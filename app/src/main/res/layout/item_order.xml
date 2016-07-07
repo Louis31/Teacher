@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="6dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="6dp">
+
+        <TextView
+            android:id="@+id/tv_order_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/order_number_tip"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_order_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_order_number"
+            android:layout_alignParentRight="true"
+            android:text="2015-01-23"
+            android:textSize="@dimen/tsize_small" />
+    </RelativeLayout>
+
+    <View style="@style/line_h" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="8dp">
+
+        <ImageView
+            android:id="@+id/iv_goods"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/iv_goods"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_goods_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="农夫山泉有点甜农夫山泉有点甜农夫山泉有点甜农夫山泉有点甜农夫山泉有点甜农夫山泉有点甜"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_goods_price_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_goods_name"
+                android:layout_marginTop="4dp"
+                android:text="@string/order_price_tip" />
+
+            <TextView
+                android:id="@+id/tv_goods_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_goods_name"
+                android:layout_marginTop="4dp"
+                android:layout_toRightOf="@id/tv_goods_price_tip"
+                android:text="200.00"
+                android:textColor="@color/red"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_goods_price_tip"
+                android:layout_marginTop="4dp"
+                android:text="@string/order_goods_num_tip" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="6dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="6dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/order_up_pay"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="38.00"
+            android:textColor="@color/red"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <View style="@style/line_h" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <TextView
+            android:id="@+id/tv_order_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:text="@string/order_finish"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_order_cancel"
+            android:layout_width="80dp"
+            android:layout_height="26dp"
+            android:layout_gravity="right|center_vertical"
+            android:background="@drawable/shape_btn_order"
+            android:gravity="center"
+            android:text="@string/order_cancel"
+            android:textColor="@color/red" />
+
+        <TextView
+            android:id="@+id/tv_order_send"
+            android:layout_width="80dp"
+            android:layout_height="26dp"
+            android:layout_gravity="right|center_vertical"
+            android:background="@drawable/shape_btn_order"
+            android:gravity="center"
+            android:text="@string/order_send"
+            android:textColor="@color/red"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <View style="@style/line_h" />
+</LinearLayout>
