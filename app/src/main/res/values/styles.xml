@@ -6,11 +6,73 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:listDivider">@drawable/divide_default</item>
+    </style>
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/white</item>
+        <item name="tabIndicatorColor">@color/red</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabSelectedTextColor">@color/red</item>
+        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
+    </style>
+
+    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/tsize_small</item>
     </style>
 
     <style name="line_h">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_height">0.6dp</item>
         <item name="android:background">@color/line</item>
+    </style>
+
+    <!-- 商品相关 -->
+    <style name="goods_item_tv">
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="goods_item_line_v">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/line</item>
+    </style>
+
+    <!-- 店铺相关 -->
+    <style name="shop_item_llayou">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <style name="shop_item_llayou_tv">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="shop_item_llayou_iv">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:src">@drawable/ic_arrow_right</item>
+    </style>
+
+    <style name="shop_item_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">12dp</item>
     </style>
 </resources>

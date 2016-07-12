@@ -2,7 +2,7 @@ package com.haiku.wateroffer.common.util.net;
 
 import android.widget.Toast;
 
-import com.haiku.onekeydeliveryseller.R;
+import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.Result;
 import com.haiku.wateroffer.common.util.SystemUtils;
 
@@ -13,7 +13,7 @@ import org.xutils.x;
 /**
  * Created by hyming on 2016/7/7.
  */
-public class XUtilsCallback<T> implements Callback.CommonCallback<Result<T>> {
+public class XUtilsCallback implements Callback.CommonCallback<Result> {
     private IRequestCallback callback;
 
     public XUtilsCallback(IRequestCallback callback) {
@@ -21,7 +21,7 @@ public class XUtilsCallback<T> implements Callback.CommonCallback<Result<T>> {
     }
 
     @Override
-    public void onSuccess(Result<T> result) {
+    public void onSuccess(Result result) {
 
     }
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="order_tab">
+        <item>@string/order_all</item>
+        <item>@string/order_pending_payment</item>
+        <item>@string/order_pending_send</item>
+        <item>@string/order_sending</item>
+        <item>@string/order_finish</item>
+    </string-array>
+
+    <string-array name="goods_tab">
+        <item>@string/goods_on_sale</item>
+        <item>@string/goods_sale_none</item>
+        <item>@string/goods_off_shelf</item>
+    </string-array>
+</resources>

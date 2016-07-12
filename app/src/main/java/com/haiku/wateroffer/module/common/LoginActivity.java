@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.haiku.onekeydeliveryseller.R;
+import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.util.ui.DialogUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.model.impl.UserModelImpl;

@@ -9,7 +9,7 @@ import com.haiku.wateroffer.common.util.net.IRequestCallback;
  * Created by hyming on 2016/7/6.
  */
 public interface IUserModel {
-    // 登录相关回调
+    // 登录模块相关回调
     interface LoginCallback extends IRequestCallback {
         // 登陆成功
         void onLoginSuccess();

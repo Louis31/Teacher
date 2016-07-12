@@ -3,6 +3,11 @@
 
     <string name="rmb">¥</string>
     <string name="login">登录</string>
+    <string name="logout">注销</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
+    <string name="off_shelf">下架</string>
+    <string name="sale_none">售罄</string>
 
     <!-- 标题相关 -->
     <string name="title_order">我的订单</string>
@@ -25,6 +30,7 @@
     <string name="order_all">全部订单</string>
     <string name="order_pending_payment">待付款</string>
     <string name="order_pending_send">待发货</string>
+    <string name="order_sending">配送中</string>
     <string name="order_finish">已完成</string>
     <string name="order_send">派单</string>
     <string name="order_cancel">取消订单</string>
@@ -34,4 +40,23 @@
     <string name="order_price_tip">单价：</string>
     <string name="order_goods_num_tip">数量：</string>
     <string name="order_up_pay">线上付款</string>
+
+    <!-- 商品相关 -->
+    <string name="goods_name">商品名称</string>
+    <string name="goods_sale_tip">销量：</string>
+    <string name="goods_stock_tip">库存：</string>
+    <string name="goods_price_tip">单价：</string>
+    <string name="goods_on_sale">出售中</string>
+    <string name="goods_sale_none">已售罄</string>
+    <string name="goods_off_shelf">已下架</string>
+
+    <!-- 店铺相关 -->
+    <string name="shop_address">店铺地址</string>
+    <string name="contact_number">联系电话</string>
+    <string name="delivery_range">配送范围</string>
+    <string name="delivery_list">配送列表</string>
+    <string name="my_bill">我的账单</string>
+    <string name="deposit">保证金</string>
+    <string name="seller_contribution">商家贡献值</string>
+
 </resources>

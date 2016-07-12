@@ -10,7 +10,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
-import com.haiku.onekeydeliveryseller.R;
+import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.module.goods.GoodsFragment;
 import com.haiku.wateroffer.module.order.OrderFragment;
 import com.haiku.wateroffer.module.shop.ShopFragment;

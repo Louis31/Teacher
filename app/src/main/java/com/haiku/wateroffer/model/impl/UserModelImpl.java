@@ -21,9 +21,9 @@ public class UserModelImpl implements IUserModel {
     public void login(@NonNull final LoginCallback callback) {
         boolean isSuccess = true;
 
-        XUtils.Post(UrlConstant.User.getLoginUrl(), ParamUtils.User.getLoginParams(), new XUtilsCallback<User>(callback) {
+        /*XUtils.Post(UrlConstant.User.getLoginUrl(), ParamUtils.User.getLoginParams(), new XUtilsCallback(callback) {
             @Override
-            public void onSuccess(Result<User> result) {
+            public void onSuccess(Result result) {
                 super.onSuccess(result);
                 if (result.getRetcode() == ErrorCode.SUCCESS) {
                     callback.onLoginSuccess();
@@ -31,7 +31,7 @@ public class UserModelImpl implements IUserModel {
                     callback.onLoginFail(result.getRetmsg());
                 }
             }
-        });
+        });*/
 
         if (isSuccess) {
             callback.onLoginSuccess();

@@ -1,0 +1,73 @@
+package com.haiku.wateroffer.common.util.data;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
+
+/**
+ * Created by hyming on 2016/7/9.
+ */
+public class GsonUtils {
+    private static Gson gson = null;
+
+    static {
+        if (gson == null) {
+            gson = new Gson();
+        }
+    }
+
+    private GsonUtils() {
+    }
+
+
+    /**
+     * Object对象转 json字符串
+     *
+     * @param object
+     * @return
+     */
+    public static String gsonString(Object object) {
+        String str = null;
+        if (gson != null) {
+            str = gson.toJson(object);
+        }
+        return str;
+    }
+
+    /**
+     * 将json字符串解析为：cls类型的对象
+     *
+     * @param gsonString
+     * @param cls
+     * @return
+     */
+    public static <T> T gsonToBean(String gsonString, Class<T> cls) {
+        T t = null;
+        if (gson != null && gsonString != null && !gsonString.equals("")) {
+            try {
+                t = gson.fromJson(gsonString, cls);
+            } catch (Exception e) {
+                System.out.println(cls.getSimpleName() + "  " + e.toString());
+            }
+
+        }
+        return t;
+    }
+
+    /**
+     * 将json字符串，转成：T类对象的 List数组
+     *
+     * @param gsonString
+     * @return
+     */
+    public static <T> List<T> gsonToList(String gsonString) {
+        List<T> list = null;
+        if (gson != null) {
+            list = gson.fromJson(gsonString, new TypeToken<List<T>>() {
+            }.getType());
+        }
+        return list;
+    }
+
+}

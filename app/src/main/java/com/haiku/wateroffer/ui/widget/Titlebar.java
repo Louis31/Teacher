@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.haiku.onekeydeliveryseller.R;
+import com.haiku.wateroffer.R;
 
 
 /**

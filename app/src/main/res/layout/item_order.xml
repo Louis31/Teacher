@@ -5,6 +5,8 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <View style="@style/line_h" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

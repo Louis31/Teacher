@@ -10,6 +10,8 @@ public abstract class LazyFragment extends Fragment {
 
     /*Fragment当前状态是否可见*/
     protected boolean isVisible;
+    protected boolean isPrepared;
+    protected boolean isFirstLoad = true;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
