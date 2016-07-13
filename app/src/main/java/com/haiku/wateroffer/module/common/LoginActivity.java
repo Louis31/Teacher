@@ -2,10 +2,13 @@ package com.haiku.wateroffer.module.common;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.common.util.data.ValidatorUtils;
 import com.haiku.wateroffer.common.util.ui.DialogUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.model.impl.UserModelImpl;
@@ -24,6 +27,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 @ContentView(R.layout.act_login)
 public class LoginActivity extends BaseActivity implements LoginContract.View {
 
+    private boolean isGettingVerifyCode;// 标记正在获取验证码
     private LoginContract.Presenter mPresenter;
     private SweetAlertDialog mDialog;
 
@@ -33,10 +37,35 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @ViewInject(R.id.et_verify_code)
     private EditText et_verify_code;
 
+    @ViewInject(R.id.tv_verify_code)
+    private TextView tv_verify_code;
+
+    // 获取短信验证码
+    @Event(R.id.tv_verify_code)
+    private void verifyCodeClick(View v) {
+        String phone = et_phone.getText().toString().trim();
+        // 判断手机号码格式是否正确
+        if (!ValidatorUtils.isMobile(phone)) {
+            ToastUtils.getInstant().showToast(R.string.msg_phone_invalid);
+        } else if (!isGettingVerifyCode) {
+            isGettingVerifyCode = true;
+            tv_verify_code.setTextColor(getResources().getColor(R.color.red));
+            mPresenter.getVerifyCode(phone);
+        }
+    }
+
     // 登录按钮点击事件
     @Event(R.id.btn_login)
     private void loginClick(View v) {
-        mPresenter.login();
+        String phone = et_phone.getText().toString().trim();
+        String valicode = et_verify_code.getText().toString().trim();// 判断手机号码格式是否正确
+        if (!ValidatorUtils.isMobile(phone)) {
+            ToastUtils.getInstant().showToast(R.string.msg_phone_invalid);
+        } else if (TextUtils.isEmpty(valicode)) {
+            ToastUtils.getInstant().showToast(R.string.msg_verifycode_invalid);
+        } else {
+            mPresenter.login(phone, valicode);
+        }
     }
 
     @Override
@@ -44,6 +73,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         super.onCreate(savedInstanceState);
         // 创建Presenter
         new LoginPresenter(new UserModelImpl(), this);
+        // 获取token
+        mPresenter.getAccessToken();
     }
 
     @Override
@@ -71,9 +102,18 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         }
     }
 
+    @Override
+    public void setVerifyCode(String verifyCode) {
+        et_verify_code.setText(verifyCode);
+        tv_verify_code.setTextColor(getResources().getColor(R.color.black));
+        isGettingVerifyCode = false;
+    }
+
     // 显示错误信息
     @Override
     public void showMessage(String msg) {
         ToastUtils.getInstant().showToast(msg);
+        tv_verify_code.setTextColor(getResources().getColor(R.color.black));
+        isGettingVerifyCode = false;
     }
 }

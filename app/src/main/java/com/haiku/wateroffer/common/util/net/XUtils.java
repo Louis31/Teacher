@@ -1,5 +1,7 @@
 package com.haiku.wateroffer.common.util.net;
 
+import com.haiku.wateroffer.common.util.data.LogUtils;
+
 import org.xutils.common.Callback.Cancelable;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.RequestParams;
@@ -27,6 +29,7 @@ public class XUtils {
             }
         }
         Cancelable cancelable = x.http().get(params, callback);
+        LogUtils.showLogE("Get", params.toString());
         return cancelable;
     }
 
@@ -44,6 +47,7 @@ public class XUtils {
             }
         }
         Cancelable cancelable = x.http().post(params, callback);
+        LogUtils.showLogE("Post", params.toString());
         return cancelable;
     }
 }

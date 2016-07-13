@@ -6,7 +6,9 @@
     android:orientation="vertical">
 
 
-    <LinearLayout style="@style/shop_item_llayou">
+    <LinearLayout
+        style="@style/shop_item_llayou"
+        android:background="@color/white">
 
         <com.haiku.wateroffer.ui.widget.CircleImageView
             android:layout_width="60dp"
@@ -78,7 +80,8 @@
 
     <View style="@style/line_h" />
 
-    <LinearLayout style="@style/shop_item_llayou">
+    <LinearLayout style="@style/shop_item_llayou"
+        android:id="@+id/llayout_deposit">
 
         <TextView
             style="@style/shop_item_llayou_tv"

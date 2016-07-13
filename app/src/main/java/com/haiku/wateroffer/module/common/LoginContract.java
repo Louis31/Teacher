@@ -19,13 +19,19 @@ public interface LoginContract {
         // 显示信息
         void showMessage(String msg);
 
+        // 设置verifyCode
+        void setVerifyCode(String verifyCode);
+
     }
 
     interface Presenter extends BasePresenter {
         // 登录操作
-        void login();
+        void login(String phone,String valicode);
 
         // 获取短信验证操作
-        void getVerifyCode();
+        void getVerifyCode(String phone);
+
+        // 获取token
+        void getAccessToken();
     }
 }

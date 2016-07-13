@@ -10,14 +10,17 @@ import com.haiku.wateroffer.common.util.net.IRequestCallback;
  */
 public interface IUserModel {
     // 登录模块相关回调
-    interface LoginCallback extends IRequestCallback {
+    interface LoginCallback extends IBaseModel.GetTokenCallback {
         // 登陆成功
         void onLoginSuccess();
 
-        // 登陆失败
-        void onLoginFail(String msg);
+        // 获取验证码成功
+        void getVerifyCodeSuccess(String verifyCode);
     }
 
     // 登陆
-    void login(@NonNull LoginCallback callback);
+    void login(String phone, String valicode, @NonNull LoginCallback callback);
+
+    // 获取验证码
+    void getVerifyCode(@NonNull String phone, @NonNull LoginCallback callback);
 }

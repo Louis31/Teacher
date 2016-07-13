@@ -1,6 +1,7 @@
 package com.haiku.wateroffer.module.base;
 
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 /**
  * 懒加载的Fragment（只有用户可见了，才加载数据和布局）
@@ -44,4 +45,10 @@ public abstract class LazyFragment extends Fragment {
      * 延迟加载
      */
     protected abstract void lazyLoad();
+
+    // 绑定view id
+    public <T extends View> T findView(View v, int viewId) {
+        View view = v.findViewById(viewId);
+        return (T) view;
+    }
 }
