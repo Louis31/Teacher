@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.model.impl.DepositModelImpl;
 import com.haiku.wateroffer.module.base.BaseActivity;
 import com.haiku.wateroffer.ui.widget.Titlebar;
@@ -16,7 +17,7 @@ import org.xutils.view.annotation.ViewInject;
  * Created by hyming on 2016/7/13.
  */
 @ContentView(R.layout.act_deposit)
-public class DepositActivity extends BaseActivity implements Titlebar.OnReturnClickListener, DepositContract.View {
+public class DepositActivity extends BaseActivity implements DepositContract.View {
 
     private DepositContract.Presenter mPresenter;
 
@@ -33,16 +34,16 @@ public class DepositActivity extends BaseActivity implements Titlebar.OnReturnCl
 
     private void initViews() {
         mTitlebar.initDatas(R.string.deposit, true);
-        mTitlebar.setListener(this);
+        mTitlebar.setListener(new TitlebarListenerAdapter() {
+            @Override
+            public void onReturnIconClick() {
+                finish();
+            }
+        });
     }
 
     @Override
     public void setPresenter(@NonNull DepositContract.Presenter presenter) {
         this.mPresenter = presenter;
-    }
-
-    @Override
-    public void onReturnClick() {
-        finish();
     }
 }

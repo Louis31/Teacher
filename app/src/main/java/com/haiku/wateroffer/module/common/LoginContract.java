@@ -4,7 +4,7 @@ import com.haiku.wateroffer.module.base.BasePresenter;
 import com.haiku.wateroffer.module.base.BaseView;
 
 /**
- * 登录模块的Contract类
+ * 登录模块Contract
  * Created by hyming on 2016/7/6.
  */
 public interface LoginContract {
@@ -21,17 +21,13 @@ public interface LoginContract {
 
         // 设置verifyCode
         void setVerifyCode(String verifyCode);
-
     }
 
     interface Presenter extends BasePresenter {
         // 登录操作
-        void login(String phone,String valicode);
+        void login(String phone, String valicode);
 
         // 获取短信验证操作
         void getVerifyCode(String phone);
-
-        // 获取token
-        void getAccessToken();
     }
 }

@@ -57,10 +57,10 @@ public class OrderFragment extends Fragment {
 
         fragments = new ArrayList<Fragment>();
         allFragment = OrderListFragment.newInstance(TypeConstant.Order.ALL);
-        pendingPaymentFragment = OrderListFragment.newInstance(TypeConstant.Order.PENDING_PAY);
-        pendingSendFragment = OrderListFragment.newInstance(TypeConstant.Order.PENDING_SEND);
-        sendingFragment = OrderListFragment.newInstance(TypeConstant.Order.SENDING);
-        finishFragment = OrderListFragment.newInstance(TypeConstant.Order.FINISH);
+        pendingPaymentFragment = OrderListFragment.newInstance(TypeConstant.Order.UNPAY);
+        pendingSendFragment = OrderListFragment.newInstance(TypeConstant.Order.PAYED);
+        sendingFragment = OrderListFragment.newInstance(TypeConstant.Order.DELIVERING);
+        finishFragment = OrderListFragment.newInstance(TypeConstant.Order.CLOSED);
 
         fragments.add(allFragment);
         fragments.add(pendingPaymentFragment);
@@ -76,8 +76,8 @@ public class OrderFragment extends Fragment {
 
         mAdapter = new FragmentAdapter(getChildFragmentManager(), tabTitles, fragments);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(0);
         mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setOffscreenPageLimit(0);
         mViewPager.setCurrentItem(0);
     }
 

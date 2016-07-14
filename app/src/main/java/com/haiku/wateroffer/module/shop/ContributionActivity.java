@@ -3,6 +3,7 @@ package com.haiku.wateroffer.module.shop;
 import android.os.Bundle;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.module.base.BaseActivity;
 import com.haiku.wateroffer.ui.widget.Titlebar;
 
@@ -14,7 +15,7 @@ import org.xutils.view.annotation.ViewInject;
  * Created by hyming on 2016/7/13.
  */
 @ContentView(R.layout.act_contribution)
-public class ContributionActivity extends BaseActivity implements Titlebar.OnReturnClickListener {
+public class ContributionActivity extends BaseActivity {
 
     @ViewInject(R.id.titlebar)
     private Titlebar mTitlebar;
@@ -28,11 +29,12 @@ public class ContributionActivity extends BaseActivity implements Titlebar.OnRet
 
     private void initViews() {
         mTitlebar.initDatas(R.string.contribution, true);
-        mTitlebar.setListener(this);
+        mTitlebar.setListener(new TitlebarListenerAdapter() {
+            @Override
+            public void onReturnIconClick() {
+                finish();
+            }
+        });
     }
 
-    @Override
-    public void onReturnClick() {
-        finish();
-    }
 }

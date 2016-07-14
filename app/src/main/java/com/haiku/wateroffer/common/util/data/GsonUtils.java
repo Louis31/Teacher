@@ -1,6 +1,7 @@
 package com.haiku.wateroffer.common.util.data;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
@@ -68,6 +69,13 @@ public class GsonUtils {
             }.getType());
         }
         return list;
+    }
+
+    // 判断json数组是否为空
+    public static boolean isJsonArrayEmpty(JsonArray jArray) {
+        if (jArray == null || jArray.size() == 0 || jArray.toString().equals("[]"))
+            return true;
+        return false;
     }
 
 }

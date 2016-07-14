@@ -12,6 +12,7 @@ import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.model.impl.GoodsModelImpl;
 import com.haiku.wateroffer.module.base.LazyFragment;
 import com.haiku.wateroffer.ui.adapter.GoodsListAdapter;
+import com.haiku.wateroffer.ui.divider.BroadDividerItem;
 import com.haiku.wateroffer.ui.widget.MyRefreshLayout;
 
 import java.util.ArrayList;
@@ -76,7 +77,8 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
 
     private void initViews() {
         mRefreshLayout = (MyRefreshLayout) rootView.findViewById(R.id.myRefreshLayout);
-        mRefreshLayout.setPageSize(BaseConstant.PAGE_SIZE);
+        mRefreshLayout.setPageSize(BaseConstant.PAGE_SIZE_DEFAULT);
+        mRefreshLayout.addItemDecoration(new BroadDividerItem(mContext));
         mRefreshLayout.setAdapter(mAdapter);
         mRefreshLayout.setLinearLayout();
         mRefreshLayout.setPullRefreshEnable(false);

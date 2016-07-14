@@ -2,12 +2,15 @@ package com.haiku.wateroffer.module.order;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.OrderItem;
+import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.model.impl.OrderModelImpl;
 import com.haiku.wateroffer.module.base.LazyFragment;
@@ -25,7 +28,9 @@ import java.util.List;
 public class OrderListFragment extends LazyFragment implements OrderListContract.View, MyRefreshLayout.OnRefreshLayoutListener {
 
     private Context mContext;
-    private int mType;// 标记当前列表数据的类型
+
+    private int uid;
+    private String mType;// 标记当前列表数据的类型
     private List<OrderItem> mDatas;
 
     private View rootView;
@@ -33,9 +38,9 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     private OrderListAdapter mAdapter;
     private OrderListContract.Presenter mPresenter;
 
-    public static OrderListFragment newInstance(int type) {
+    public static OrderListFragment newInstance(String type) {
         Bundle bundle = new Bundle();
-        bundle.putInt("type", type);
+        bundle.putString("type", type);
         OrderListFragment fragment = new OrderListFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -47,7 +52,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
         ///获取索引值
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mType = bundle.getInt("type");
+            mType = bundle.getString("type");
         }
         mContext = getContext();
     }
@@ -71,13 +76,14 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     }
 
     private void initDatas() {
+        uid = UserManager.getInstance().getUser().getUid();
         mDatas = new ArrayList<>();
-        mAdapter = new OrderListAdapter(mContext, mDatas);
+        mAdapter = new OrderListAdapter(mContext, mDatas, this);
     }
 
     private void initViews() {
         mRefreshLayout = (MyRefreshLayout) rootView.findViewById(R.id.myRefreshLayout);
-        mRefreshLayout.setPageSize(BaseConstant.PAGE_SIZE);
+        mRefreshLayout.setPageSize(BaseConstant.PAGE_SIZE_DEFAULT);
         mRefreshLayout.addItemDecoration(new BroadDividerItem(mContext));
         mRefreshLayout.setAdapter(mAdapter);
         mRefreshLayout.setLinearLayout();
@@ -85,6 +91,10 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
         mRefreshLayout.setListener(this);
     }
 
+    @Override
+    public void setPresenter(OrderListContract.Presenter presenter) {
+        this.mPresenter = presenter;
+    }
 
     @Override
     protected void lazyLoad() {
@@ -92,12 +102,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
             return;
         }
         isFirstLoad = false;
-        mPresenter.getListDatas();
-    }
-
-    @Override
-    public void setPresenter(OrderListContract.Presenter presenter) {
-        this.mPresenter = presenter;
+        mPresenter.getListDatas(uid, mType, BaseConstant.ORDER_SORT_SYNTHESIS, mRefreshLayout.getCurrentPage());
     }
 
     // 下拉刷新
@@ -109,7 +114,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     // 加载更多
     @Override
     public void onLoadMore() {
-        mPresenter.getListDatas();
+        mPresenter.getListDatas(uid, mType, BaseConstant.ORDER_SORT_SYNTHESIS, mRefreshLayout.getCurrentPage());
     }
 
     // 显示列表界面
@@ -120,9 +125,9 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
         mRefreshLayout.loadingCompleted(true);
     }
 
-
     @Override
     public void showMessage(String msg) {
         mRefreshLayout.loadingCompleted(false);
+        ToastUtils.getInstant().showToast(msg);
     }
 }

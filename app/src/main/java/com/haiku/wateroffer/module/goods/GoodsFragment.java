@@ -70,8 +70,8 @@ public class GoodsFragment extends Fragment {
 
         mAdapter = new FragmentAdapter(getChildFragmentManager(), tabTitles, fragments);
         mViewPager.setAdapter(mAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.setOffscreenPageLimit(0);
         mViewPager.setCurrentItem(0);
-        mTabLayout.setupWithViewPager(mViewPager);
     }
 }

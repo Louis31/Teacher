@@ -6,6 +6,7 @@ import com.haiku.wateroffer.bean.Goods;
 import com.haiku.wateroffer.model.IGoodsModel;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品列表模块Presenter实现类
@@ -40,6 +41,12 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
     @Override
     public void getListDataFail(String msg) {
         mView.showMessage(msg);
+    }
+
+
+    @Override
+    public void getTokenSuccess(Map<String, Object> params) {
+
     }
 
     // 错误回调

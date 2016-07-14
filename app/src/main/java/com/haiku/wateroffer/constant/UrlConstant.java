@@ -14,13 +14,17 @@ public class UrlConstant {
     // 可用的appSecret：eUGhdvpDDpC16iUXqfMsc3ntl , 0wtcDflIXFLHx4VJ3G32cuFGg , ghrF59N53zchmGO2KsWlWuokC
     private final static String APP_SECRET = "eUGhdvpDDpC16iUXqfMsc3ntl";
 
-    private final static String PATHS_USER = "/user";
+    private final static String PATH_USER = "/user";
+    private final static String PATH_ORDER = "/order";
 
-    /**
-     * 用户相关path
-     */
+    // 用户相关path
     private static String getUserPath() {
-        return HOST + PATHS_USER;
+        return HOST + PATH_USER;
+    }
+
+    // 订单相关path
+    private static String getOrderPath() {
+        return HOST + PATH_ORDER;
     }
 
     /**
@@ -31,11 +35,15 @@ public class UrlConstant {
     }
 
     private static String getToken() {
-        return "?token=" + UserManager.getInstance().getToken().getAccess_token();
+        String token = "?token=";
+        if (UserManager.getInstance().getToken() != null) {
+            return token + UserManager.getInstance().getToken().getAccess_token();
+        }
+        return token;
     }
 
     /**
-     * 获取短信验证码
+     * 获取短信验证码，Get
      */
     public static String smsCodeUrl() {
         return HOST + "/sms/send" + getToken();
@@ -45,9 +53,24 @@ public class UrlConstant {
      * 用户相关url
      */
     public static class User {
-        // 登陆url
+        // 登陆url，Post
         public static String loginUrl() {
             return getUserPath() + "/identify" + getToken();
+        }
+
+        // 添加店铺名称，Post
+        public static String addShopNameUrl() {
+            return getUserPath() + "/addShopName" + getToken();
+        }
+    }
+
+    /**
+     * 订单相关url
+     */
+    public static class Order {
+        // 获取订单列表，Get
+        public static String listUrl() {
+            return getOrderPath() + "/get_list" + getToken();
         }
     }
 }

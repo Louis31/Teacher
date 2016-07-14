@@ -8,11 +8,15 @@
 
     <LinearLayout
         style="@style/shop_item_llayou"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
         android:background="@color/white">
 
         <com.haiku.wateroffer.ui.widget.CircleImageView
+            android:id="@+id/iv_shop_logo"
             android:layout_width="60dp"
-            android:layout_height="60dp" />
+            android:layout_height="60dp"
+            android:src="@drawable/ic_image_loading" />
 
         <TextView
             style="@style/shop_item_llayou_tv"
@@ -36,7 +40,8 @@
 
     <View style="@style/line_h" />
 
-    <LinearLayout style="@style/shop_item_llayou">
+    <LinearLayout style="@style/shop_item_llayou"
+        android:id="@+id/llayout_phone">
 
         <TextView
             style="@style/shop_item_llayou_tv"
@@ -80,8 +85,9 @@
 
     <View style="@style/line_h" />
 
-    <LinearLayout style="@style/shop_item_llayou"
-        android:id="@+id/llayout_deposit">
+    <LinearLayout
+        android:id="@+id/llayout_deposit"
+        style="@style/shop_item_llayou">
 
         <TextView
             style="@style/shop_item_llayou_tv"

@@ -6,8 +6,11 @@
     <string name="logout">注销</string>
     <string name="delete">删除</string>
     <string name="edit">编辑</string>
+    <string name="save">保存</string>
     <string name="off_shelf">下架</string>
     <string name="sale_none">售罄</string>
+    <string name="next_step">下一步</string>
+    <string name="address">地址</string>
 
     <string name="wechat_payment">微信支付</string>
     <string name="alipay_payment">支付宝支付</string>
@@ -22,9 +25,16 @@
     <string name="msg_netword_error">网络出错，请检查网络</string>
     <string name="msg_phone_invalid">请输入正确的手机号码</string>
     <string name="msg_verifycode_invalid">请输入正确的验证码</string>
+    <string name="msg_shop_name_empty">店铺名称不能为空</string>
 
     <!-- dialog -->
-    <string name="dlg_loging">正在登录......</string>
+    <string name="dlg_loging">正在登录...</string>
+    <string name="dlg_submiting">正在提交...</string>
+
+    <!-- 编辑相关 -->
+    <string name="hint_phone_old">请输入当前手机号码</string>
+    <string name="hint_phone_new">请输入新手机号码</string>
+    <string name="hint_use_new_account">下次使用新账号登录</string>
 
     <!-- 登录相关 -->
     <string name="hint_phone">请输入手机号码</string>
@@ -56,7 +66,12 @@
     <string name="goods_off_shelf">已下架</string>
 
     <!-- 店铺相关 -->
+    <string name="hint_shop_name">请为自己的小店设置名称</string>
+    <string name="hint_shop_addr">街道/小区/学校</string>
+    <string name="hint_shop_addr_detail">请输入楼层、门牌号</string>
+    <string name="shop_name">店铺名称</string>
     <string name="shop_address">店铺地址</string>
+    <string name="shop_open">开店咯</string>
     <string name="contact_number">联系电话</string>
     <string name="delivery_range">配送范围</string>
     <string name="delivery_list">配送列表</string>
@@ -66,4 +81,6 @@
 
     <string name="contribution">贡献值</string>
     <string name="current_contribution">当前贡献值</string>
+
+
 </resources>

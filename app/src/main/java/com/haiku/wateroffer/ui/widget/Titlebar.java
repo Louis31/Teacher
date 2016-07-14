@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.common.listener.TitlebarListener;
 
 
 /**
@@ -18,14 +19,10 @@ import com.haiku.wateroffer.R;
 public class Titlebar extends FrameLayout {
     private TextView tv_title;
     private ImageView iv_back;
-    private OnReturnClickListener mListener;
+    private TextView tv_save;
+    private TitlebarListener mListener;
 
-    public interface OnReturnClickListener {
-        // 退出当前activity
-        void onReturnClick();
-    }
-
-    public void setListener(OnReturnClickListener listener) {
+    public void setListener(TitlebarListener listener) {
         this.mListener = listener;
     }
 
@@ -61,7 +58,7 @@ public class Titlebar extends FrameLayout {
                 @Override
                 public void onClick(View v) {
                     if (mListener != null) {
-                        mListener.onReturnClick();
+                        mListener.onReturnIconClick();
                     }
                 }
             });
@@ -71,5 +68,19 @@ public class Titlebar extends FrameLayout {
     // 设置标题
     public void setTitle(int resId) {
         tv_title.setText(resId);
+    }
+
+    // 显示保存
+    public void showSaveTextView() {
+        tv_save = (TextView) findViewById(R.id.tv_save);
+        tv_save.setVisibility(View.VISIBLE);
+        tv_save.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onSaveTextClick();
+                }
+            }
+        });
     }
 }

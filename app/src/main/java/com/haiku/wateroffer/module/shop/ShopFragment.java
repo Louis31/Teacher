@@ -3,13 +3,14 @@ package com.haiku.wateroffer.module.shop;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.common.util.ui.DialogUtils;
 import com.haiku.wateroffer.module.base.LazyFragment;
 
 /**
@@ -18,9 +19,13 @@ import com.haiku.wateroffer.module.base.LazyFragment;
  */
 public class ShopFragment extends LazyFragment implements View.OnClickListener {
     private Context mContext;
+    private String mImagePath;
 
     private View rootView;
-    private LinearLayout llayout_deposit;
+    private ImageView iv_shop_logo;// 店铺logo
+
+    private LinearLayout llayout_phone;// 店铺电话
+    private LinearLayout llayout_deposit;// 保证金
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,9 +55,13 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
 
     // 初始化界面
     private void initViews() {
+        iv_shop_logo = findView(rootView, R.id.iv_shop_logo);
+        llayout_phone = findView(rootView, R.id.llayout_phone);
         llayout_deposit = findView(rootView, R.id.llayout_deposit);
-        llayout_deposit.setOnClickListener(this);
 
+        iv_shop_logo.setOnClickListener(this);
+        llayout_phone.setOnClickListener(this);
+        llayout_deposit.setOnClickListener(this);
     }
 
     @Override
@@ -63,6 +72,17 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            // 店铺LOGO点击
+            case R.id.iv_shop_logo:
+                mImagePath = mContext.getExternalCacheDir()
+                        .getAbsolutePath()
+                        + String.valueOf(System.currentTimeMillis())
+                        + ".jpg";
+                DialogUtils.makePhotoPickDialog(getActivity(), mImagePath).show();
+                break;
+            // 跳转编辑联系电话界面
+            case R.id.llayout_phone:
+                break;
             // 跳转到保证金页面
             case R.id.llayout_deposit:
                 startActivity(new Intent(mContext, DepositActivity.class));

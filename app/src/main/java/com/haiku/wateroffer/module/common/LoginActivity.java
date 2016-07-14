@@ -73,8 +73,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         super.onCreate(savedInstanceState);
         // 创建Presenter
         new LoginPresenter(new UserModelImpl(), this);
-        // 获取token
-        mPresenter.getAccessToken();
     }
 
     @Override
@@ -85,6 +83,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     // 显示主页
     @Override
     public void showMainActivity() {
+
+        // startActivity(new Intent(mContext, ShopAddressActivity.class));
         startActivity(new Intent(mContext, MainActivity.class));
         finish();
     }

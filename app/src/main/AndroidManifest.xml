@@ -29,6 +29,9 @@
         <activity android:name=".module.common.MainActivity" />
 
         <!-- 店铺相关 -->
+        <activity android:name=".module.shop.ShopNameActivity" />
+        <activity android:name=".module.shop.ShopAddressActivity" />
+        <activity android:name=".module.shop.EditPhoneActivity" />
         <activity android:name=".module.shop.DepositActivity" />
         <activity android:name=".module.shop.ContributionActivity" />
     </application>

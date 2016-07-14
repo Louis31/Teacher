@@ -38,4 +38,14 @@ public class UserManager {
     public void setUser(User user) {
         this.user = user;
     }
+
+    // 判断token是否为空
+    public static boolean isTokenEmpty() {
+        if (null == getInstance().getToken()
+                || getInstance().getToken().getAccess_token().equals("")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

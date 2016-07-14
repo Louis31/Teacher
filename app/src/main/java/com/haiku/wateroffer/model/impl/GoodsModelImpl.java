@@ -19,7 +19,6 @@ public class GoodsModelImpl implements IGoodsModel {
     @Override
     public void getGoodsList(@NonNull final GoodsListCallback callback) {
 
-
         Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override

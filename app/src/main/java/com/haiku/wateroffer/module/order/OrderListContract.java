@@ -22,6 +22,6 @@ public class OrderListContract {
 
     interface Presenter extends BasePresenter {
         // 获取列表数据
-        void getListDatas();
+        void getListDatas(int uid, String status, String key, int pageno);
     }
 }
