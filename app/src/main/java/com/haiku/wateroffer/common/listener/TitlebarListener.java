@@ -10,4 +10,7 @@ public interface TitlebarListener {
 
     // 保存按钮
     void onSaveTextClick();
+
+    // 添加图标点击
+    void onAddIconClick();
 }

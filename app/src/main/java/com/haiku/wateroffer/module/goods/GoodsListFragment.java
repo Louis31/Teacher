@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.Goods;
+import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.model.impl.GoodsModelImpl;
 import com.haiku.wateroffer.module.base.LazyFragment;
@@ -25,6 +27,7 @@ import java.util.List;
 public class GoodsListFragment extends LazyFragment implements GoodsListContract.View, MyRefreshLayout.OnRefreshLayoutListener {
     private Context mContext;
 
+    private int uid;
     private int mType;// 标记当前列表数据的类型
     private List<Goods> mDatas;
 
@@ -71,8 +74,9 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     }
 
     private void initDatas() {
+        uid = UserManager.getInstance().getUser().getUid();
         mDatas = new ArrayList<>();
-        mAdapter = new GoodsListAdapter(mContext, mDatas);
+        mAdapter = new GoodsListAdapter(mContext, mDatas, mType, this);
     }
 
     private void initViews() {
@@ -92,7 +96,7 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
             return;
         }
         isFirstLoad = false;
-        mPresenter.getListDatas();
+        mPresenter.getListDatas(uid, mType, mRefreshLayout.getCurrentPage());
     }
 
     @Override
@@ -109,7 +113,7 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     // 加载更多
     @Override
     public void onLoadMore() {
-        mPresenter.getListDatas();
+        mPresenter.getListDatas(uid, mType, mRefreshLayout.getCurrentPage());
     }
 
     // 显示列表界面
@@ -124,5 +128,6 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     @Override
     public void showMessage(String msg) {
         mRefreshLayout.loadingCompleted(false);
+        ToastUtils.getInstant().showToast(msg);
     }
 }

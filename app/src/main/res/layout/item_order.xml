@@ -67,10 +67,12 @@
     <View style="@style/line_h" />
 
     <FrameLayout
+        android:id="@+id/flayout_bottom"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:paddingLeft="12dp"
-        android:paddingRight="12dp">
+        android:paddingRight="12dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_order_finish"
@@ -88,7 +90,8 @@
             android:background="@drawable/shape_btn_order"
             android:gravity="center"
             android:text="@string/order_cancel"
-            android:textColor="@color/red" />
+            android:textColor="@color/red"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_order_send"
@@ -102,5 +105,4 @@
             android:visibility="gone" />
     </FrameLayout>
 
-    <View style="@style/line_h" />
 </LinearLayout>

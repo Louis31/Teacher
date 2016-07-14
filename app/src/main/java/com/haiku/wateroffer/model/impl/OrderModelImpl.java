@@ -33,10 +33,8 @@ public class OrderModelImpl implements IOrderModel {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.getRetcode() == ErrorCode.SUCCESS) {
-                    result.getRetmsg().getAsJsonArray();
                     List<OrderItem> list = new ArrayList<OrderItem>();
-                    if (GsonUtils.isJsonArrayEmpty(result.getRetmsg().getAsJsonArray())) {
-                    } else {
+                    if (!GsonUtils.isJsonArrayEmpty(result.getRetmsg().getAsJsonArray())) {
                         list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().getAsString());
                     }
                     callback.getListDataSuccess(list);

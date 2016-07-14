@@ -7,6 +7,7 @@
     <string name="delete">删除</string>
     <string name="edit">编辑</string>
     <string name="save">保存</string>
+    <string name="up_shelf">上架</string>
     <string name="off_shelf">下架</string>
     <string name="sale_none">售罄</string>
     <string name="next_step">下一步</string>

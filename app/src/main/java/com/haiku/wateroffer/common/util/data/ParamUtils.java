@@ -38,4 +38,17 @@ public class ParamUtils {
             return map;
         }
     }
+
+    /**
+     * 商品相关参数
+     */
+    public static class Goods {
+        // 获取商品列表参数
+        public static Map<String, Object> getListParams(Map<String, Object> params) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("pagesize", BaseConstant.PAGE_SIZE_DEFAULT);
+            map.putAll(params);
+            return map;
+        }
+    }
 }

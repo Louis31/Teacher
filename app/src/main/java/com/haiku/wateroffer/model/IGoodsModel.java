@@ -7,6 +7,7 @@ import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品Model接口,处理订单相关业务逻辑
@@ -17,11 +18,8 @@ public interface IGoodsModel {
     interface GoodsListCallback extends IRequestCallback {
         // 获取列表数据成功
         void getListDataSuccess(List<Goods> list);
-
-        // 获取列表数据失败
-        void getListDataFail(String msg);
     }
 
     // 获取商品列表
-    void getGoodsList(@NonNull GoodsListCallback callback);
+    void getGoodsList(Map<String, Object> params, @NonNull GoodsListCallback callback);
 }

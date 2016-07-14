@@ -3,8 +3,11 @@ package com.haiku.wateroffer.module.goods;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.Goods;
+import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.model.IBaseModel;
 import com.haiku.wateroffer.model.IGoodsModel;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,28 +28,37 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         mView.setPresenter(this);
     }
 
+    /**
+     * Presenter 接口方法
+     */
     // 获取列表数据
     @Override
-    public void getListDatas() {
-        mGoodsModel.getGoodsList(this);
+    public void getListDatas(int uid, int status, int pageno) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("uid", uid);
+        params.put("status", status);
+        params.put("pageno", pageno);
+
+        if (UserManager.isTokenEmpty()) {
+            // 获取token
+            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
+        } else {
+            mGoodsModel.getGoodsList(params, this);
+        }
     }
 
+    /**
+     * Callback 接口方法
+     */
     // 获取列表数据成功
     @Override
     public void getListDataSuccess(List<Goods> list) {
         mView.showListView(list);
     }
 
-    // 获取列表数据失败
-    @Override
-    public void getListDataFail(String msg) {
-        mView.showMessage(msg);
-    }
-
-
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
-
+        mGoodsModel.getGoodsList(params, this);
     }
 
     // 错误回调

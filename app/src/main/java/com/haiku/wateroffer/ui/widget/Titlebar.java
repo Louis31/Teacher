@@ -20,6 +20,7 @@ public class Titlebar extends FrameLayout {
     private TextView tv_title;
     private ImageView iv_back;
     private TextView tv_save;
+    private ImageView iv_add;
     private TitlebarListener mListener;
 
     public void setListener(TitlebarListener listener) {
@@ -82,5 +83,29 @@ public class Titlebar extends FrameLayout {
                 }
             }
         });
+    }
+
+    // 初始化图标
+    public void initAddIcon() {
+        iv_add = (ImageView) findViewById(R.id.iv_add);
+        iv_add.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onAddIconClick();
+                }
+            }
+        });
+    }
+
+    //显示/隐藏添加图标
+    public void showAddIcon(boolean isShow) {
+        if (iv_add != null) {
+            if (isShow) {
+                iv_add.setVisibility(View.VISIBLE);
+            } else {
+                iv_add.setVisibility(View.GONE);
+            }
+        }
     }
 }

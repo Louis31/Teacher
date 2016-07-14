@@ -2,7 +2,6 @@ package com.haiku.wateroffer.module.order;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +77,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     private void initDatas() {
         uid = UserManager.getInstance().getUser().getUid();
         mDatas = new ArrayList<>();
-        mAdapter = new OrderListAdapter(mContext, mDatas, this);
+        mAdapter = new OrderListAdapter(mContext, mDatas, mType, this);
     }
 
     private void initViews() {

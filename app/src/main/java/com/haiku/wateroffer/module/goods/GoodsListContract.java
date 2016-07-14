@@ -17,11 +17,10 @@ public class GoodsListContract {
 
         // 显示信息
         void showMessage(String msg);
-
     }
 
     interface Presenter extends BasePresenter {
         // 获取列表数据
-        void getListDatas();
+        void getListDatas(int uid, int status, int pageno);
     }
 }

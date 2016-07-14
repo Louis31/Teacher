@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical">
+
     <View style="@style/line_h" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,6 +66,7 @@
                 android:text="@string/goods_sale_tip" />
 
             <TextView
+                android:id="@+id/tv_goods_stock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_goods_price_tip"
@@ -83,24 +86,28 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_delete"
             style="@style/goods_item_tv"
             android:text="@string/delete" />
 
         <View style="@style/goods_item_line_v" />
 
         <TextView
+            android:id="@+id/tv_off_shelf"
             style="@style/goods_item_tv"
             android:text="@string/off_shelf" />
 
         <View style="@style/goods_item_line_v" />
 
         <TextView
+            android:id="@+id/tv_up_shelf"
             style="@style/goods_item_tv"
-            android:text="@string/sale_none" />
+            android:text="@string/up_shelf" />
 
         <View style="@style/goods_item_line_v" />
 
         <TextView
+            android:id="@+id/tv_edit"
             style="@style/goods_item_tv"
             android:text="@string/edit" />
     </LinearLayout>

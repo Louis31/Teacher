@@ -11,6 +11,7 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.module.goods.GoodsFragment;
 import com.haiku.wateroffer.module.order.OrderFragment;
 import com.haiku.wateroffer.module.shop.ShopFragment;
@@ -48,6 +49,13 @@ public class MainActivity extends FragmentActivity {
     // 初始化界面
     private void initViews() {
         mTitlebar.initDatas(getString(R.string.title_order), false);
+        mTitlebar.initAddIcon();
+        mTitlebar.setListener(new TitlebarListenerAdapter() {
+            @Override
+            public void onAddIconClick() {
+
+            }
+        });
         mTabHost.setup(this, getSupportFragmentManager(),
                 R.id.main_content);
         for (int i = 0; i < tabTexts.length; i++) {
@@ -79,10 +87,13 @@ public class MainActivity extends FragmentActivity {
     private void tagChanged(String tabId) {
         if (tabTexts[0].equals(tabId)) {
             mTitlebar.setTitle(R.string.title_order);
+            mTitlebar.showAddIcon(false);
         } else if (tabTexts[1].equals(tabId)) {
             mTitlebar.setTitle(R.string.title_goods);
+            mTitlebar.showAddIcon(true);
         } else if (tabTexts[2].equals(tabId)) {
             mTitlebar.setTitle(R.string.title_shop);
+            mTitlebar.showAddIcon(false);
         }
     }
 }
