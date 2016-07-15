@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.Goods;
 import com.haiku.wateroffer.bean.OrderItem;
+import com.haiku.wateroffer.common.listener.OrderListListener;
 import com.haiku.wateroffer.common.util.ui.ImageUtils;
 import com.haiku.wateroffer.constant.TypeConstant;
 
@@ -31,6 +32,12 @@ public class OrderListAdapter extends MyBaseAdapter {
 
     private List<OrderItem> mDatas;
     private Fragment fragment;
+
+    private OrderListListener mListener;
+
+    public void setListener(OrderListListener listener) {
+        this.mListener = listener;
+    }
 
     public OrderListAdapter(Context cxt, List<OrderItem> datas, String status, Fragment fragment) {
         super(cxt);
@@ -75,7 +82,7 @@ public class OrderListAdapter extends MyBaseAdapter {
 
     @Override
     protected ViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
-        return new ItemViewHolder(mInflater.inflate(R.layout.item_order, null));
+        return new ItemViewHolder(mInflater.inflate(R.layout.item_order, null), mListener);
     }
 
     @Override
@@ -125,13 +132,21 @@ public class OrderListAdapter extends MyBaseAdapter {
         TextView tv_order_cancel;
         TextView tv_order_send;
 
-        public ItemViewHolder(View v) {
+        public ItemViewHolder(View v, final OrderListListener listener) {
             super(v);
             tv_order_number = bind(v, R.id.tv_order_number);
             tv_order_time = bind(v, R.id.tv_order_time);
             tv_order_amount = bind(v, R.id.tv_order_amount);
             llayout_goods = bind(v, R.id.llayout_goods);
 
+            llayout_goods.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onOrderDetailClick(getPosition());
+                    }
+                }
+            });
             // 列表状态为全部
             if (mStatus.equals(TypeConstant.Order.ALL)) {
                 flayout_bottom = bind(v, R.id.flayout_bottom);

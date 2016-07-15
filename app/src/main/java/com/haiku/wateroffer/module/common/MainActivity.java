@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
+import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.module.goods.GoodsFragment;
 import com.haiku.wateroffer.module.order.OrderFragment;
 import com.haiku.wateroffer.module.shop.ShopFragment;
@@ -44,6 +45,18 @@ public class MainActivity extends FragmentActivity {
         mContext = this;
         x.view().inject(this);
         initViews();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ToastUtils.getInstant().init(mContext);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ToastUtils.getInstant().destroy();
     }
 
     // 初始化界面

@@ -73,6 +73,53 @@
         <item name="android:background">@color/line</item>
     </style>
 
+    <!-- 订单相关 -->
+    <style name="order_detail_iv">
+        <item name="android:layout_width">@dimen/circle_icon_height</item>
+        <item name="android:layout_height">@dimen/circle_icon_height</item>
+    </style>
+
+    <style name="order_detail_tv_status">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/circle_icon_height</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="order_detail_tv_time">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+
+    <style name="order_detail_line_h">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.6dp</item>
+        <item name="android:background">@color/line</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <style name="order_detail_line_v">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/line</item>
+        <item name="android:layout_marginLeft">11.5dp</item>
+    </style>
+
+    <style name="order_detail_tv_l">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+
+    <style name="order_detail_tv_r">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <!-- 商品相关 -->
     <style name="goods_item_tv">
         <item name="android:paddingRight">16dp</item>

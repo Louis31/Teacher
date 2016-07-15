@@ -11,7 +11,7 @@
     <com.haiku.wateroffer.ui.widget.Titlebar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/common_height" />
+        android:layout_height="@dimen/titlebar_height" />
 
 
     <EditText

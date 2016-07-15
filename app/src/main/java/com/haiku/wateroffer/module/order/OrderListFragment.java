@@ -1,6 +1,7 @@
 package com.haiku.wateroffer.module.order;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.common.listener.OrderListListener;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.model.impl.OrderModelImpl;
@@ -24,7 +26,7 @@ import java.util.List;
  * 订单列表Fragment
  * Created by hyming on 2016/7/11.
  */
-public class OrderListFragment extends LazyFragment implements OrderListContract.View, MyRefreshLayout.OnRefreshLayoutListener {
+public class OrderListFragment extends LazyFragment implements OrderListContract.View, MyRefreshLayout.OnRefreshLayoutListener, OrderListListener {
 
     private Context mContext;
 
@@ -128,5 +130,13 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     public void showMessage(String msg) {
         mRefreshLayout.loadingCompleted(false);
         ToastUtils.getInstant().showToast(msg);
+    }
+
+    /**
+     * 事件回调
+     */
+    @Override
+    public void onOrderDetailClick(int pos) {
+        startActivity(new Intent(mContext, OrderDetailActivity.class));
     }
 }
