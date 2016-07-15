@@ -12,6 +12,10 @@
     <string name="sale_none">售罄</string>
     <string name="next_step">下一步</string>
     <string name="address">地址</string>
+    <string name="deliver">配送员</string>
+    <string name="phone">电话</string>
+    <string name="start_time">开始时间</string>
+    <string name="end_time">结束时间</string>
 
     <string name="wechat_payment">微信支付</string>
     <string name="alipay_payment">支付宝支付</string>
@@ -42,6 +46,12 @@
     <string name="hint_verify_code">请输入短信验证码</string>
     <string name="get_verify_code">获取验证码</string>
 
+    <!-- 用户相关 -->
+    <string name="name_tip">姓名：</string>
+    <string name="phone_tip">电话：</string>
+    <string name="address_tip">地址：</string>
+
+
     <!-- 订单相关 -->
     <string name="order_all">全部订单</string>
     <string name="order_pending_payment">待付款</string>
@@ -56,6 +66,17 @@
     <string name="order_price_tip">单价：</string>
     <string name="order_goods_num_tip">数量：</string>
     <string name="order_up_pay">线上付款</string>
+    <string name="order_off_pay">线下付款</string>
+    <string name="order_count">订单数</string>
+
+    <string name="order_status_finish">订单完成</string>
+    <string name="order_status_deliver">配送员已接单</string>
+    <string name="order_status_receive">商家已接单</string>
+
+    <string name="order_status_tip">订单状态：</string>
+    <string name="order_ordertime_tip">下单时间：</string>
+    <string name="order_delivertime_tip">送达时间：</string>
+    <string name="remark_tip">备注：</string>
 
     <!-- 商品相关 -->
     <string name="goods_name">商品名称</string>
@@ -78,10 +99,16 @@
     <string name="delivery_list">配送列表</string>
     <string name="my_bill">我的账单</string>
     <string name="deposit">保证金</string>
-    <string name="seller_contribution">商家贡献值</string>
+    <string name="seller_contribute">商家贡献值</string>
 
     <string name="contribution">贡献值</string>
     <string name="current_contribution">当前贡献值</string>
+
+    <!-- 我的账单相关 -->
+    <string name="bill_detail">账单明细</string>
+    <string name="bill_overview">账单概览</string>
+    <string name="choose_deliver">选择配送员</string>
+    <string name="start_search">开始查询</string>
 
 
 </resources>

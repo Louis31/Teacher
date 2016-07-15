@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".module.order.OrderDetailActivity">
+    tools:context=".module.shop.MyBillActivity">
 
     <com.haiku.wateroffer.ui.widget.Titlebar
         android:id="@+id/titlebar"
@@ -18,12 +18,12 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_tab_status"
+            android:id="@+id/tv_tab_detail"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/order_status"
+            android:text="@string/bill_detail"
             android:textColor="@color/red" />
 
         <View
@@ -34,12 +34,12 @@
             android:background="@color/line" />
 
         <TextView
-            android:id="@+id/tv_tab_detail"
+            android:id="@+id/tv_tab_overview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/order_detail" />
+            android:text="@string/bill_overview" />
 
     </LinearLayout>
 
@@ -48,15 +48,15 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!-- 订单详情 -->
+        <!-- 账单概览 -->
         <include
-            android:id="@+id/llayout_order_detail"
-            layout="@layout/view_order_detail"
+            android:id="@+id/llayout_bill_overview"
+            layout="@layout/view_bill_overview"
             android:visibility="gone" />
-        <!-- 订单状态 -->
-        <include
-            android:id="@+id/llayout_order_status"
-            layout="@layout/view_order_status" />
-
+        <!-- 账单明细 -->
+        <com.haiku.wateroffer.ui.widget.MyRefreshLayout
+            android:id="@+id/myRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
 </LinearLayout>

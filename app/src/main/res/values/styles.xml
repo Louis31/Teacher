@@ -73,6 +73,31 @@
         <item name="android:background">@color/line</item>
     </style>
 
+    <style name="line_v">
+        <item name="android:layout_width">0.6dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/line</item>
+    </style>
+
+    <style name="btn_common">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/tsize_normal</item>
+    </style>
+
+    <style name="btn_common_red" parent="btn_common">
+        <item name="android:background">@drawable/selector_circ_red</item>
+    </style>
+
+    <style name="btn_common_green" parent="btn_common">
+        <item name="android:background">@drawable/selector_circ_green</item>
+    </style>
+
+    <style name="btn_common_blue" parent="btn_common">
+        <item name="android:background">@drawable/selector_circ_blue</item>
+    </style>
+
     <!-- 订单相关 -->
     <style name="order_detail_iv">
         <item name="android:layout_width">@dimen/circle_icon_height</item>
@@ -139,7 +164,7 @@
     </style>
 
     <!-- 店铺相关 -->
-    <style name="shop_item_llayou">
+    <style name="shop_item_llayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/item_common_selector</item>

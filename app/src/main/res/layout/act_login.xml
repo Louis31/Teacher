@@ -61,13 +61,9 @@
 
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/btn_common_red"
         android:layout_marginTop="48dp"
-        android:background="@drawable/selector_circ_red"
-        android:text="@string/login"
-        android:textColor="@color/white"
-        android:textSize="@dimen/tsize_normal" />
+        android:text="@string/login" />
 
     <View
         android:layout_width="wrap_content"

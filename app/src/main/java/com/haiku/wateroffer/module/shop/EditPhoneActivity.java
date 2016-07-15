@@ -3,9 +3,12 @@ package com.haiku.wateroffer.module.shop;
 import android.os.Bundle;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.module.base.BaseActivity;
+import com.haiku.wateroffer.ui.widget.Titlebar;
 
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
 
 /**
  * 编辑联系电话Activity
@@ -15,9 +18,23 @@ import org.xutils.view.annotation.ContentView;
 public class EditPhoneActivity extends BaseActivity {
 
 
+    @ViewInject(R.id.titlebar)
+    private Titlebar mTitlebar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initViews();
         // 创建Presenter
+    }
+
+    private void initViews() {
+        mTitlebar.initDatas(R.string.contact_number, true);
+        mTitlebar.setListener(new TitlebarListenerAdapter() {
+            @Override
+            public void onReturnIconClick() {
+                finish();
+            }
+        });
     }
 }

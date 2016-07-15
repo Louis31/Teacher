@@ -24,7 +24,7 @@
             android:id="@+id/tv_order_finish_status"
             style="@style/order_detail_tv_status"
             android:layout_toRightOf="@id/iv_order_finish_circle"
-            android:text="订单完成" />
+            android:text="@string/order_status_finish" />
 
         <TextView
             android:id="@+id/tv_order_finish_time"
@@ -67,7 +67,7 @@
             android:id="@+id/tv_order_deliver_status"
             style="@style/order_detail_tv_status"
             android:layout_toRightOf="@id/iv_order_deliver_circle"
-            android:text="配送员已接单" />
+            android:text="@string/order_status_deliver" />
 
         <TextView
             android:id="@+id/tv_order_deliver_now"
@@ -142,7 +142,7 @@
             android:id="@+id/tv_order_receive_status"
             style="@style/order_detail_tv_status"
             android:layout_toRightOf="@id/iv_order_receive_circle"
-            android:text="商家已接单" />
+            android:text="@string/order_status_receive" />
 
         <TextView
             android:id="@+id/tv_order_receive_time"

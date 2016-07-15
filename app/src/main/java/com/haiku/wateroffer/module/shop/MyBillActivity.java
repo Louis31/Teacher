@@ -1,12 +1,14 @@
-package com.haiku.wateroffer.module.order;
+package com.haiku.wateroffer.module.shop;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.module.base.BaseActivity;
+import com.haiku.wateroffer.ui.widget.MyRefreshLayout;
 import com.haiku.wateroffer.ui.widget.Titlebar;
 
 import org.xutils.view.annotation.ContentView;
@@ -14,13 +16,13 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 /**
- * 订单详情Activity
+ * 我的账单Activity
  * Created by hyming on 2016/7/15.
  */
-@ContentView(R.layout.act_order_detail)
-public class OrderDetailActivity extends BaseActivity {
-    private final int TYPE_STATUS = 0;
-    private final int TYPE_DETAIL = 1;
+@ContentView(R.layout.act_my_bill)
+public class MyBillActivity extends BaseActivity {
+    private final int TYPE_DETAIL = 0;
+    private final int TYPE_OVERVIEW = 1;
     private int mType;
 
     private int colorRed;
@@ -29,26 +31,26 @@ public class OrderDetailActivity extends BaseActivity {
     @ViewInject(R.id.titlebar)
     private Titlebar mTitlebar;
 
-    @ViewInject(value = R.id.tv_tab_status)
-    private TextView tv_tab_status;
-
     @ViewInject(R.id.tv_tab_detail)
     private TextView tv_tab_detail;
 
-    @ViewInject(R.id.llayout_order_detail)
-    private View llayout_order_detail;
+    @ViewInject(R.id.tv_tab_overview)
+    private TextView tv_tab_overview;
 
-    @ViewInject(R.id.llayout_order_status)
-    private View llayout_order_status;
+    @ViewInject(R.id.myRefreshLayout)
+    private MyRefreshLayout myRefreshLayout;
 
-    @Event(R.id.tv_tab_status)
-    private void tabStatusClick(View v) {
-        changeTabView(TYPE_STATUS);
-    }
+    @ViewInject(R.id.llayout_bill_overview)
+    private View llayout_bill_overview;
 
     @Event(R.id.tv_tab_detail)
     private void tabDetailClick(View v) {
         changeTabView(TYPE_DETAIL);
+    }
+
+    @Event(R.id.tv_tab_overview)
+    private void tabOverViewClick(View v) {
+        changeTabView(TYPE_OVERVIEW);
     }
 
     @Override
@@ -59,13 +61,13 @@ public class OrderDetailActivity extends BaseActivity {
     }
 
     private void initDatas() {
-        mType = TYPE_STATUS;
+        mType = TYPE_DETAIL;
         colorRed = getResources().getColor(R.color.red);
         colorBlack = getResources().getColor(R.color.black);
     }
 
     private void initViews() {
-        mTitlebar.initDatas(R.string.order_detail, true);
+        mTitlebar.initDatas(R.string.my_bill, true);
         mTitlebar.setListener(new TitlebarListenerAdapter() {
             @Override
             public void onReturnIconClick() {
@@ -79,19 +81,19 @@ public class OrderDetailActivity extends BaseActivity {
         if (mType == type) {
             return;
         }
-        // 订单状态
-        if (type == TYPE_STATUS) {
-            tv_tab_status.setTextColor(colorRed);
-            tv_tab_detail.setTextColor(colorBlack);
-            llayout_order_status.setVisibility(View.VISIBLE);
-            llayout_order_detail.setVisibility(View.GONE);
-        }
-        // 订单详情
-        else {
+        // 账单明细
+        if (type == TYPE_DETAIL) {
             tv_tab_detail.setTextColor(colorRed);
-            tv_tab_status.setTextColor(colorBlack);
-            llayout_order_detail.setVisibility(View.VISIBLE);
-            llayout_order_status.setVisibility(View.GONE);
+            tv_tab_overview.setTextColor(colorBlack);
+            myRefreshLayout.setVisibility(View.VISIBLE);
+            llayout_bill_overview.setVisibility(View.GONE);
+        }
+        // 账单概括
+        else {
+            tv_tab_overview.setTextColor(colorRed);
+            tv_tab_detail.setTextColor(colorBlack);
+            llayout_bill_overview.setVisibility(View.VISIBLE);
+            myRefreshLayout.setVisibility(View.GONE);
         }
         mType = type;
     }

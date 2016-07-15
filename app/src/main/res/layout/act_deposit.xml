@@ -21,25 +21,17 @@
 
     <Button
         android:id="@+id/btn_wechat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/btn_common_green"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
         android:layout_marginTop="48dp"
-        android:background="@drawable/selector_circ_green"
-        android:text="@string/wechat_payment"
-        android:textColor="@color/white"
-        android:textSize="@dimen/tsize_normal" />
+        android:text="@string/wechat_payment" />
 
     <Button
         android:id="@+id/btn_alipay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/btn_common_blue"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/selector_circ_blue"
-        android:text="@string/alipay_payment"
-        android:textColor="@color/white"
-        android:textSize="@dimen/tsize_normal" />
+        android:text="@string/alipay_payment" />
 </LinearLayout>

@@ -11,7 +11,7 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
 /**
- * 贡献值界面
+ * 商家贡献值界面
  * Created by hyming on 2016/7/13.
  */
 @ContentView(R.layout.act_contribution)

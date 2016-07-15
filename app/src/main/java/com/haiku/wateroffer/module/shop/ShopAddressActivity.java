@@ -36,5 +36,4 @@ public class ShopAddressActivity extends BaseActivity {
             }
         });
     }
-
 }

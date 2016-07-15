@@ -77,7 +77,8 @@ public class MyRefreshLayout extends FrameLayout {
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                mSwipeRefreshLayout.setRefreshing(true);
+                if (isLoading)
+                    mSwipeRefreshLayout.setRefreshing(true);
             }
         });
 
