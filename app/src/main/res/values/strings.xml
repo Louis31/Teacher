@@ -110,5 +110,8 @@
     <string name="choose_deliver">选择配送员</string>
     <string name="start_search">开始查询</string>
 
+    <!-- 配送相关 -->
+    <string name="deliver_list">配送员列表</string>
+    <string name="edit_list">编辑列表</string>
 
 </resources>

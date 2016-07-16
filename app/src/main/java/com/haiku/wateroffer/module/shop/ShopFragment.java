@@ -13,8 +13,6 @@ import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.util.ui.DialogUtils;
 import com.haiku.wateroffer.module.base.LazyFragment;
 
-import org.w3c.dom.Text;
-
 /**
  * 我的小店Fragment
  * Created by hyming on 2016/7/6.
@@ -30,6 +28,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
 
     private View llayout_address;// 店铺地址
     private View llayout_phone;// 店铺电话
+    private View llayout_deliver_list;//　配送列表
     private View llayout_my_bill;// 我的订单
     private View llayout_deposit;// 保证金
     private View llayout_contribute;// 商家贡献值
@@ -66,6 +65,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
         iv_shop_logo = findView(rootView, R.id.iv_shop_logo);
         llayout_address = findView(rootView, R.id.llayout_address);
         llayout_phone = findView(rootView, R.id.llayout_phone);
+        llayout_deliver_list = findView(rootView, R.id.llayout_deliver_list);
         llayout_my_bill = findView(rootView, R.id.llayout_my_bill);
         llayout_deposit = findView(rootView, R.id.llayout_deposit);
         llayout_contribute = findView(rootView, R.id.llayout_contribute);
@@ -74,6 +74,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
         tv_shop_name.setOnClickListener(this);
         llayout_address.setOnClickListener(this);
         llayout_phone.setOnClickListener(this);
+        llayout_deliver_list.setOnClickListener(this);
         llayout_my_bill.setOnClickListener(this);
         llayout_deposit.setOnClickListener(this);
         llayout_contribute.setOnClickListener(this);
@@ -106,6 +107,10 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
             // 跳转编辑联系电话界面
             case R.id.llayout_phone:
                 startActivity(new Intent(mContext, EditPhoneActivity.class));
+                break;
+            // 配送列表
+            case R.id.llayout_deliver_list:
+                startActivity(new Intent(mContext, DeliverListActivity.class));
                 break;
             // 我的账单
             case R.id.llayout_my_bill:

@@ -33,6 +33,7 @@
         <activity android:name=".module.shop.ShopNameActivity" />
         <activity android:name=".module.shop.ShopAddressActivity" />
         <activity android:name=".module.shop.EditPhoneActivity" />
+        <activity android:name=".module.shop.DeliverListActivity" />
         <activity android:name=".module.shop.MyBillActivity" />
         <activity android:name=".module.shop.DepositActivity" />
         <activity android:name=".module.shop.ContributionActivity" />

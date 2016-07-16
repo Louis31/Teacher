@@ -75,7 +75,8 @@
 
     <View style="@style/line_h" />
 
-    <LinearLayout style="@style/shop_item_llayout">
+    <LinearLayout style="@style/shop_item_llayout"
+        android:id="@+id/llayout_deliver_list">
 
         <TextView
             style="@style/shop_item_llayou_tv"
