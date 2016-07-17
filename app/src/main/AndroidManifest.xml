@@ -27,8 +27,10 @@
         </activity>
 
         <activity android:name=".module.common.MainActivity" />
-
+        <!-- 订单相关 -->
         <activity android:name=".module.order.OrderDetailActivity" />
+        <!-- 商品相关 -->
+        <activity android:name=".module.goods.GoodsEditActivity" />
         <!-- 店铺相关 -->
         <activity android:name=".module.shop.ShopNameActivity" />
         <activity android:name=".module.shop.ShopAddressActivity" />

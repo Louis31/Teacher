@@ -8,8 +8,8 @@ public interface TitlebarListener {
     // 后退图标点击
     void onReturnIconClick();
 
-    // 保存按钮
-    void onSaveTextClick();
+    // 右边文字按钮
+    void onRightTextClick();
 
     // 添加图标点击
     void onAddIconClick();

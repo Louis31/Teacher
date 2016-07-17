@@ -11,7 +11,7 @@ public class TitlebarListenerAdapter implements TitlebarListener {
     }
 
     @Override
-    public void onSaveTextClick() {
+    public void onRightTextClick() {
 
     }
 

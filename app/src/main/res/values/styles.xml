@@ -163,6 +163,52 @@
         <item name="android:background">@color/line</item>
     </style>
 
+    <style name="goods_edit_llayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/common_height</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+    </style>
+
+    <style name="goods_edit_llayout_tv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="goods_edit_llayout_et">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/tsize_normal</item>
+    </style>
+
+    <style name="goods_edit_rlayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/common_height</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+    </style>
+
+    <style name="goods_edit_rlayout_tv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="goods_edit_rlayout_tv_r" parent="goods_edit_rlayout_tv">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!-- 店铺相关 -->
     <style name="shop_item_llayout">
         <item name="android:layout_width">match_parent</item>

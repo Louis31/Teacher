@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context=".module.goods.GoodsEditActivity">
+
+    <com.haiku.wateroffer.ui.widget.Titlebar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/titlebar_height" />
+
+    <LinearLayout style="@style/goods_edit_llayout">
+
+        <TextView
+            style="@style/goods_edit_llayout_tv"
+            android:text="@string/goods_name" />
+
+        <EditText
+            style="@style/goods_edit_llayout_et"
+            android:hint="@string/hint_goods_name" />
+    </LinearLayout>
+
+    <View style="@style/line_h" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:text="@string/goods_image"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="6dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_camera" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height_broad" />
+
+    <LinearLayout style="@style/goods_edit_llayout">
+
+        <TextView
+            style="@style/goods_edit_llayout_tv"
+            android:text="@string/price" />
+
+        <EditText
+            style="@style/goods_edit_llayout_et"
+            android:hint="@string/hint_goods_price" />
+    </LinearLayout>
+
+    <View style="@style/line_h" />
+
+    <LinearLayout style="@style/goods_edit_llayout">
+
+        <TextView
+            style="@style/goods_edit_llayout_tv"
+            android:text="@string/stock" />
+
+        <EditText
+            style="@style/goods_edit_llayout_et"
+            android:hint="@string/hint_goods_stock" />
+    </LinearLayout>
+
+    <View style="@style/line_h" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:text="@string/goods_describe"
+        android:textColor="@color/black" />
+
+    <EditText
+        style="@style/goods_edit_llayout_et"
+        android:layout_marginLeft="0dp"
+        android:gravity="top"
+        android:hint="@string/hint_goods_describe"
+        android:lines="4"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height_broad" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:text="@string/goods_buy_setting"
+        android:textColor="@color/black" />
+
+    <View style="@style/line_h" />
+
+    <RelativeLayout style="@style/goods_edit_rlayout">
+
+        <TextView
+            style="@style/goods_edit_rlayout_tv"
+            android:text="@string/goods_person" />
+
+        <TextView
+            style="@style/goods_edit_rlayout_tv_r"
+            android:text="每周" />
+
+    </RelativeLayout>
+
+    <View style="@style/line_h" />
+
+    <RelativeLayout style="@style/goods_edit_rlayout">
+
+        <TextView
+            style="@style/goods_edit_rlayout_tv"
+            android:text="@string/goods_limit_buy" />
+
+        <TextView
+            style="@style/goods_edit_rlayout_tv_r"
+            android:text="10次" />
+
+    </RelativeLayout>
+
+    <View style="@style/line_h" />
+
+    <RelativeLayout style="@style/goods_edit_rlayout">
+
+        <TextView
+            android:id="@+id/tv_goods_overrange_tip"
+            style="@style/goods_edit_rlayout_tv"
+            android:text="@string/goods_overrange" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_goods_overrange_tip"
+            android:layout_marginLeft="6dp"
+            android:layout_toRightOf="@id/tv_goods_overrange_tip"
+            android:text="@string/hint_goods_overrange"
+            android:textSize="@dimen/tsize_small" />
+
+        <TextView
+            style="@style/goods_edit_rlayout_tv_r"
+            android:text="20元" />
+
+    </RelativeLayout>
+
+    <View style="@style/line_h" />
+
+    <RelativeLayout style="@style/goods_edit_rlayout">
+
+        <TextView
+            style="@style/goods_edit_rlayout_tv"
+            android:text="@string/goods_classify" />
+
+        <TextView
+            style="@style/goods_edit_rlayout_tv_r"
+            android:text="我是XX分类" />
+
+    </RelativeLayout>
+</LinearLayout>

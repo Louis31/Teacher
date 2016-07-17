@@ -71,15 +71,15 @@ public class Titlebar extends FrameLayout {
         tv_title.setText(resId);
     }
 
-    // 显示保存
-    public void showSaveTextView() {
-        tv_save = (TextView) findViewById(R.id.tv_save);
+    // 显示右边文字
+    public void showRightTextView(int resId) {
+        tv_save = (TextView) findViewById(resId);
         tv_save.setVisibility(View.VISIBLE);
         tv_save.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onSaveTextClick();
+                    mListener.onRightTextClick();
                 }
             }
         });

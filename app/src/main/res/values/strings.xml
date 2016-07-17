@@ -11,11 +11,16 @@
     <string name="off_shelf">下架</string>
     <string name="sale_none">售罄</string>
     <string name="next_step">下一步</string>
+
     <string name="address">地址</string>
     <string name="deliver">配送员</string>
     <string name="phone">电话</string>
     <string name="start_time">开始时间</string>
     <string name="end_time">结束时间</string>
+
+    <string name="price">价格</string>
+    <string name="stock">库存</string>
+
 
     <string name="wechat_payment">微信支付</string>
     <string name="alipay_payment">支付宝支付</string>
@@ -80,6 +85,8 @@
 
     <!-- 商品相关 -->
     <string name="goods_name">商品名称</string>
+    <string name="goods_image">商品图片</string>
+    <string name="goods_describe">商品描述</string>
     <string name="goods_sale_tip">销量：</string>
     <string name="goods_stock_tip">库存：</string>
     <string name="goods_price_tip">单价：</string>
@@ -87,6 +94,17 @@
     <string name="goods_sale_none">已售罄</string>
     <string name="goods_off_shelf">已下架</string>
 
+    <string name="goods_buy_setting">购买设置</string>
+    <string name="goods_person">每人</string>
+    <string name="goods_limit_buy">限购</string>
+    <string name="goods_classify">分类</string>
+    <string name="goods_overrange">超出部分每件</string>
+
+    <string name="hint_goods_name">请输入商品名称</string>
+    <string name="hint_goods_price">请输入商品价格</string>
+    <string name="hint_goods_stock">请输入商品库存</string>
+    <string name="hint_goods_describe">请输入商品描述</string>
+    <string name="hint_goods_overrange">不填代表原价</string>
     <!-- 店铺相关 -->
     <string name="hint_shop_name">请为自己的小店设置名称</string>
     <string name="hint_shop_addr">街道/小区/学校</string>
