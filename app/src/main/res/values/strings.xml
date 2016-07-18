@@ -17,6 +17,7 @@
     <string name="phone">电话</string>
     <string name="start_time">开始时间</string>
     <string name="end_time">结束时间</string>
+    <string name="time_none">——————</string>
 
     <string name="price">价格</string>
     <string name="stock">库存</string>
@@ -36,10 +37,13 @@
     <string name="msg_phone_invalid">请输入正确的手机号码</string>
     <string name="msg_verifycode_invalid">请输入正确的验证码</string>
     <string name="msg_shop_name_empty">店铺名称不能为空</string>
+    <string name="msg_bill_search_invalid">请选择需要查询的时间段和配送员</string>
 
     <!-- dialog -->
     <string name="dlg_loging">正在登录...</string>
     <string name="dlg_submiting">正在提交...</string>
+    <string name="dlg_order_cancel">取消配送请先和对方电话沟通，是否取消配送？</string>
+    <string name="dlg_deliver_add">您还没有添加配送员，是否添加？</string>
 
     <!-- 编辑相关 -->
     <string name="hint_phone_old">请输入当前手机号码</string>
@@ -74,6 +78,7 @@
     <string name="order_off_pay">线下付款</string>
     <string name="order_count">订单数</string>
 
+    <string name="order_status_cancel">订单取消</string>
     <string name="order_status_finish">订单完成</string>
     <string name="order_status_deliver">配送员已接单</string>
     <string name="order_status_receive">商家已接单</string>
@@ -81,6 +86,7 @@
     <string name="order_status_tip">订单状态：</string>
     <string name="order_ordertime_tip">下单时间：</string>
     <string name="order_delivertime_tip">送达时间：</string>
+    <string name="order_delivername_tip">配送员：</string>
     <string name="remark_tip">备注：</string>
 
     <!-- 商品相关 -->
@@ -105,6 +111,7 @@
     <string name="hint_goods_stock">请输入商品库存</string>
     <string name="hint_goods_describe">请输入商品描述</string>
     <string name="hint_goods_overrange">不填代表原价</string>
+
     <!-- 店铺相关 -->
     <string name="hint_shop_name">请为自己的小店设置名称</string>
     <string name="hint_shop_addr">街道/小区/学校</string>
@@ -113,8 +120,6 @@
     <string name="shop_address">店铺地址</string>
     <string name="shop_open">开店咯</string>
     <string name="contact_number">联系电话</string>
-    <string name="delivery_range">配送范围</string>
-    <string name="delivery_list">配送列表</string>
     <string name="my_bill">我的账单</string>
     <string name="deposit">保证金</string>
     <string name="seller_contribute">商家贡献值</string>
@@ -131,5 +136,6 @@
     <!-- 配送相关 -->
     <string name="deliver_list">配送员列表</string>
     <string name="edit_list">编辑列表</string>
-
+    <string name="delivery_range">配送范围</string>
+    <string name="delivery_list">配送列表</string>
 </resources>

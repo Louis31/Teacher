@@ -37,6 +37,14 @@ public class ParamUtils {
             map.putAll(params);
             return map;
         }
+
+        // 获取订单详情
+        public static Map<String, Object> getInfoParams(Map<String, Object> params) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("login_type", BaseConstant.LOGIN_TYPE_MERCHANT);
+            map.put("device_type", BaseConstant.DEVICE_TYPE);
+            return map;
+        }
     }
 
     /**

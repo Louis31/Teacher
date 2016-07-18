@@ -8,17 +8,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:paddingBottom="12dp"
-        android:paddingTop="12dp">
+        android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/llayout_start_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/item_common_selector"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -26,21 +27,29 @@
                 android:text="@string/start_time" />
 
             <TextView
+                android:id="@+id/tv_start_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="2016年1月23日"
+                android:text="@string/time_none"
                 android:textColor="@color/black" />
         </LinearLayout>
 
-        <View style="@style/line_v" />
+        <View
+            style="@style/line_v"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp" />
 
         <LinearLayout
+            android:id="@+id/llayout_end_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/item_common_selector"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,10 +57,11 @@
                 android:text="@string/end_time" />
 
             <TextView
+                android:id="@+id/tv_end_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="2016年1月23日"
+                android:text="@string/time_none"
                 android:textColor="@color/black" />
         </LinearLayout>
     </LinearLayout>
@@ -59,6 +69,7 @@
     <View style="@style/line_h" />
 
     <RelativeLayout
+        android:id="@+id/rlayout_deliver"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/item_common_selector"
@@ -71,10 +82,10 @@
             android:textColor="@color/black" />
 
         <TextView
+            android:id="@+id/tv_deliver_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="杰伦"
             android:textColor="@color/blue"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -82,7 +93,7 @@
     <View style="@style/line_h" />
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_search"
         style="@style/btn_common_red"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="12dp"
@@ -104,31 +115,10 @@
             android:text="@string/order_count" />
 
         <TextView
+            android:id="@+id/tv_order_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="8"
-            android:textColor="@color/black" />
-    </RelativeLayout>
-
-    <View style="@style/line_h" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:padding="12dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/order_off_pay" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="38.00"
             android:textColor="@color/black" />
     </RelativeLayout>
 
@@ -146,10 +136,33 @@
             android:text="@string/order_up_pay" />
 
         <TextView
+            android:id="@+id/tv_order_up_pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="143.00"
             android:textColor="@color/black" />
     </RelativeLayout>
+
+    <View style="@style/line_h" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/order_off_pay" />
+
+        <TextView
+            android:id="@+id/tv_order_off_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+    <View style="@style/line_h" />
 </LinearLayout>

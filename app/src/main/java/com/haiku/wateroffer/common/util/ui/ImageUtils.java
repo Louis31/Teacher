@@ -1,5 +1,6 @@
 package com.haiku.wateroffer.common.util.ui;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 
@@ -18,6 +19,12 @@ public class ImageUtils {
     // 加载图片
     public static void showImage(Fragment fragment, String url, ImageView iv) {
         Glide.with(fragment).load(url).placeholder(LOADING_IMG)
+                .error(ERROR_IMG).into(iv);
+    }
+
+    // 加载图片
+    public static void showImage(Activity activity, String url, ImageView iv) {
+        Glide.with(activity).load(url).placeholder(LOADING_IMG)
                 .error(ERROR_IMG).into(iv);
     }
 }

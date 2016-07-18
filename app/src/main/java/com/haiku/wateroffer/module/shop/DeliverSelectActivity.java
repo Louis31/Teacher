@@ -1,0 +1,107 @@
+package com.haiku.wateroffer.module.shop;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+
+import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.bean.Deliver;
+import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.common.listener.MyItemClickListener;
+import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
+import com.haiku.wateroffer.common.util.ui.ToastUtils;
+import com.haiku.wateroffer.model.IUserModel;
+import com.haiku.wateroffer.model.impl.UserModelImpl;
+import com.haiku.wateroffer.module.base.BaseActivity;
+import com.haiku.wateroffer.ui.adapter.DeliverSelectAdapter;
+import com.haiku.wateroffer.ui.widget.MyRefreshLayout;
+import com.haiku.wateroffer.ui.widget.Titlebar;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 选择配送员界面
+ * Created by hyming on 2016/7/18.
+ */
+@ContentView(R.layout.act_deliver_select)
+public class DeliverSelectActivity extends BaseActivity implements IUserModel.DeliverCallback, MyItemClickListener {
+
+    private int uid;
+    private List<Deliver> mDatas;
+    private DeliverSelectAdapter mAdapter;
+
+    private IUserModel mUserModel;
+
+    @ViewInject(R.id.titlebar)
+    private Titlebar mTitlebar;
+
+    @ViewInject(R.id.myRefreshLayout)
+    private MyRefreshLayout mRefreshLayout;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initDatas();
+        initViews();
+        Map<String, Object> params = new HashMap<>();
+        params.put("uid", uid);
+        mUserModel.getDeliverList(params, this);
+    }
+
+    private void initDatas() {
+        uid = UserManager.getInstance().getUser().getUid();
+        mDatas = new ArrayList<>();
+        mAdapter = new DeliverSelectAdapter(mContext, mDatas);
+        mAdapter.setListener(this);
+        mUserModel = new UserModelImpl();
+    }
+
+    private void initViews() {
+        mTitlebar.initDatas(R.string.choose_deliver, true);
+        mTitlebar.setListener(new TitlebarListenerAdapter() {
+            @Override
+            public void onReturnIconClick() {
+                finish();
+            }
+        });
+
+        mRefreshLayout.setPageSize(1000);
+        mRefreshLayout.setAdapter(mAdapter);
+        mRefreshLayout.setLinearLayout();
+        mRefreshLayout.setPullRefreshEnable(false);
+        mRefreshLayout.setLoadMoreEnable(false);
+    }
+
+    @Override
+    public void getDeliverListSuccess(List<Deliver> list) {
+        mDatas.addAll(list);
+        mAdapter.notifyDataSetChanged();
+        mRefreshLayout.loadingCompleted(true);
+    }
+
+    @Override
+    public void getTokenSuccess(Map<String, Object> params) {
+        mUserModel.getDeliverList(params, this);
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+        mRefreshLayout.loadingCompleted(false);
+        ToastUtils.getInstant().showToast(errorMsg);
+    }
+
+    @Override
+    public void onItemClick(int pos) {
+        String deliver_name = mDatas.get(pos).getDiliveryman_name();
+        Intent intent = new Intent();
+        intent.putExtra("deliver_name", deliver_name);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+}

@@ -16,7 +16,7 @@ import java.util.Map;
 public class LoginPresenter implements LoginContract.Presenter, IUserModel.LoginCallback {
 
     private final int REQUEST_LOGIN = 1;
-    private final int REQUEST_GET_VERIFY_CODE = 2;
+    private final int REQUEST_VERIFY_CODE = 2;
     private int requesType;
 
     @NonNull
@@ -55,7 +55,7 @@ public class LoginPresenter implements LoginContract.Presenter, IUserModel.Login
         Map<String, Object> params = new HashMap<>();
         params.put("phone", phone);
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_GET_VERIFY_CODE;
+            requesType = REQUEST_VERIFY_CODE;
             // 获取token
             ((IBaseModel) mUserModel).getAccessToken(params, this);
         } else {
@@ -91,7 +91,7 @@ public class LoginPresenter implements LoginContract.Presenter, IUserModel.Login
     public void getTokenSuccess(Map<String, Object> params) {
         if (requesType == REQUEST_LOGIN) {
             mUserModel.login(params, this);
-        } else if (requesType == REQUEST_GET_VERIFY_CODE) {
+        } else if (requesType == REQUEST_VERIFY_CODE) {
             mUserModel.getVerifyCode(params, this);
         }
     }

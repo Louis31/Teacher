@@ -68,6 +68,21 @@ public class UrlConstant {
         public static String addShopNameUrl() {
             return getUserPath() + "/addShopName" + getToken();
         }
+
+        // 获取账单明细，Get
+        public static String getBillList() {
+            return getUserPath() + "/getbillsList" + getToken();
+        }
+
+        // 获取查询账单，Get
+        public static String searchBill() {
+            return getUserPath() + "/requestBillDetail" + getToken();
+        }
+
+        // 获取配送员列表，Get
+        public static String getDeliverList() {
+            return getUserPath() + "/requestDiliverymanList" + getToken();
+        }
     }
 
     /**
@@ -77,6 +92,21 @@ public class UrlConstant {
         // 获取订单列表，Get
         public static String listUrl() {
             return getOrderPath() + "/get_list" + getToken();
+        }
+
+        // 获取订单详情，Get
+        public static String infoUrl() {
+            return getOrderPath() + "/get_info" + getToken();
+        }
+
+        // 取消配送
+        public static String cancelUrl() {
+            return "";
+        }
+
+        // 派单
+        public static String sendUrl() {
+            return "";
         }
     }
 

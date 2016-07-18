@@ -3,6 +3,7 @@ package com.haiku.wateroffer.module.base;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 
@@ -33,5 +34,11 @@ public class BaseActivity extends Activity {
     protected void onPause() {
         super.onPause();
         ToastUtils.getInstant().destroy();
+    }
+
+    // 绑定view id
+    public <T extends View> T findView(View v, int viewId) {
+        View view = v.findViewById(viewId);
+        return (T) view;
     }
 }

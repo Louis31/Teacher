@@ -7,13 +7,7 @@
 
     <View style="@style/line_h" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="6dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="6dp">
+    <RelativeLayout style="@style/order_list_pay">
 
         <TextView
             android:id="@+id/tv_order_number"
@@ -28,7 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/tv_order_number"
             android:layout_alignParentRight="true"
-            android:text="2015-01-23"
             android:textSize="@dimen/tsize_small" />
     </RelativeLayout>
 
@@ -40,13 +33,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="6dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="6dp">
+    <RelativeLayout style="@style/order_list_pay">
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,22 +43,14 @@
 
         <TextView
             android:id="@+id/tv_order_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="38.00"
-            android:textColor="@color/red"
-            android:textStyle="bold" />
+            style="@style/order_list_pay_tv" />
     </RelativeLayout>
 
     <View style="@style/line_h" />
 
     <FrameLayout
         android:id="@+id/flayout_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
+        style="@style/order_list_bottom"
         android:visibility="gone">
 
         <TextView
@@ -84,24 +63,14 @@
 
         <TextView
             android:id="@+id/tv_order_cancel"
-            android:layout_width="80dp"
-            android:layout_height="26dp"
-            android:layout_gravity="right|center_vertical"
-            android:background="@drawable/shape_btn_order"
-            android:gravity="center"
+            style="@style/order_list_bottom_btn"
             android:text="@string/order_cancel"
-            android:textColor="@color/red"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_order_send"
-            android:layout_width="80dp"
-            android:layout_height="26dp"
-            android:layout_gravity="right|center_vertical"
-            android:background="@drawable/shape_btn_order"
-            android:gravity="center"
+            style="@style/order_list_bottom_btn"
             android:text="@string/order_send"
-            android:textColor="@color/red"
             android:visibility="gone" />
     </FrameLayout>
 

@@ -8,13 +8,13 @@ import java.io.Serializable;
  */
 public class AddressInfo implements Serializable {
     private int uid;
-    private String uname;
-    private String phone;
-    private String province;
-    private String dist;
-    private String city;
+    private String uname;// 用户名
+    private String phone;// 电话
+    private String province;// 省份
+    private String dist;// 目的地
+    private String city;// 城市
     private String poscode;
-    private String addrs;
+    private String addrs;   // 地址
 
 
     public int getUid() {

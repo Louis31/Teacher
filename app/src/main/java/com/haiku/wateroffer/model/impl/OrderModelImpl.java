@@ -2,6 +2,7 @@ package com.haiku.wateroffer.model.impl;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.bean.ResultData;
 import com.haiku.wateroffer.common.util.data.GsonUtils;
@@ -43,6 +44,35 @@ public class OrderModelImpl implements IOrderModel {
                 }
             }
         });
+    }
+
+    // 获取订单详情
+    @Override
+    public void getOrderInfo(Map<String, Object> params, @NonNull final OrderInfoCallback callback) {
+        XUtils.Get(UrlConstant.Order.infoUrl(), ParamUtils.Order.getInfoParams(params), new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.getRetcode() == ErrorCode.SUCCESS) {
+                    OrderItem bean = GsonUtils.gsonToBean(result.getRetmsg().getAsJsonObject().getAsString(), OrderItem.class);
+                    callback.getOrderInfoSuccess(bean);
+                } else {
+                    callback.onError(result.getRetcode(), result.getRetmsg().getAsString());
+                }
+            }
+        });
+    }
+
+    // 取消订单
+    @Override
+    public void cancelOrder(Map<String, Object> params, @NonNull OrderOperateCallback callback) {
+
+    }
+
+    // 派送订单
+    @Override
+    public void sendOrder(Map<String, Object> params, @NonNull OrderOperateCallback callback) {
 
     }
 }

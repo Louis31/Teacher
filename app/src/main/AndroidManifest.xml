@@ -28,7 +28,7 @@
 
         <activity android:name=".module.common.MainActivity" />
         <!-- 订单相关 -->
-        <activity android:name=".module.order.OrderDetailActivity" />
+        <activity android:name=".module.order.OrderInfoActivity" />
         <!-- 商品相关 -->
         <activity android:name=".module.goods.GoodsEditActivity" />
         <!-- 店铺相关 -->
@@ -36,6 +36,7 @@
         <activity android:name=".module.shop.ShopAddressActivity" />
         <activity android:name=".module.shop.EditPhoneActivity" />
         <activity android:name=".module.shop.DeliverListActivity" />
+        <activity android:name=".module.shop.DeliverSelectActivity" />
         <activity android:name=".module.shop.MyBillActivity" />
         <activity android:name=".module.shop.DepositActivity" />
         <activity android:name=".module.shop.ContributionActivity" />

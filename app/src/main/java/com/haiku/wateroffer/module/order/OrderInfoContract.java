@@ -4,24 +4,22 @@ import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.module.base.BasePresenter;
 import com.haiku.wateroffer.module.base.BaseView;
 
-import java.util.List;
-
 /**
- * 订单列表模块的Contract类
- * Created by hyming on 2016/7/11.
+ * 订单详情模块的Contract类
+ * Created by hyming on 2016/7/17.
  */
-public class OrderListContract {
+public class OrderInfoContract {
     interface View extends BaseView<Presenter> {
-        // 显示列表界面
-        void showListView(List<OrderItem> list);
+        // 设置信息订单信息
+        void setOrderInfo(OrderItem bean);
 
-        // 显示信息
+        // 显示消息
         void showMessage(String msg);
     }
 
     interface Presenter extends BasePresenter {
-        // 获取列表数据
-        void getListDatas(int uid, String status, String key, int pageno);
+        // 获取订单详情
+        void getOrderInfo(int uid, int order_id);
 
         // 取消订单
         void cancelOrder();

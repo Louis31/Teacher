@@ -16,6 +16,7 @@ import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.model.impl.OrderModelImpl;
 import com.haiku.wateroffer.module.base.LazyFragment;
 import com.haiku.wateroffer.ui.adapter.OrderListAdapter;
+import com.haiku.wateroffer.ui.dialog.AlertDialog;
 import com.haiku.wateroffer.ui.divider.BroadDividerItem;
 import com.haiku.wateroffer.ui.widget.MyRefreshLayout;
 
@@ -135,8 +136,43 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     /**
      * 事件回调
      */
+    // 查看订单详情
     @Override
     public void onOrderDetailClick(int pos) {
-        startActivity(new Intent(mContext, OrderDetailActivity.class));
+        startActivity(new Intent(mContext, OrderInfoActivity.class));
+    }
+
+    // 取消配送
+    @Override
+    public void onOrderCancelClick(int pos) {
+        new AlertDialog(mContext).builder().setMsg(getString(R.string.dlg_order_cancel))
+                .setCancelable(false)
+                .setPositiveButton("是", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 取消配送
+                        mPresenter.cancelOrder();
+                    }
+                }).setNegativeButton("否", null).show();
+    }
+
+    // 派单
+    @Override
+    public void onOrderSendClick(int pos) {
+        // 判断配送列表是否已经添加配送员
+        boolean isHas = false;
+        if (isHas) {
+            // 派送订单
+            mPresenter.sendOrder();
+        } else {
+            new AlertDialog(mContext).builder().setMsg(getString(R.string.dlg_deliver_add))
+                    .setCancelable(false)
+                    .setPositiveButton("是", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // 跳转到配送列表页面
+                        }
+                    }).setNegativeButton("否", null).show();
+        }
     }
 }

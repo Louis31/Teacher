@@ -160,6 +160,15 @@ public class OrderListAdapter extends MyBaseAdapter {
                 tv_order_send = bind(v, R.id.tv_order_send);
                 flayout_bottom.setVisibility(View.VISIBLE);
                 tv_order_send.setVisibility(View.VISIBLE);
+
+                tv_order_send.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (listener != null) {
+                            listener.onOrderSendClick(getPosition());
+                        }
+                    }
+                });
             }
             // 列表状态为配送中
             else if (mStatus.equals(TypeConstant.Order.DELIVERING)) {
@@ -167,6 +176,15 @@ public class OrderListAdapter extends MyBaseAdapter {
                 tv_order_cancel = bind(v, R.id.tv_order_cancel);
                 flayout_bottom.setVisibility(View.VISIBLE);
                 tv_order_cancel.setVisibility(View.VISIBLE);
+
+                tv_order_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (listener != null) {
+                            listener.onOrderCancelClick(getPosition());
+                        }
+                    }
+                });
             }
             // 列表状态为已完成
             else if (mStatus.equals(TypeConstant.Order.CLOSED)) {

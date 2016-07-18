@@ -50,7 +50,7 @@ public class GoodsListAdapter extends MyBaseAdapter {
         ItemViewHolder vh = (ItemViewHolder) holder;
 
         vh.tv_goods_name.setText(bean.getProduct_name());
-        vh.tv_goods_price.setText(bean.getSell_price());
+        vh.tv_goods_price.setText(rmb + bean.getSell_price());
         vh.tv_goods_sale.setText(goodsSaleTip);
         vh.tv_goods_stock.setText(goodsStockTip + bean.getProduct_instocks());
         ImageUtils.showImage(fragment, bean.getProduct_image(), vh.iv_goods);
