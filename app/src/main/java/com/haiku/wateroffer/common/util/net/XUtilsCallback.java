@@ -3,7 +3,7 @@ package com.haiku.wateroffer.common.util.net;
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.util.SystemUtils;
 import com.haiku.wateroffer.common.util.data.LogUtils;
-import com.haiku.wateroffer.constant.ErrorCode;
+import com.haiku.wateroffer.constant.BaseConstant;
 
 import org.xutils.common.Callback;
 import org.xutils.ex.HttpException;
@@ -40,11 +40,11 @@ public class XUtilsCallback<ResultType> implements Callback.CommonCallback<Resul
             // ...
             if (SystemUtils.isNetworkConnected(x.app())) {
                 if (callback != null) {
-                    callback.onError(ErrorCode.SERVER_ERROR, x.app().getString(R.string.msg_server_error));
+                    callback.onError(BaseConstant.SERVER_ERROR, x.app().getString(R.string.err_server_error));
                 }
             } else {
                 if (callback != null) {
-                    callback.onError(ErrorCode.METWORD_ERROR, x.app().getString(R.string.msg_netword_error));
+                    callback.onError(BaseConstant.METWORD_ERROR, x.app().getString(R.string.err_netword_error));
                 }
             }
         }

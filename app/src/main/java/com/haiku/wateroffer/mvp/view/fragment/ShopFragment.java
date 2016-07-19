@@ -16,7 +16,7 @@ import com.haiku.wateroffer.mvp.base.LazyFragment;
 import com.haiku.wateroffer.mvp.view.activity.ContributionActivity;
 import com.haiku.wateroffer.mvp.view.activity.DeliverListActivity;
 import com.haiku.wateroffer.mvp.view.activity.DepositActivity;
-import com.haiku.wateroffer.mvp.view.activity.PhoneEditActivity;
+import com.haiku.wateroffer.mvp.view.activity.PhoneChangeActivity;
 import com.haiku.wateroffer.mvp.view.activity.MyBillActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopAddressActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopNameActivity;
@@ -119,7 +119,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
                 break;
             // 跳转编辑联系电话界面
             case R.id.llayout_phone:
-                startActivity(new Intent(mContext, PhoneEditActivity.class));
+                startActivity(new Intent(mContext, PhoneChangeActivity.class));
                 break;
             // 配送列表
             case R.id.llayout_deliver_list:

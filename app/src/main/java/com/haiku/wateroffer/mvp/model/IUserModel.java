@@ -14,11 +14,8 @@ import java.util.Map;
  * Created by hyming on 2016/7/6.
  */
 public interface IUserModel {
-    // 登录模块相关回调
-    interface LoginCallback extends IRequestCallback {
-        // 登陆成功
-        void onLoginSuccess();
-
+    // 获取验证码相关回调
+    interface GetVerifyCodeCallback extends IRequestCallback {
         // 获取验证码成功
         void getVerifyCodeSuccess(String verifyCode);
     }
@@ -39,10 +36,10 @@ public interface IUserModel {
     }
 
     // 登陆
-    void login(Map<String, Object> params, @NonNull LoginCallback callback);
+    void login(Map<String, Object> params, @NonNull IRequestCallback callback);
 
     // 获取验证码
-    void getVerifyCode(Map<String, Object> params, @NonNull LoginCallback callback);
+    void getVerifyCode(Map<String, Object> params, @NonNull GetVerifyCodeCallback callback);
 
     // 获取我的账单明细
     void getBillList(Map<String, Object> params, @NonNull MyBillCallback callback);
@@ -55,4 +52,7 @@ public interface IUserModel {
 
     // 修改店铺名称
     void addShopName(Map<String, Object> params, @NonNull IRequestCallback callback);
+
+    // 修改店铺电话
+    void changePhone(Map<String, Object> params, @NonNull GetVerifyCodeCallback callback);
 }

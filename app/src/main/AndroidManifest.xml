@@ -10,7 +10,7 @@
 
 
     <application
-        android:name=".APPApplication"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -34,7 +34,7 @@
         <!-- 店铺相关 -->
         <activity android:name=".mvp.view.activity.ShopNameActivity" />
         <activity android:name=".mvp.view.activity.ShopAddressActivity" />
-        <activity android:name=".mvp.view.activity.PhoneEditActivity" />
+        <activity android:name=".mvp.view.activity.PhoneChangeActivity" />
         <activity android:name=".mvp.view.activity.DeliverListActivity" />
         <activity android:name=".mvp.view.activity.DeliverSelectActivity" />
         <activity android:name=".mvp.view.activity.MyBillActivity" />
