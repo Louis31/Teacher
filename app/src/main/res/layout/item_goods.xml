@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/iv_goods"
             android:orientation="vertical">
 
@@ -35,7 +35,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="农夫山泉有点甜农夫山泉有点甜农夫山泉有点甜农夫山泉有点甜农夫山泉有点甜农夫山泉有点甜"
                 android:textColor="@color/black" />
 
             <TextView
@@ -53,7 +52,6 @@
                 android:layout_below="@id/tv_goods_name"
                 android:layout_marginTop="4dp"
                 android:layout_toRightOf="@id/tv_goods_price_tip"
-                android:text="200.00"
                 android:textColor="@color/red"
                 android:textStyle="bold" />
 
@@ -112,5 +110,5 @@
             android:text="@string/edit" />
     </LinearLayout>
 
-
+    <View style="@style/line_h" />
 </LinearLayout>

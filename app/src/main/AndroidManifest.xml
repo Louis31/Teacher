@@ -18,7 +18,7 @@
 
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".module.common.LoginActivity">
+        <activity android:name=".mvp.view.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,20 +26,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".module.common.MainActivity" />
+        <activity android:name=".mvp.view.activity.MainActivity" />
         <!-- 订单相关 -->
-        <activity android:name=".module.order.OrderInfoActivity" />
+        <activity android:name=".mvp.view.activity.OrderInfoActivity" />
         <!-- 商品相关 -->
-        <activity android:name=".module.goods.GoodsEditActivity" />
+        <activity android:name=".mvp.view.activity.GoodsEditActivity" />
         <!-- 店铺相关 -->
-        <activity android:name=".module.shop.ShopNameActivity" />
-        <activity android:name=".module.shop.ShopAddressActivity" />
-        <activity android:name=".module.shop.EditPhoneActivity" />
-        <activity android:name=".module.shop.DeliverListActivity" />
-        <activity android:name=".module.shop.DeliverSelectActivity" />
-        <activity android:name=".module.shop.MyBillActivity" />
-        <activity android:name=".module.shop.DepositActivity" />
-        <activity android:name=".module.shop.ContributionActivity" />
+        <activity android:name=".mvp.view.activity.ShopNameActivity" />
+        <activity android:name=".mvp.view.activity.ShopAddressActivity" />
+        <activity android:name=".mvp.view.activity.EditPhoneActivity" />
+        <activity android:name=".mvp.view.activity.DeliverListActivity" />
+        <activity android:name=".mvp.view.activity.DeliverSelectActivity" />
+        <activity android:name=".mvp.view.activity.MyBillActivity" />
+        <activity android:name=".mvp.view.activity.DepositActivity" />
+        <activity android:name=".mvp.view.activity.ContributionActivity" />
 
     </application>
 

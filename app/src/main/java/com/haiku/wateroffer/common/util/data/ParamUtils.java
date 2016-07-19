@@ -43,6 +43,7 @@ public class ParamUtils {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("login_type", BaseConstant.LOGIN_TYPE_MERCHANT);
             map.put("device_type", BaseConstant.DEVICE_TYPE);
+            map.putAll(params);
             return map;
         }
     }

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".module.shop.DeliverListActivity">
+    android:orientation="vertical">
 
-    <com.haiku.wateroffer.ui.widget.Titlebar
+    <com.haiku.wateroffer.mvp.view.widget.Titlebar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/titlebar_height" />
@@ -49,12 +47,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- 编辑列表 -->
-        <com.haiku.wateroffer.ui.widget.MyRefreshLayout
+        <com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout
             android:id="@+id/refresh_layout_edit"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <!-- 配送员列表 -->
-        <com.haiku.wateroffer.ui.widget.MyRefreshLayout
+        <com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout
             android:id="@+id/refresh_layout_deliver"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

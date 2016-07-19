@@ -8,12 +8,11 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.common.util.data.StringUtils;
-import com.haiku.wateroffer.ui.dialog.ActionSheetDialog;
-import com.haiku.wateroffer.ui.dialog.ActionSheetDialog.*;
+import com.haiku.wateroffer.mvp.view.dialog.ActionSheetDialog;
+import com.haiku.wateroffer.mvp.view.dialog.ActionSheetDialog.*;
 
 import java.io.File;
 import java.util.Calendar;

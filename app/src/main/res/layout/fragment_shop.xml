@@ -12,7 +12,7 @@
         android:background="@color/white"
         android:padding="12dp">
 
-        <com.haiku.wateroffer.ui.widget.CircleImageView
+        <com.haiku.wateroffer.mvp.view.widget.CircleImageView
             android:id="@+id/iv_shop_logo"
             android:layout_width="60dp"
             android:layout_height="60dp"

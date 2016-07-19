@@ -2,8 +2,9 @@ package com.haiku.wateroffer.common.util.data;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -62,11 +63,11 @@ public class GsonUtils {
      * @param gsonString
      * @return
      */
-    public static <T> List<T> gsonToList(String gsonString) {
+    public static <T> List<T> gsonToList(String gsonString,Class clazz) {
         List<T> list = null;
         if (gson != null) {
-            list = gson.fromJson(gsonString, new TypeToken<List<T>>() {
-            }.getType());
+            Type objectType = type(List.class, clazz);
+            list = gson.fromJson(gsonString, objectType);
         }
         return list;
     }
@@ -76,6 +77,22 @@ public class GsonUtils {
         if (jArray == null || jArray.size() == 0 || jArray.toString().equals("[]"))
             return true;
         return false;
+    }
+
+    static ParameterizedType type(final Class raw, final Type... args) {
+        return new ParameterizedType() {
+            public Type getRawType() {
+                return raw;
+            }
+
+            public Type[] getActualTypeArguments() {
+                return args;
+            }
+
+            public Type getOwnerType() {
+                return null;
+            }
+        };
     }
 
 }

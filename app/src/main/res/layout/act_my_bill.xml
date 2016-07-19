@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".module.shop.MyBillActivity">
+    android:orientation="vertical">
 
-    <com.haiku.wateroffer.ui.widget.Titlebar
+    <com.haiku.wateroffer.mvp.view.widget.Titlebar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/titlebar_height" />
@@ -47,7 +45,7 @@
             layout="@layout/view_bill_overview"
             android:visibility="gone" />
         <!-- 账单明细 -->
-        <com.haiku.wateroffer.ui.widget.MyRefreshLayout
+        <com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout
             android:id="@+id/myRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
