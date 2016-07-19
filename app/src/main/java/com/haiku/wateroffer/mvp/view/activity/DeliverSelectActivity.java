@@ -90,6 +90,12 @@ public class DeliverSelectActivity extends BaseActivity implements IUserModel.De
         mUserModel.getDeliverList(params, this);
     }
 
+    // 成功回调
+    @Override
+    public void onSuccess() {
+
+    }
+
     @Override
     public void onError(int errorCode, String errorMsg) {
         mRefreshLayout.loadingCompleted(false);

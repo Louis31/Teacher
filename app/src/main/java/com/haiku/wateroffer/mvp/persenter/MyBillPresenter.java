@@ -67,6 +67,13 @@ public class MyBillPresenter implements MyBillContract.Presenter, IUserModel.MyB
         mUserModel.getBillList(params, this);
     }
 
+    // 成功回调
+    @Override
+    public void onSuccess() {
+
+    }
+
+
     @Override
     public void onError(int errorCode, String errorMsg) {
         mView.showMessage(errorMsg);

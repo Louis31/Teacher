@@ -52,4 +52,7 @@ public interface IUserModel {
 
     // 获取配送员列表
     void getDeliverList(Map<String, Object> params, @NonNull DeliverCallback callback);
+
+    // 修改店铺名称
+    void addShopName(Map<String, Object> params, @NonNull IRequestCallback callback);
 }

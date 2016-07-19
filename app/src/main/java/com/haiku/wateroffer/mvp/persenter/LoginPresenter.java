@@ -97,6 +97,12 @@ public class LoginPresenter implements LoginContract.Presenter, IUserModel.Login
         }
     }
 
+    // 成功回调
+    @Override
+    public void onSuccess() {
+
+    }
+
     // 错误返回
     @Override
     public void onError(int errorCode, String errorMsg) {

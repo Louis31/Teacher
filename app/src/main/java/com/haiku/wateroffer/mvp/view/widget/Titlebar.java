@@ -72,9 +72,10 @@ public class Titlebar extends FrameLayout {
     }
 
     // 显示右边文字
-    public void showRightTextView(int resId) {
-        tv_save = (TextView) findViewById(resId);
+    public void showRightTextView(String txt) {
+        tv_save = (TextView) findViewById(R.id.tv_save);
         tv_save.setVisibility(View.VISIBLE);
+        tv_save.setText(txt);
         tv_save.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

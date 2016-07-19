@@ -15,7 +15,7 @@ import org.xutils.view.annotation.ViewInject;
  * Created by hyming on 2016/7/14.
  */
 @ContentView(R.layout.act_edit_phone)
-public class EditPhoneActivity extends BaseActivity {
+public class PhoneEditActivity extends BaseActivity {
 
 
     @ViewInject(R.id.titlebar)

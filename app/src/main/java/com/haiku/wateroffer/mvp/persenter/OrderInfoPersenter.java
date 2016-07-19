@@ -108,6 +108,13 @@ public class OrderInfoPersenter implements OrderInfoContract.Presenter, IOrderMo
         }
     }
 
+    // 成功回调
+    @Override
+    public void onSuccess() {
+
+    }
+
+
     // 错误回调
     @Override
     public void onError(int errorCode, String errorMsg) {

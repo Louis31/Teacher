@@ -32,7 +32,7 @@ public class GoodsListAdapter extends MyBaseAdapter {
 
     private GoodsListListener mListener;
 
-    private void setListener(GoodsListListener listener) {
+    public void setListener(GoodsListListener listener) {
         this.mListener = listener;
     }
 

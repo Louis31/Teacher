@@ -31,6 +31,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/iv_arrow_right"
             android:padding="12dp"
+            android:textColor="@color/black"
             android:text="店铺名称" />
     </RelativeLayout>
 

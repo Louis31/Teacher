@@ -12,8 +12,8 @@ public interface ShopNameContract {
         // 显示/隐藏加载对话框
         void showLoadingDialog(boolean isShow);
 
-        // 显示添加店铺地址页面
-        void showShopAddressActivity();
+        // 成功回调
+        void showSuccessView();
 
         // 显示信息
         void showMessage(String msg);

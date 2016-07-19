@@ -10,20 +10,6 @@ import java.util.Map;
  * Created by hyming on 2016/7/7.
  */
 public class ParamUtils {
-
-    /**
-     * 用户相关参数
-     */
-    public static class User {
-        // 获取添加店铺名称参数
-        public static Map<String, Object> getAddShopNameParams(int uid, String shopName) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("uid", uid);
-            map.put("shopname", shopName);
-            return map;
-        }
-    }
-
     /**
      * 订单相关参数
      */

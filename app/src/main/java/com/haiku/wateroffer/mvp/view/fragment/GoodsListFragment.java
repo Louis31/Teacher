@@ -12,11 +12,12 @@ import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.GoodsListListener;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.BaseConstant;
-import com.haiku.wateroffer.mvp.model.impl.GoodsModelImpl;
 import com.haiku.wateroffer.mvp.base.LazyFragment;
 import com.haiku.wateroffer.mvp.contract.GoodsListContract;
+import com.haiku.wateroffer.mvp.model.impl.GoodsModelImpl;
 import com.haiku.wateroffer.mvp.persenter.GoodsListPersenter;
 import com.haiku.wateroffer.mvp.view.adapter.GoodsListAdapter;
+import com.haiku.wateroffer.mvp.view.dialog.AlertDialog;
 import com.haiku.wateroffer.mvp.view.divider.BroadDividerItem;
 import com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout;
 
@@ -81,6 +82,7 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
         uid = UserManager.getInstance().getUser().getUid();
         mDatas = new ArrayList<>();
         mAdapter = new GoodsListAdapter(mContext, mDatas, mType, this);
+        mAdapter.setListener(this);
     }
 
     private void initViews() {
@@ -138,7 +140,14 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     // 删除商品
     @Override
     public void onGoodsDeleteClick(int pos) {
-
+        new AlertDialog(mContext).builder().setMsg(getString(R.string.dlg_delete_goods))
+                .setCancelable(false)
+                .setPositiveButton("是", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //  删除商品
+                    }
+                }).setNegativeButton("否", null).show();
     }
 
     // 上架商品

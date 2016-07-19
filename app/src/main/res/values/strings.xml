@@ -44,6 +44,7 @@
     <string name="dlg_submiting">正在提交...</string>
     <string name="dlg_order_cancel">取消配送请先和对方电话沟通，是否取消配送？</string>
     <string name="dlg_deliver_add">您还没有添加配送员，是否添加？</string>
+    <string name="dlg_delete_goods">是否删除此商品？</string>
 
     <!-- 编辑相关 -->
     <string name="hint_phone_old">请输入当前手机号码</string>

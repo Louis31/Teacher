@@ -1,5 +1,6 @@
 package com.haiku.wateroffer.mvp.view.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +16,7 @@ import com.haiku.wateroffer.mvp.base.LazyFragment;
 import com.haiku.wateroffer.mvp.view.activity.ContributionActivity;
 import com.haiku.wateroffer.mvp.view.activity.DeliverListActivity;
 import com.haiku.wateroffer.mvp.view.activity.DepositActivity;
-import com.haiku.wateroffer.mvp.view.activity.EditPhoneActivity;
+import com.haiku.wateroffer.mvp.view.activity.PhoneEditActivity;
 import com.haiku.wateroffer.mvp.view.activity.MyBillActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopAddressActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopNameActivity;
@@ -25,12 +26,14 @@ import com.haiku.wateroffer.mvp.view.activity.ShopNameActivity;
  * Created by hyming on 2016/7/6.
  */
 public class ShopFragment extends LazyFragment implements View.OnClickListener {
+    private final int REQUEST_EDIT_NAME = 1;
+
     private Context mContext;
     private String mImagePath;
 
     private View rootView;
 
-    private TextView tv_shop_name;
+    private TextView tv_shop_name;// 店铺名称
     private ImageView iv_shop_logo;// 店铺logo
 
     private View llayout_address;// 店铺地址
@@ -105,7 +108,10 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
                 break;
             // 店铺名称点击
             case R.id.tv_shop_name:
-                startActivity(new Intent(mContext, ShopNameActivity.class));
+                Intent intent = new Intent(mContext, ShopNameActivity.class);
+                intent.putExtra("isUpdate", true);
+                intent.putExtra("shop_name", "测试名称");
+                startActivityForResult(intent, REQUEST_EDIT_NAME);
                 break;
             // 跳转到店铺地址界面
             case R.id.llayout_address:
@@ -113,7 +119,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
                 break;
             // 跳转编辑联系电话界面
             case R.id.llayout_phone:
-                startActivity(new Intent(mContext, EditPhoneActivity.class));
+                startActivity(new Intent(mContext, PhoneEditActivity.class));
                 break;
             // 配送列表
             case R.id.llayout_deliver_list:
@@ -131,6 +137,13 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
             case R.id.llayout_contribute:
                 startActivity(new Intent(mContext, ContributionActivity.class));
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_EDIT_NAME && resultCode == Activity.RESULT_OK) {
+            tv_shop_name.setText(data.getStringExtra("shop_name"));
         }
     }
 }

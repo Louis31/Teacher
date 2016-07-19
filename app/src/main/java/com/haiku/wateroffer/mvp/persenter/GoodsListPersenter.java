@@ -62,6 +62,12 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         mGoodsModel.getGoodsList(params, this);
     }
 
+    // 成功回调
+    @Override
+    public void onSuccess() {
+
+    }
+
     // 错误回调
     @Override
     public void onError(int errorCode, String errorMsg) {

@@ -10,6 +10,7 @@ import com.haiku.wateroffer.bean.User;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.data.GsonUtils;
 import com.haiku.wateroffer.common.util.data.LogUtils;
+import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.common.util.net.XUtils;
 import com.haiku.wateroffer.common.util.net.XUtilsCallback;
 import com.haiku.wateroffer.constant.ErrorCode;
@@ -119,6 +120,23 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
                         list = GsonUtils.gsonToList(jArry.toString(), Deliver.class);
                     }
                     callback.getDeliverListSuccess(list);
+                } else {
+                    callback.onError(result.getRetcode(), result.getRetmsg().getAsString());
+                }
+            }
+        });
+    }
+
+    // 修改店铺名称
+    @Override
+    public void addShopName(Map<String, Object> params, @NonNull final IRequestCallback callback) {
+        XUtils.Post(UrlConstant.User.addShopNameUrl(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.getRetcode() == ErrorCode.SUCCESS) {
+                    callback.onSuccess();
                 } else {
                     callback.onError(result.getRetcode(), result.getRetmsg().getAsString());
                 }

@@ -28,7 +28,7 @@ public class GoodsEditActivity extends BaseActivity {
 
     private void initViews() {
         mTitlebar.initDatas("添加商品", true);
-        mTitlebar.showRightTextView(R.string.save);
+        mTitlebar.showRightTextView(getString(R.string.save));
         mTitlebar.setListener(new TitlebarListenerAdapter() {
             @Override
             public void onReturnIconClick() {
