@@ -3,7 +3,11 @@ package com.haiku.wateroffer.mvp.view.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,25 +15,40 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.common.util.data.FileUtils;
 import com.haiku.wateroffer.common.util.ui.DialogUtils;
+import com.haiku.wateroffer.common.util.ui.ImageUtils;
+import com.haiku.wateroffer.common.util.ui.ToastUtils;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.base.LazyFragment;
+import com.haiku.wateroffer.mvp.contract.ShopContract;
+import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
+import com.haiku.wateroffer.mvp.persenter.ShopPresenter;
 import com.haiku.wateroffer.mvp.view.activity.ContributionActivity;
 import com.haiku.wateroffer.mvp.view.activity.DeliverListActivity;
 import com.haiku.wateroffer.mvp.view.activity.DepositActivity;
-import com.haiku.wateroffer.mvp.view.activity.PhoneChangeActivity;
 import com.haiku.wateroffer.mvp.view.activity.MyBillActivity;
+import com.haiku.wateroffer.mvp.view.activity.PhoneChangeActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopAddressActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopNameActivity;
+import com.haiku.wateroffer.mvp.view.dialog.ActionSheetDialog;
+
+import java.io.File;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * 我的小店Fragment
  * Created by hyming on 2016/7/6.
  */
-public class ShopFragment extends LazyFragment implements View.OnClickListener {
-    private final int REQUEST_EDIT_NAME = 1;
-
+public class ShopFragment extends LazyFragment implements View.OnClickListener, ShopContract.View {
     private Context mContext;
     private String mImagePath;
+    private Uri mImageUri;
+
+    private ShopContract.Presenter mPresenter;
+    private SweetAlertDialog mDialog;
 
     private View rootView;
 
@@ -55,6 +74,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
             rootView = inflater.inflate(R.layout.fragment_shop, container, false);
             initDatas();
             initViews();
+            new ShopPresenter(new UserModelImpl(), this);
         }
         //因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
         ViewGroup parent = (ViewGroup) rootView.getParent();
@@ -62,6 +82,11 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
             parent.removeView(rootView);
         }
         return rootView;
+    }
+
+    @Override
+    public void setPresenter(@NonNull ShopContract.Presenter presenter) {
+        this.mPresenter = presenter;
     }
 
     // 初始化数据
@@ -104,14 +129,30 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
                         .getAbsolutePath()
                         + String.valueOf(System.currentTimeMillis())
                         + ".jpg";
-                DialogUtils.makePhotoPickDialog(getActivity(), mImagePath).show();
+                new ActionSheetDialog(mContext).builder()
+                        .setCancelable(false)
+                        .setCanceledOnTouchOutside(false)
+                        .addSheetItem("相机拍照", ActionSheetDialog.SheetItemColor.Blue,
+                                new ActionSheetDialog.OnSheetItemClickListener() {
+                                    @Override
+                                    public void onClick(int which) {
+                                        doTakePhoto();// 相机拍照
+                                    }
+                                }).addSheetItem("相册选取", ActionSheetDialog.SheetItemColor.Blue,
+                        new ActionSheetDialog.OnSheetItemClickListener() {
+                            @Override
+                            public void onClick(int which) {
+                                doPickPicture();// 相册获取
+                            }
+                        })
+                        .show();
                 break;
             // 店铺名称点击
             case R.id.tv_shop_name:
                 Intent intent = new Intent(mContext, ShopNameActivity.class);
                 intent.putExtra("isUpdate", true);
                 intent.putExtra("shop_name", "测试名称");
-                startActivityForResult(intent, REQUEST_EDIT_NAME);
+                startActivityForResult(intent, BaseConstant.REQUEST_EDIT_SHOP_NAME);
                 break;
             // 跳转到店铺地址界面
             case R.id.llayout_address:
@@ -140,10 +181,100 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * 相机拍照
+     */
+    private void doTakePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = new File(mImagePath);
+        // 设置输出路径
+        mImageUri = Uri.fromFile(file);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+        startActivityForResult(intent, BaseConstant.REQUEST_TAKE_PHOTO);
+    }
+
+    /**
+     * 相册获取
+     */
+    private void doPickPicture() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, BaseConstant.REQUEST_PICK_PHOTO);
+    }
+
+    /**
+     * 裁剪图片
+     *
+     * @param uri
+     * @param outputX
+     * @param outputY
+     * @param requestCode
+     */
+    private void cropImageUri(Uri uri, int outputX, int outputY, int requestCode) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", outputX);
+        intent.putExtra("outputY", outputY);
+        intent.putExtra("scale", true);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        intent.putExtra("return-data", false);
+        intent.putExtra("noFaceDetection", true); // no face detection
+        startActivityForResult(intent, requestCode);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_EDIT_NAME && resultCode == Activity.RESULT_OK) {
+        // 修改店铺名称
+        if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_NAME && resultCode == Activity.RESULT_OK) {
             tv_shop_name.setText(data.getStringExtra("shop_name"));
         }
+        // 手机拍照
+        else if (requestCode == BaseConstant.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            cropImageUri(mImageUri, 480, 480, BaseConstant.REQUEST_CROP_PICTURE);
+        }
+        // 相册获取
+        else if (requestCode == BaseConstant.REQUEST_PICK_PHOTO) {
+            if (data != null && data.getData() != null) {
+                mImageUri = data.getData();
+                cropImageUri(mImageUri, 480, 480, BaseConstant.REQUEST_CROP_PICTURE);
+            }
+        }
+        // 裁剪图片
+        else if (requestCode == BaseConstant.REQUEST_CROP_PICTURE && resultCode == Activity.RESULT_OK) {
+            Bitmap bmp = ImageUtils.decodeUriAsBitmap(mContext, mImageUri);
+            String base64 = ImageUtils.imgToBase64(bmp);
+            if (bmp != null)
+                bmp.recycle();
+            FileUtils.deleteFile(mImagePath);
+            mImagePath = "";
+            // 上传图片
+            int uid = UserManager.getInstance().getUser().getUid();
+            mPresenter.changeShopLogo(uid, base64);
+        }
+    }
+
+    @Override
+    public void showLoadingDialog(boolean isShow) {
+        if (isShow) {
+            mDialog = DialogUtils.makeLoadingDialog(mContext, getString(R.string.dlg_upload_image));
+            mDialog.show();
+        } else {
+            if (mDialog != null && mDialog.isShowing()) {
+                mDialog.dismiss();
+            }
+        }
+    }
+
+    @Override
+    public void setLogo() {
+        ToastUtils.getInstant().showToast("修改图片成功");
+    }
+
+    @Override
+    public void showMessage(String msg) {
+        ToastUtils.getInstant().showToast(msg);
     }
 }

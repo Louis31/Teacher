@@ -74,6 +74,11 @@ public class UrlConstant {
             return getUserPath() + "/changeLoginPhone" + getToken();
         }
 
+        // 修改店铺logo，Post
+        public static String changeShopLogo(){
+            return getUserPath() + "/modifyShopLogo" + getToken();
+        }
+
         // 获取账单明细，Get
         public static String getBillList() {
             return getUserPath() + "/getbillsList" + getToken();
@@ -88,6 +93,8 @@ public class UrlConstant {
         public static String getDeliverList() {
             return getUserPath() + "/requestDiliverymanList" + getToken();
         }
+
+
     }
 
     /**

@@ -4,6 +4,13 @@ package com.haiku.wateroffer.constant;
  * Created by hyming on 2016/7/12.
  */
 public class BaseConstant {
+    // 请求的code
+    public final static int REQUEST_TAKE_PHOTO = 1;// 相机照相
+    public final static int REQUEST_PICK_PHOTO = 2;// 相册选取
+    public final static int REQUEST_CROP_PICTURE = 3;// 裁剪
+
+    public final static int REQUEST_EDIT_SHOP_NAME = 10;// 编辑店铺名称
+
     // 网络返回的错误代码常量
     public final static int SUCCESS = 0;// 返回成功
     public final static int SERVER_ERROR = 998;// 服务器错误

@@ -55,4 +55,7 @@ public interface IUserModel {
 
     // 修改店铺电话
     void changePhone(Map<String, Object> params, @NonNull GetVerifyCodeCallback callback);
+
+    // 修改店铺logo
+    void changeShopLogo(Map<String, Object> params, @NonNull IRequestCallback callback);
 }

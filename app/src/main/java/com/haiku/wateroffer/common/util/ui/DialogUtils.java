@@ -11,6 +11,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.common.util.data.StringUtils;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.view.dialog.ActionSheetDialog;
 import com.haiku.wateroffer.mvp.view.dialog.ActionSheetDialog.*;
 
@@ -26,9 +27,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by hyming on 2016/6/17.
  */
 public class DialogUtils {
-    public final static int TAKE_PHOTO = 1;// 相机照相
-    public final static int PICK_PHOTO = 2;// 相册选取
-
     // 显示加载对话框
     public static SweetAlertDialog makeLoadingDialog(Context cxt, String title) {
         SweetAlertDialog dialog = new SweetAlertDialog(cxt, SweetAlertDialog.PROGRESS_TYPE);
@@ -55,7 +53,7 @@ public class DialogUtils {
     }
 
     // 显示选择图片对话框
-    public static ActionSheetDialog makePhotoPickDialog(final Activity act, final String imagePath) {
+    /*public static ActionSheetDialog makePhotoPickDialog(final Activity act, final String imagePath) {
         ActionSheetDialog dialog = new ActionSheetDialog(act);
         dialog.builder()
                 .setCancelable(false)
@@ -75,27 +73,5 @@ public class DialogUtils {
                             }
                         });
         return dialog;
-    }
-
-    /**
-     * 相机拍照
-     */
-    private static void doTakePhoto(Activity act, String imagePath) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(imagePath);
-        // 设置输出路径
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        act.startActivityForResult(intent, TAKE_PHOTO);
-    }
-
-    /**
-     * 相册获取
-     */
-    private static void doPickPicture(Activity act) {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        act.startActivityForResult(intent, PICK_PHOTO);
-    }
-
-
+    }*/
 }
