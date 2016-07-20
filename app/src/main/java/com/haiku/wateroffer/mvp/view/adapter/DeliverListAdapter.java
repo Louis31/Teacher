@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.Deliver;
+import com.haiku.wateroffer.common.listener.DeliverListListener;
 import com.haiku.wateroffer.constant.TypeConstant;
 
 import java.util.List;
@@ -91,7 +92,7 @@ public class DeliverListAdapter extends MyBaseAdapter {
         TextView tv_continue_pause;
         TextView tv_delete;
 
-        public ItemViewHolder(View v, DeliverListListener listener) {
+        public ItemViewHolder(View v, final DeliverListListener listener) {
             super(v);
             tv_deliver_name = bind(v, R.id.tv_deliver_name);
             tv_deliver_phone = bind(v, R.id.tv_deliver_phone);
