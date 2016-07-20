@@ -21,6 +21,7 @@
         android:layout_weight="1" />
 
     <TextView
+        android:id="@+id/tv_added"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#cccccc"
@@ -28,34 +29,48 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="4dp"
-        android:text="已添加"
+        android:text="@string/deliver_added"
         android:textColor="@color/white"
         android:textSize="@dimen/tsize_small"
         android:visibility="gone" />
 
     <TextView
+        android:id="@+id/tv_paused"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="暂停中"
+        android:text="@string/deliver_paused"
         android:visibility="gone" />
 
-    <!--<TextView
+    <LinearLayout
+        android:id="@+id/llayout_operation"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="暂停"
-        android:textColor="@color/blue" />
-
-    <View
-        android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:background="@color/line" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/delete"
-        android:textColor="@color/blue" />-->
+        <TextView
+            android:id="@+id/tv_continue_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingRight="12dp"
+            android:text="@string/pause"
+            android:textColor="@color/blue" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/line" />
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="12dp"
+            android:text="@string/delete"
+            android:textColor="@color/blue" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -7,6 +7,8 @@
     <string name="delete">删除</string>
     <string name="edit">编辑</string>
     <string name="save">保存</string>
+    <string name="pause">暂停</string>
+    <string name="go_on">继续</string>
     <string name="up_shelf">上架</string>
     <string name="off_shelf">下架</string>
     <string name="sale_none">售罄</string>
@@ -138,6 +140,8 @@
     <string name="edit_list">编辑列表</string>
     <string name="delivery_range">配送范围</string>
     <string name="delivery_list">配送列表</string>
+    <string name="deliver_added">已添加</string>
+    <string name="deliver_paused">暂停中</string>
 
     <!-- 访问网络错误信息 -->
     <string name="err_server_error">服务器繁忙，请稍后重试</string>
