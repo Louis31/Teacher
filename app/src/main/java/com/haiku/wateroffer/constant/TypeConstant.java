@@ -23,4 +23,10 @@ public class TypeConstant {
         public final static int ON_SALE = 1;// 出售中
         public final static int SALE_NONE = 2;// 已售罄
     }
+
+    public static class Deliver {
+        public final static int NONE = 0;// 未添加和删除状态
+        public final static int PAUSE = 1;// 暂停状态
+        public final static int CONTINUE = 2;// 继续状态
+    }
 }
