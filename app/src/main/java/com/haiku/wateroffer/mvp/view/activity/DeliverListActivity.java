@@ -1,6 +1,7 @@
 package com.haiku.wateroffer.mvp.view.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -38,12 +39,9 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     private int mType;
 
     private int mOperationType;
-
     private int colorRed;
     private int colorBlack;
     private int mCurrentPos;
-    private boolean isClicking;
-
 
     private List<Deliver> mDatas;
     private DeliverListAdapter mListAdapter;// 配送员列表Adapter
@@ -194,7 +192,10 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     @Override
     public void onItemClick(int pos) {
         // TODO 跳转到配送员订单页面
-
+        Intent intent = new Intent(mContext,DeliverOrderActivity.class);
+        intent.putExtra("deliver_id",mDatas.get(pos).getDiliveryman_id());
+        intent.putExtra("deliver_name",mDatas.get(pos).getDiliveryman_name());
+        startActivity(intent);
     }
 
     @Override

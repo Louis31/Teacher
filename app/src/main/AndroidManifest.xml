@@ -38,6 +38,7 @@
         <activity android:name=".mvp.view.activity.PhoneChangeActivity" />
         <activity android:name=".mvp.view.activity.DeliverListActivity" />
         <activity android:name=".mvp.view.activity.DeliverSelectActivity" />
+        <activity android:name=".mvp.view.activity.DeliverOrderActivity" />
         <activity android:name=".mvp.view.activity.MyBillActivity" />
         <activity android:name=".mvp.view.activity.DepositActivity" />
         <activity android:name=".mvp.view.activity.ContributionActivity" />

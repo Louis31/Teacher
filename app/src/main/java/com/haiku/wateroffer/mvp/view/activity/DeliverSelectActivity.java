@@ -29,7 +29,7 @@ import java.util.Map;
  * 选择配送员界面
  * Created by hyming on 2016/7/18.
  */
-@ContentView(R.layout.act_deliver_select)
+@ContentView(R.layout.act_common_list)
 public class DeliverSelectActivity extends BaseActivity implements IUserModel.DeliverCallback, MyItemClickListener {
 
     private int uid;
