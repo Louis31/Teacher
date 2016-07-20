@@ -20,7 +20,7 @@ public interface DeliverContract {
         void showListView(List<Deliver> list);
 
         // 更新列表界面
-        void updateListView(int status);
+        void updateListView();
 
         // 显示信息
         void showMessage(String msg);

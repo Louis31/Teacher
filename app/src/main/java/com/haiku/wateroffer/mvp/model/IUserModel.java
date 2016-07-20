@@ -33,6 +33,9 @@ public interface IUserModel {
     interface DeliverCallback extends IRequestCallback {
         // 获取配送列表成功
         void getDeliverListSuccess(List<Deliver> list);
+
+        // 修改状态成功
+        void changeStatusSuccess();
     }
 
     // 登陆
@@ -49,6 +52,9 @@ public interface IUserModel {
 
     // 获取配送员列表
     void getDeliverList(Map<String, Object> params, @NonNull DeliverCallback callback);
+
+    // 编辑配送员
+    void changeDeliverStatus(Map<String, Object> params, @NonNull DeliverCallback callback);
 
     // 修改店铺名称
     void addShopName(Map<String, Object> params, @NonNull IRequestCallback callback);

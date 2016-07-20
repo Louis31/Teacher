@@ -86,6 +86,11 @@ public class DeliverSelectActivity extends BaseActivity implements IUserModel.De
     }
 
     @Override
+    public void changeStatusSuccess() {
+
+    }
+
+    @Override
     public void getTokenSuccess(Map<String, Object> params) {
         mUserModel.getDeliverList(params, this);
     }
