@@ -160,6 +160,7 @@ public class MyBillActivity extends BaseActivity implements MyBillContract.View 
         mRefreshLayout.setAdapter(mAdapter);
         mRefreshLayout.setLinearLayout();
         mRefreshLayout.setPullRefreshEnable(false);
+        mRefreshLayout.setLoadMoreEnable(false);
     }
 
     // 改变当前显示界面

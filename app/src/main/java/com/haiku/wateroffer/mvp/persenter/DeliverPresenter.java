@@ -51,6 +51,7 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
 
     @Override
     public void changeDeliverStatus(int diliveryman_id, String phone, int status) {
+        mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
         params.put("diliveryman_id", diliveryman_id);
         params.put("phone", phone);
@@ -77,7 +78,7 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
     // 修改状态成功
     @Override
     public void changeStatusSuccess() {
-        mView.showLoadingDialog(true);
+        mView.showLoadingDialog(false);
         mView.updateListView();
     }
 
