@@ -75,7 +75,7 @@ public class UrlConstant {
         }
 
         // 修改店铺logo，Post
-        public static String changeShopLogo(){
+        public static String changeShopLogo() {
             return getUserPath() + "/modifyShopLogo" + getToken();
         }
 
@@ -94,6 +94,10 @@ public class UrlConstant {
             return getUserPath() + "/requestDiliverymanList" + getToken();
         }
 
+        // 编辑配送员，Get
+        public static String editDeliver() {
+            return getUserPath() + "/editDiliveryman" + getToken();
+        }
 
     }
 

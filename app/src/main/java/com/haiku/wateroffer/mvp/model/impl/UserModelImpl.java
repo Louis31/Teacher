@@ -128,6 +128,23 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
         });
     }
 
+    // 编辑配送员
+    @Override
+    public void changeDeliverStatus(Map<String, Object> params, @NonNull final DeliverCallback callback) {
+        XUtils.Get(UrlConstant.User.editDeliver(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                    callback.changeStatusSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
+
     // 修改店铺名称
     @Override
     public void addShopName(Map<String, Object> params, @NonNull final IRequestCallback callback) {
