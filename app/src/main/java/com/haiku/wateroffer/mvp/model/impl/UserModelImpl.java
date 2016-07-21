@@ -145,6 +145,23 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
         });
     }
 
+    // 添加配送员
+    @Override
+    public void addDeliver(Map<String, Object> params, @NonNull final DeliverCallback callback) {
+        XUtils.Get(UrlConstant.User.addDeliver(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                    callback.addDeliverSuccess(GsonUtils.gsonToBean(result.getRetmsg().toString(), Deliver.class));
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
+
     // 修改店铺名称
     @Override
     public void addShopName(Map<String, Object> params, @NonNull final IRequestCallback callback) {

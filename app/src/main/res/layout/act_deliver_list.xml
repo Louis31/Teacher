@@ -43,19 +43,8 @@
 
     <View style="@style/line_h" />
 
-    <FrameLayout
+    <com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout
+        android:id="@+id/myRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <!-- 编辑列表 -->
-        <com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout
-            android:id="@+id/refresh_layout_edit"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-        <!-- 配送员列表 -->
-        <com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout
-            android:id="@+id/refresh_layout_deliver"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
+        android:layout_height="match_parent" />
 </LinearLayout>

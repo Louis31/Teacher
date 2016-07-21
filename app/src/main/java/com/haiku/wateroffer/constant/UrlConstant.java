@@ -99,6 +99,11 @@ public class UrlConstant {
             return getUserPath() + "/editDiliveryman" + getToken();
         }
 
+        // 添加配送员，Get
+        public static String addDeliver() {
+            return getUserPath() + "/addDiliveryman" + getToken();
+        }
+
     }
 
     /**

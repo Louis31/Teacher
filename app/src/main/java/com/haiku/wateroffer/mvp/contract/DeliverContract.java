@@ -20,7 +20,7 @@ public interface DeliverContract {
         void showListView(List<Deliver> list);
 
         // 更新列表界面
-        void updateListView();
+        void updateListView(Deliver bean);
 
         // 显示信息
         void showMessage(String msg);
@@ -32,5 +32,8 @@ public interface DeliverContract {
 
         // 修改配送员状态
         void changeDeliverStatus(int diliveryman_id, String phone, int status);
+
+        // 添加配送员
+        void addDeliver(int uid,String phone);
     }
 }

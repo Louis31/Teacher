@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp"
+    android:paddingTop="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/deliver_phone_tip"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:id="@+id/et_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:maxLength="11"
+        android:inputType="number"
+        android:textSize="@dimen/tsize_normal" />
+
+
+    <Button
+        android:id="@+id/btn_confirm"
+        style="@style/btn_common_red"
+        android:layout_marginTop="12dp"
+        android:text="@string/confirm" />
+</LinearLayout>

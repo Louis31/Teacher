@@ -19,6 +19,7 @@ import java.util.Map;
 public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.DeliverCallback {
     private final int REQUEST_LIST = 1;
     private final int REQUEST_CHANGE = 2;
+    private final int REQUEST_ADD = 3;
     private int requesType;
 
     @NonNull
@@ -66,6 +67,21 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
         }
     }
 
+    @Override
+    public void addDeliver(int uid, String phone) {
+        mView.showLoadingDialog(true);
+        Map<String, Object> params = new HashMap<>();
+        params.put("uid", uid);
+        params.put("phone", phone);
+        if (UserManager.isTokenEmpty()) {
+            requesType = REQUEST_ADD;
+            // 获取token
+            ((IBaseModel) mUserModel).getAccessToken(params, this);
+        } else {
+            mUserModel.addDeliver(params, this);
+        }
+    }
+
     /**
      * Callback
      */
@@ -79,15 +95,22 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
     @Override
     public void changeStatusSuccess() {
         mView.showLoadingDialog(false);
-        mView.updateListView();
+        mView.updateListView(null);
+    }
+
+    @Override
+    public void addDeliverSuccess(Deliver deliver) {
+        mView.updateListView(deliver);
     }
 
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
         if (requesType == REQUEST_LIST) {
             mUserModel.getDeliverList(params, this);
-        } else {
+        } else if (requesType == REQUEST_CHANGE) {
             mUserModel.changeDeliverStatus(params, this);
+        } else {
+            mUserModel.addDeliver(params, this);
         }
     }
 

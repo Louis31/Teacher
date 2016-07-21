@@ -9,8 +9,10 @@ import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.Deliver;
+import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.DeliverListListener;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
+import com.haiku.wateroffer.common.util.data.ValidatorUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
@@ -18,6 +20,8 @@ import com.haiku.wateroffer.mvp.contract.DeliverContract;
 import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
 import com.haiku.wateroffer.mvp.persenter.DeliverPresenter;
 import com.haiku.wateroffer.mvp.view.adapter.DeliverListAdapter;
+import com.haiku.wateroffer.mvp.view.dialog.AddDeliverDialog;
+import com.haiku.wateroffer.mvp.view.dialog.AlertDialog;
 import com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout;
 import com.haiku.wateroffer.mvp.view.widget.Titlebar;
 
@@ -59,11 +63,8 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     @ViewInject(R.id.tv_tab_edit)
     private TextView tv_tab_edit;
 
-    @ViewInject(R.id.refresh_layout_edit)
-    private MyRefreshLayout refresh_layout_edit;
-
-    @ViewInject(R.id.refresh_layout_deliver)
-    private MyRefreshLayout refresh_layout_deliver;
+    @ViewInject(R.id.myRefreshLayout)
+    private MyRefreshLayout mRefreshLayout;
 
     @Event(R.id.tv_tab_deliver)
     private void tabDeliverClick(View v) {
@@ -81,6 +82,7 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
         initDatas();
         initViews();
         new DeliverPresenter(new UserModelImpl(), this);
+        mPresenter.getDeliverList(UserManager.getInstance().getUser().getUid());
     }
 
     @Override
@@ -96,28 +98,33 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
         mDatas = new ArrayList<>();
         mListAdapter = new DeliverListAdapter(mContext, mDatas, DeliverListAdapter.TYPE_LIST);
         mEditAdapter = new DeliverListAdapter(mContext, mDatas, DeliverListAdapter.TYPE_EDIT);
+
+        mListAdapter.setListener(this);
+        mEditAdapter.setListener(this);
     }
 
     private void initViews() {
         mTitlebar.initDatas(R.string.delivery_list, true);
+        mTitlebar.initAddIcon();
+        mTitlebar.showAddIcon(true);
         mTitlebar.setListener(new TitlebarListenerAdapter() {
             @Override
             public void onReturnIconClick() {
                 finish();
             }
+
+            @Override
+            public void onAddIconClick() {
+                // 显示添加配送员界面
+                showAddDeliverView();
+            }
         });
 
-        refresh_layout_deliver.setPageSize(1000);
-        refresh_layout_deliver.setAdapter(mListAdapter);
-        refresh_layout_deliver.setLinearLayout();
-        refresh_layout_deliver.setPullRefreshEnable(false);
-        refresh_layout_deliver.setLoadMoreEnable(false);
-
-        refresh_layout_edit.setPageSize(1000);
-        refresh_layout_edit.setAdapter(mEditAdapter);
-        refresh_layout_edit.setLinearLayout();
-        refresh_layout_edit.setPullRefreshEnable(false);
-        refresh_layout_edit.setLoadMoreEnable(false);
+        mRefreshLayout.setPageSize(1000);
+        mRefreshLayout.setAdapter(mListAdapter);
+        mRefreshLayout.setLinearLayout();
+        mRefreshLayout.setPullRefreshEnable(false);
+        mRefreshLayout.setLoadMoreEnable(false);
     }
 
     // 改变当前显示界面
@@ -129,15 +136,13 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
         if (type == TYPE_DELIVER) {
             tv_tab_deliver.setTextColor(colorRed);
             tv_tab_edit.setTextColor(colorBlack);
-            refresh_layout_deliver.setVisibility(View.VISIBLE);
-            refresh_layout_edit.setVisibility(View.GONE);
+            mRefreshLayout.setAdapter(mListAdapter);
         }
         // 编辑列表
         else {
             tv_tab_edit.setTextColor(colorRed);
             tv_tab_deliver.setTextColor(colorBlack);
-            refresh_layout_edit.setVisibility(View.VISIBLE);
-            refresh_layout_deliver.setVisibility(View.GONE);
+            mRefreshLayout.setAdapter(mEditAdapter);
         }
         mType = type;
     }
@@ -146,7 +151,7 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     @Override
     public void showLoadingDialog(boolean isShow) {
         if (isShow) {
-            mDialog = ProgressDialog.show(mContext, "", getString(R.string.dlg_updating));
+            mDialog = ProgressDialog.show(mContext, "", getString(R.string.dlg_submiting));
             mDialog.setCancelable(false);
         } else {
             if (mDialog != null && mDialog.isShowing()) {
@@ -161,29 +166,49 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
         mDatas.addAll(list);
         mListAdapter.notifyDataSetChanged();
         mEditAdapter.notifyDataSetChanged();
-        refresh_layout_deliver.loadingCompleted(true);
-        refresh_layout_edit.loadingCompleted(true);
+        mRefreshLayout.loadingCompleted(true);
     }
 
     // 更新列表界面
     @Override
-    public void updateListView() {
-        if (mOperationType == TypeConstant.Deliver.DELETE) {
-            mDatas.remove(mCurrentPos);
-            mListAdapter.notifyItemRemoved(mCurrentPos);
-            mEditAdapter.notifyItemRemoved(mCurrentPos);
+    public void updateListView(Deliver bean) {
+        if (bean != null) {
+            mDatas.add(bean);
+            mListAdapter.notifyItemInserted(mDatas.size() - 1);
+            mEditAdapter.notifyItemInserted(mDatas.size() - 1);
         } else {
-            mListAdapter.notifyItemChanged(mCurrentPos);
-            mEditAdapter.notifyItemChanged(mCurrentPos);
+            if (mOperationType == TypeConstant.Deliver.DELETE) {
+                mDatas.remove(mCurrentPos);
+                mListAdapter.notifyItemRemoved(mCurrentPos);
+                mEditAdapter.notifyItemRemoved(mCurrentPos);
+            } else {
+                mListAdapter.notifyItemChanged(mCurrentPos);
+                mEditAdapter.notifyItemChanged(mCurrentPos);
+            }
         }
     }
 
     // 显示信息
     @Override
     public void showMessage(String msg) {
-        refresh_layout_deliver.loadingCompleted(false);
-        refresh_layout_edit.loadingCompleted(false);
+        mRefreshLayout.loadingCompleted(false);
         ToastUtils.getInstant().showToast(msg);
+    }
+
+    private void showAddDeliverView() {
+        final AddDeliverDialog dialog = new AddDeliverDialog(mContext).builder();
+        dialog.setClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String phone = dialog.getInputText();
+                if (!ValidatorUtils.isMobile(phone)) {
+                    ToastUtils.getInstant().showToast(R.string.msg_phone_invalid);
+                } else {
+                    // 添加配送员
+                    mPresenter.addDeliver(UserManager.getInstance().getUser().getUid(), phone);
+                }
+            }
+        }).show();
     }
 
     /**
@@ -192,9 +217,9 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     @Override
     public void onItemClick(int pos) {
         // TODO 跳转到配送员订单页面
-        Intent intent = new Intent(mContext,DeliverOrderActivity.class);
-        intent.putExtra("deliver_id",mDatas.get(pos).getDiliveryman_id());
-        intent.putExtra("deliver_name",mDatas.get(pos).getDiliveryman_name());
+        Intent intent = new Intent(mContext, DeliverOrderActivity.class);
+        intent.putExtra("deliver_id", mDatas.get(pos).getDiliveryman_id());
+        intent.putExtra("deliver_name", mDatas.get(pos).getDiliveryman_name());
         startActivity(intent);
     }
 
@@ -212,11 +237,18 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     }
 
     @Override
-    public void onDeleteClick(int pos) {
-        // 删除点击
-        mCurrentPos = pos;
-        mOperationType = TypeConstant.Deliver.DELETE;
-        mPresenter.changeDeliverStatus(mDatas.get(pos).getDiliveryman_id(), mDatas.get(pos).getDiliveryman_phone(), mOperationType);
+    public void onDeleteClick(final int pos) {
+        new AlertDialog(mContext).builder().setMsg(getString(R.string.dlg_deliver_delete))
+                .setCancelable(false)
+                .setPositiveButton("是", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 删除点击
+                        mCurrentPos = pos;
+                        mOperationType = TypeConstant.Deliver.DELETE;
+                        mPresenter.changeDeliverStatus(mDatas.get(pos).getDiliveryman_id(), mDatas.get(pos).getDiliveryman_phone(), mOperationType);
+                    }
+                }).setNegativeButton("否", null).show();
     }
 }
 

@@ -91,6 +91,11 @@ public class DeliverSelectActivity extends BaseActivity implements IUserModel.De
     }
 
     @Override
+    public void addDeliverSuccess(Deliver deliver) {
+
+    }
+
+    @Override
     public void getTokenSuccess(Map<String, Object> params) {
         mUserModel.getDeliverList(params, this);
     }

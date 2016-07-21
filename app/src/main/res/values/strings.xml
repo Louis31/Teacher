@@ -5,6 +5,7 @@
     <string name="login">登录</string>
     <string name="logout">注销</string>
     <string name="delete">删除</string>
+    <string name="confirm">确定</string>
     <string name="edit">编辑</string>
     <string name="save">保存</string>
     <string name="pause">暂停</string>
@@ -46,6 +47,7 @@
     <string name="dlg_upload_image">正在上传图片...</string>
     <string name="dlg_order_cancel">取消配送请先和对方电话沟通，是否取消配送？</string>
     <string name="dlg_deliver_add">您还没有添加配送员，是否添加？</string>
+    <string name="dlg_deliver_delete">是否确定删除该配送员？</string>
     <string name="dlg_delete_goods">是否删除此商品？</string>
 
     <!-- 编辑相关 -->
@@ -143,6 +145,7 @@
     <string name="delivery_list">配送列表</string>
     <string name="deliver_added">已添加</string>
     <string name="deliver_paused">暂停中</string>
+    <string name="deliver_phone_tip">请输入配送员的手机号码：</string>
 
     <!-- 访问网络错误信息 -->
     <string name="err_server_error">服务器繁忙，请稍后重试</string>

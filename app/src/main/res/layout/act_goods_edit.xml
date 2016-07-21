@@ -58,7 +58,9 @@
 
         <EditText
             style="@style/goods_edit_llayout_et"
-            android:hint="@string/hint_goods_price" />
+            android:hint="@string/hint_goods_price"
+            android:inputType="numberDecimal"
+            android:maxLength="8" />
     </LinearLayout>
 
     <View style="@style/line_h" />
@@ -71,7 +73,9 @@
 
         <EditText
             style="@style/goods_edit_llayout_et"
-            android:hint="@string/hint_goods_stock" />
+            android:hint="@string/hint_goods_stock"
+            android:inputType="number"
+            android:maxLength="8" />
     </LinearLayout>
 
     <View style="@style/line_h" />

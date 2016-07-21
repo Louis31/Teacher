@@ -36,6 +36,9 @@ public interface IUserModel {
 
         // 修改状态成功
         void changeStatusSuccess();
+
+        // 添加配送员成功
+        void addDeliverSuccess(Deliver deliver);
     }
 
     // 登陆
@@ -55,6 +58,9 @@ public interface IUserModel {
 
     // 编辑配送员
     void changeDeliverStatus(Map<String, Object> params, @NonNull DeliverCallback callback);
+
+    // 添加配送员
+    void addDeliver(Map<String, Object> params, @NonNull DeliverCallback callback);
 
     // 修改店铺名称
     void addShopName(Map<String, Object> params, @NonNull IRequestCallback callback);
