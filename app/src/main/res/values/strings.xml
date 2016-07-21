@@ -43,7 +43,7 @@
     <string name="msg_price_invalid">价格输入错误</string>
     <string name="msg_stock_invalid">库存输入错误</string>
     <string name="msg_goods_invalid">填写完整信息后方可上架</string>
-
+    <string name="msg_addr_invalid">地址不能为空</string>
     <!-- dialog -->
     <string name="dlg_loging">正在登录...</string>
     <string name="dlg_submiting">正在提交...</string>
@@ -142,6 +142,7 @@
 
     <string name="contribution">贡献值</string>
     <string name="current_contribution">当前贡献值</string>
+    <string name="current_address_list">您当前位置列表</string>
 
     <!-- 我的账单相关 -->
     <string name="bill_detail">账单明细</string>

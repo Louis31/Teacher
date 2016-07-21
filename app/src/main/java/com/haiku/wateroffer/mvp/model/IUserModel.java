@@ -70,4 +70,7 @@ public interface IUserModel {
 
     // 修改店铺logo
     void changeShopLogo(Map<String, Object> params, @NonNull IRequestCallback callback);
+
+    // 修改店铺地址
+    void addShopAddress(Map<String, Object> params, @NonNull IRequestCallback callback);
 }

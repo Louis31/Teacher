@@ -62,6 +62,7 @@
 
 
     <Button
+        android:visibility="gone"
         android:id="@+id/btn_next"
         style="@style/btn_common_red"
         android:layout_marginLeft="24dp"

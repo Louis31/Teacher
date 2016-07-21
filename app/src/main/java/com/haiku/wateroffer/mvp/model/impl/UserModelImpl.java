@@ -211,4 +211,21 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
             }
         });
     }
+
+    // 修改店铺地址
+    @Override
+    public void addShopAddress(Map<String, Object> params, @NonNull final IRequestCallback callback) {
+        XUtils.Post(UrlConstant.User.changeShopLogo(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                    callback.onSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
 }

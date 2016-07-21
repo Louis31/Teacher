@@ -79,6 +79,11 @@ public class UrlConstant {
             return getUserPath() + "/modifyShopLogo" + getToken();
         }
 
+        // 修改店铺地址，Post
+        public static String addShopAddress() {
+            return getUserPath() + "/addShopAddress" + getToken();
+        }
+
         // 获取账单明细，Get
         public static String getBillList() {
             return getUserPath() + "/getbillsList" + getToken();

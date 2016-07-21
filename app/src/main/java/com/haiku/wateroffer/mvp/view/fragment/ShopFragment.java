@@ -149,14 +149,16 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                 break;
             // 店铺名称点击
             case R.id.tv_shop_name:
-                Intent intent = new Intent(mContext, ShopNameActivity.class);
-                intent.putExtra("isUpdate", true);
-                intent.putExtra("shop_name", "测试名称");
-                startActivityForResult(intent, BaseConstant.REQUEST_EDIT_SHOP_NAME);
+                Intent iShopName = new Intent(mContext, ShopNameActivity.class);
+                iShopName.putExtra("isUpdate", true);
+                iShopName.putExtra("shop_name", "测试名称");
+                startActivityForResult(iShopName, BaseConstant.REQUEST_EDIT_SHOP_NAME);
                 break;
             // 跳转到店铺地址界面
             case R.id.llayout_address:
-                startActivity(new Intent(mContext, ShopAddressActivity.class));
+                Intent iShopAddr = new Intent(mContext, ShopAddressActivity.class);
+                iShopAddr.putExtra("isUpdate", true);
+                startActivity(iShopAddr);
                 break;
             // 跳转编辑联系电话界面
             case R.id.llayout_phone:

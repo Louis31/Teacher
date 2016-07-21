@@ -60,6 +60,7 @@
         <activity android:name=".mvp.view.activity.MyBillActivity" />
         <activity android:name=".mvp.view.activity.DepositActivity" />
         <activity android:name=".mvp.view.activity.ContributionActivity" />
+        <activity android:name=".mvp.view.activity.AddressActivity"/>
         <!-- 高德定位 -->
         <service android:name="com.amap.api.location.APSService"></service>
         <meta-data

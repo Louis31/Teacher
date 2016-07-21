@@ -73,6 +73,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        et_phone.setText("13650721344");
         // 创建Presenter
         new LoginPresenter(new UserModelImpl(), this);
     }
