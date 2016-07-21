@@ -1,6 +1,7 @@
 package com.haiku.wateroffer.mvp.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
@@ -66,7 +67,7 @@ public class MainActivity extends FragmentActivity {
         mTitlebar.setListener(new TitlebarListenerAdapter() {
             @Override
             public void onAddIconClick() {
-
+                startActivity(new Intent(mContext, GoodsEditActivity.class));
             }
         });
         mTabHost.setup(this, getSupportFragmentManager(),

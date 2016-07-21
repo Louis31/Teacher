@@ -29,7 +29,7 @@ public class GoodsModelImpl implements IGoodsModel {
     // 获取商品列表
     @Override
     public void getGoodsList(Map<String, Object> params, @NonNull final GoodsListCallback callback) {
-        XUtils.Post(UrlConstant.Goods.listUrl(), ParamUtils.Goods.getListParams(params), new XUtilsCallback<ResultData>(callback) {
+        XUtils.Get(UrlConstant.Goods.listUrl(), ParamUtils.Goods.getListParams(params), new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);

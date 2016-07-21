@@ -17,7 +17,7 @@ import com.haiku.wateroffer.mvp.contract.GoodsListContract;
 import com.haiku.wateroffer.mvp.model.impl.GoodsModelImpl;
 import com.haiku.wateroffer.mvp.persenter.GoodsListPersenter;
 import com.haiku.wateroffer.mvp.view.adapter.GoodsListAdapter;
-import com.haiku.wateroffer.mvp.view.dialog.AlertDialog;
+import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
 import com.haiku.wateroffer.mvp.view.divider.BroadDividerItem;
 import com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout;
 
@@ -140,7 +140,7 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     // 删除商品
     @Override
     public void onGoodsDeleteClick(int pos) {
-        new AlertDialog(mContext).builder().setMsg(getString(R.string.dlg_delete_goods))
+        new IOSAlertDialog(mContext).builder().setMsg(getString(R.string.dlg_delete_goods))
                 .setCancelable(false)
                 .setPositiveButton("是", new View.OnClickListener() {
                     @Override

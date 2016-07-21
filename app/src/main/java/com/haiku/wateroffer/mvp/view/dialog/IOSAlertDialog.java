@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,29 +18,31 @@ import android.widget.TextView;
 import com.haiku.wateroffer.R;
 
 
-public class AlertDialog {
+public class IOSAlertDialog {
     private Context context;
     private Dialog dialog;
     private LinearLayout lLayout_bg;
     private TextView txt_title;
     private TextView txt_msg;
+    private EditText et_input;
     private Button btn_neg;
     private Button btn_pos;
     private ImageView img_line;
     private Display display;
     private boolean showTitle = false;
     private boolean showMsg = false;
+    private boolean showInput = false;
     private boolean showPosBtn = false;
     private boolean showNegBtn = false;
 
-    public AlertDialog(Context context) {
+    public IOSAlertDialog(Context context) {
         this.context = context;
         WindowManager windowManager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         display = windowManager.getDefaultDisplay();
     }
 
-    public AlertDialog builder() {
+    public IOSAlertDialog builder() {
         // 获取Dialog布局
         View view = LayoutInflater.from(context).inflate(
                 R.layout.view_alertdialog, null);
@@ -50,6 +53,8 @@ public class AlertDialog {
         txt_title.setVisibility(View.GONE);
         txt_msg = (TextView) view.findViewById(R.id.txt_msg);
         txt_msg.setVisibility(View.GONE);
+        et_input = (EditText) view.findViewById(R.id.et_input);
+        et_input.setVisibility(View.GONE);
         btn_neg = (Button) view.findViewById(R.id.btn_neg);
         btn_neg.setVisibility(View.GONE);
         btn_pos = (Button) view.findViewById(R.id.btn_pos);
@@ -68,7 +73,7 @@ public class AlertDialog {
         return this;
     }
 
-    public AlertDialog setTitle(String title) {
+    public IOSAlertDialog setTitle(String title) {
         showTitle = true;
         if ("".equals(title)) {
             txt_title.setText("标题");
@@ -78,7 +83,7 @@ public class AlertDialog {
         return this;
     }
 
-    public AlertDialog setMsg(String msg) {
+    public IOSAlertDialog setMsg(String msg) {
         showMsg = true;
         if ("".equals(msg)) {
             txt_msg.setText("内容");
@@ -88,12 +93,18 @@ public class AlertDialog {
         return this;
     }
 
-    public AlertDialog setCancelable(boolean cancel) {
+    public IOSAlertDialog setInput(int type) {
+        showInput = true;
+        et_input.setRawInputType(type);
+        return this;
+    }
+
+    public IOSAlertDialog setCancelable(boolean cancel) {
         dialog.setCancelable(cancel);
         return this;
     }
 
-    public AlertDialog setPositiveButton(String text,
+    public IOSAlertDialog setPositiveButton(String text,
                                          final OnClickListener listener) {
         showPosBtn = true;
         if ("".equals(text)) {
@@ -112,7 +123,7 @@ public class AlertDialog {
         return this;
     }
 
-    public AlertDialog setNegativeButton(String text,
+    public IOSAlertDialog setNegativeButton(String text,
                                          final OnClickListener listener) {
         showNegBtn = true;
         if ("".equals(text)) {
@@ -145,6 +156,10 @@ public class AlertDialog {
             txt_msg.setVisibility(View.VISIBLE);
         }
 
+        if (showInput) {
+            et_input.setVisibility(View.VISIBLE);
+        }
+
         if (!showPosBtn && !showNegBtn) {
             btn_pos.setText("确定");
             btn_pos.setVisibility(View.VISIBLE);
@@ -174,6 +189,10 @@ public class AlertDialog {
             btn_neg.setVisibility(View.VISIBLE);
             btn_neg.setBackgroundResource(R.drawable.alertdialog_single_selector);
         }
+    }
+
+    public String getInputValue(){
+        return et_input.getText().toString().trim();
     }
 
     public void show() {

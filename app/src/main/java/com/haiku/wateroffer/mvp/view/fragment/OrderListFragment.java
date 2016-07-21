@@ -19,7 +19,7 @@ import com.haiku.wateroffer.mvp.contract.OrderListContract;
 import com.haiku.wateroffer.mvp.persenter.OrderListPersenter;
 import com.haiku.wateroffer.mvp.base.LazyFragment;
 import com.haiku.wateroffer.mvp.view.adapter.OrderListAdapter;
-import com.haiku.wateroffer.mvp.view.dialog.AlertDialog;
+import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
 import com.haiku.wateroffer.mvp.view.divider.BroadDividerItem;
 import com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout;
 
@@ -152,7 +152,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     // 取消配送
     @Override
     public void onOrderCancelClick(int pos) {
-        new AlertDialog(mContext).builder().setMsg(getString(R.string.dlg_order_cancel))
+        new IOSAlertDialog(mContext).builder().setMsg(getString(R.string.dlg_order_cancel))
                 .setCancelable(false)
                 .setPositiveButton("是", new View.OnClickListener() {
                     @Override
@@ -172,7 +172,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
             // 派送订单
             mPresenter.sendOrder();
         } else {
-            new AlertDialog(mContext).builder().setMsg(getString(R.string.dlg_deliver_add))
+            new IOSAlertDialog(mContext).builder().setMsg(getString(R.string.dlg_deliver_add))
                     .setCancelable(false)
                     .setPositiveButton("是", new View.OnClickListener() {
                         @Override

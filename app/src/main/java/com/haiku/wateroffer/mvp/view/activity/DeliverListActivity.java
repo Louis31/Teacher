@@ -21,7 +21,7 @@ import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
 import com.haiku.wateroffer.mvp.persenter.DeliverPresenter;
 import com.haiku.wateroffer.mvp.view.adapter.DeliverListAdapter;
 import com.haiku.wateroffer.mvp.view.dialog.AddDeliverDialog;
-import com.haiku.wateroffer.mvp.view.dialog.AlertDialog;
+import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
 import com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout;
 import com.haiku.wateroffer.mvp.view.widget.Titlebar;
 
@@ -164,6 +164,11 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     @Override
     public void showListView(List<Deliver> list) {
         mDatas.addAll(list);
+        for (Deliver bean : mDatas) {
+            if (bean.getDiliveryman_status() == TypeConstant.Deliver.DELETE) {
+                mDatas.remove(bean);
+            }
+        }
         mListAdapter.notifyDataSetChanged();
         mEditAdapter.notifyDataSetChanged();
         mRefreshLayout.loadingCompleted(true);
@@ -238,7 +243,7 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
 
     @Override
     public void onDeleteClick(final int pos) {
-        new AlertDialog(mContext).builder().setMsg(getString(R.string.dlg_deliver_delete))
+        new IOSAlertDialog(mContext).builder().setMsg(getString(R.string.dlg_deliver_delete))
                 .setCancelable(false)
                 .setPositiveButton("是", new View.OnClickListener() {
                     @Override

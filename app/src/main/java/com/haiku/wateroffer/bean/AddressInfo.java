@@ -13,7 +13,7 @@ public class AddressInfo implements Serializable {
     private String province;// 省份
     private String dist;// 目的地
     private String city;// 城市
-    private String poscode;
+    private String poscode;// 邮编
     private String addrs;   // 地址
 
 

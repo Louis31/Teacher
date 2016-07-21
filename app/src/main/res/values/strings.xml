@@ -6,6 +6,7 @@
     <string name="logout">注销</string>
     <string name="delete">删除</string>
     <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
     <string name="edit">编辑</string>
     <string name="save">保存</string>
     <string name="pause">暂停</string>
@@ -39,6 +40,9 @@
     <string name="msg_verifycode_invalid">请输入正确的验证码</string>
     <string name="msg_shop_name_empty">店铺名称不能为空</string>
     <string name="msg_bill_search_invalid">请选择需要查询的时间段和配送员</string>
+    <string name="msg_price_invalid">价格输入错误</string>
+    <string name="msg_stock_invalid">库存输入错误</string>
+    <string name="msg_goods_invalid">填写完整信息后方可上架</string>
 
     <!-- dialog -->
     <string name="dlg_loging">正在登录...</string>
@@ -49,6 +53,10 @@
     <string name="dlg_deliver_add">您还没有添加配送员，是否添加？</string>
     <string name="dlg_deliver_delete">是否确定删除该配送员？</string>
     <string name="dlg_delete_goods">是否删除此商品？</string>
+    <string name="dlg_limit_title">请输入限购次数</string>
+    <string name="dlg_limit_tip">限购次数不能为0</string>
+    <string name="dlg_overrange_title">请输入金额</string>
+    <string name="dlg_overrange_tip">不填代表原价</string>
 
     <!-- 编辑相关 -->
     <string name="hint_phone_old">请输入当前手机号码</string>
@@ -110,6 +118,9 @@
     <string name="goods_limit_buy">限购</string>
     <string name="goods_classify">分类</string>
     <string name="goods_overrange">超出部分每件</string>
+
+    <string name="goods_add">增加商品</string>
+    <string name="goods_edit">编辑商品</string>
 
     <string name="hint_goods_name">请输入商品名称</string>
     <string name="hint_goods_price">请输入商品价格</string>
