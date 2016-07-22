@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
+import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.contract.ShopAddrContract;
@@ -122,5 +124,16 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
     @Override
     public void showMessage(String msg) {
         ToastUtils.getInstant().showToast(msg);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        closeKeybord();
+        return super.onTouchEvent(event);
+    }
+
+    // 关闭keybord
+    public void closeKeybord() {
+        KeyBoardUtils.closeKeybord(et_address, this);
     }
 }

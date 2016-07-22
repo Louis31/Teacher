@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.common.util.data.ValidatorUtils;
+import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.contract.PhoneChangeContract;
@@ -137,5 +139,18 @@ public class PhoneChangeActivity extends BaseActivity implements PhoneChangeCont
     @Override
     public void showShopView() {
         finish();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        closeKeybord();
+        return super.onTouchEvent(event);
+    }
+
+    // 关闭keybord
+    public void closeKeybord() {
+        KeyBoardUtils.closeKeybord(et_phone_new, this);
+        KeyBoardUtils.closeKeybord(et_phone_old, this);
+        KeyBoardUtils.closeKeybord(et_verify_code, this);
     }
 }

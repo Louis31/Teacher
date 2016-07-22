@@ -6,12 +6,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
+import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
@@ -188,5 +190,19 @@ public class GoodsEditActivity extends BaseActivity {
         public int getWhich() {
             return which;
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        closeKeybord();
+        return super.onTouchEvent(event);
+    }
+
+    // 关闭keybord
+    public void closeKeybord() {
+        KeyBoardUtils.closeKeybord(et_goods_name, this);
+        KeyBoardUtils.closeKeybord(et_goods_price, this);
+        KeyBoardUtils.closeKeybord(et_goods_stock, this);
+        KeyBoardUtils.closeKeybord(et_goods_describe, this);
     }
 }

@@ -37,7 +37,9 @@
 
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".mvp.view.activity.LoginActivity">
+        <activity
+            android:name=".mvp.view.activity.LoginActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,11 +53,19 @@
         <!-- 订单相关 -->
         <activity android:name=".mvp.view.activity.OrderInfoActivity" />
         <!-- 商品相关 -->
-        <activity android:name=".mvp.view.activity.GoodsEditActivity" />
+        <activity
+            android:name=".mvp.view.activity.GoodsEditActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <!-- 店铺相关 -->
-        <activity android:name=".mvp.view.activity.ShopNameActivity" />
-        <activity android:name=".mvp.view.activity.ShopAddressActivity" />
-        <activity android:name=".mvp.view.activity.PhoneChangeActivity" />
+        <activity
+            android:name=".mvp.view.activity.ShopNameActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".mvp.view.activity.ShopAddressActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".mvp.view.activity.PhoneChangeActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity android:name=".mvp.view.activity.DeliverListActivity" />
         <activity android:name=".mvp.view.activity.DeliverSelectActivity" />
         <activity android:name=".mvp.view.activity.DeliverOrderActivity" />
