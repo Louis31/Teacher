@@ -141,6 +141,10 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
             // 删除成功
             mDatas.remove(mItemPos);
             mAdapter.notifyItemRemoved(mItemPos);
+        } else if (type == TypeConstant.GoodsOpera.OFF_SHELF) {
+            // 下架成功
+            mDatas.remove(mItemPos);
+            mAdapter.notifyItemRemoved(mItemPos);
         }
     }
 
@@ -190,7 +194,8 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     // 下架商品
     @Override
     public void onGoodsOffShelfClick(int pos) {
-
+        mItemPos = pos;
+        mPresenter.offShelfGoods(uid, mDatas.get(pos).getProduct_id());
     }
 
     // 编辑商品

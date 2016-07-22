@@ -31,5 +31,8 @@ public interface GoodsListContract {
 
         // 删除商品
         void deleteGoods(int uid, int product_id);
+
+        // 下架商品
+        void offShelfGoods(int uid, int product_id);
     }
 }

@@ -149,5 +149,10 @@ public class UrlConstant {
         public static String deleteUrl() {
             return getGoodsPath() + "/deleteProduct" + getToken();
         }
+
+        // 下架商品
+        public static String offShelfUrl() {
+            return getGoodsPath() + "/saleOff" + getToken();
+        }
     }
 }

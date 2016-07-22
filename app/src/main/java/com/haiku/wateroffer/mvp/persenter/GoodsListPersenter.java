@@ -20,6 +20,7 @@ import java.util.Map;
 public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsModel.GoodsListCallback {
     private final int REQUEST_LIST = 1;
     private final int REQUEST_DELETE = 2;// 删除
+    private final int REQUEST_OFF_SHELF = 3;// 下架
     private int requesType;
 
     @NonNull
@@ -70,6 +71,23 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         }
     }
 
+    // 下架商品
+    @Override
+    public void offShelfGoods(int uid, int product_id) {
+        mView.showLoadingDialog(true);
+        Map<String, Object> params = new HashMap<>();
+        params.put("uid", uid);
+        params.put("product_id", product_id);
+
+        if (UserManager.isTokenEmpty()) {
+            requesType = REQUEST_OFF_SHELF;
+            // 获取token
+            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
+        } else {
+            mGoodsModel.offShelfGoods(params, this);
+        }
+    }
+
     /**
      * Callback 接口方法
      */
@@ -85,6 +103,8 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
             mGoodsModel.getGoodsList(params, this);
         } else if (requesType == REQUEST_DELETE) {
             mGoodsModel.deleteGoods(params, this);
+        } else if (requesType == REQUEST_OFF_SHELF) {
+            mGoodsModel.offShelfGoods(params, this);
         }
     }
 
@@ -95,6 +115,9 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         if (requesType == REQUEST_DELETE) {
             // 删除成功
             mView.refreshListView(TypeConstant.GoodsOpera.DELETE_GOODS);
+        } else if (requesType == REQUEST_OFF_SHELF) {
+            // 下架成功
+            mView.refreshListView(TypeConstant.GoodsOpera.OFF_SHELF);
         }
     }
 

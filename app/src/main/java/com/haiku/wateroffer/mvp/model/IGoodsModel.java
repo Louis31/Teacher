@@ -3,7 +3,6 @@ package com.haiku.wateroffer.mvp.model;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.Goods;
-import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 
 import java.util.List;
@@ -25,4 +24,7 @@ public interface IGoodsModel {
 
     // 删除商品
     void deleteGoods(Map<String, Object> params, @NonNull GoodsListCallback callback);
+
+    // 下架商品
+    void offShelfGoods(Map<String, Object> params, @NonNull GoodsListCallback callback);
 }
