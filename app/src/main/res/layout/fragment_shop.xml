@@ -1,139 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:orientation="vertical">
+    android:scrollbars="none">
 
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:padding="12dp">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
 
-        <com.haiku.wateroffer.mvp.view.widget.CircleImageView
-            android:id="@+id/iv_shop_logo"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/ic_image_loading" />
-
-        <ImageView
-            android:id="@+id/iv_arrow_right"
-            style="@style/shop_item_llayou_iv"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" />
-
-        <TextView
-            android:id="@+id/tv_shop_name"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/iv_arrow_right"
+            android:background="@color/white"
+            android:padding="12dp">
+
+            <com.haiku.wateroffer.mvp.view.widget.CircleImageView
+                android:id="@+id/iv_shop_logo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_image_loading" />
+
+            <ImageView
+                android:id="@+id/iv_arrow_right"
+                style="@style/shop_item_llayou_iv"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:id="@+id/tv_shop_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/iv_arrow_right"
+                android:padding="12dp"
+                android:text="店铺名称"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+
+        <View style="@style/shop_item_line" />
+
+        <LinearLayout
+            android:id="@+id/llayout_address"
+            style="@style/shop_item_llayout">
+
+            <TextView
+                style="@style/shop_item_llayou_tv"
+                android:text="@string/shop_address" />
+
+            <ImageView style="@style/shop_item_llayou_iv" />
+        </LinearLayout>
+
+        <View style="@style/line_h" />
+
+        <LinearLayout
+            android:id="@+id/llayout_phone"
+            style="@style/shop_item_llayout">
+
+            <TextView
+                style="@style/shop_item_llayou_tv"
+                android:text="@string/contact_number" />
+
+            <ImageView style="@style/shop_item_llayou_iv" />
+        </LinearLayout>
+
+        <View style="@style/shop_item_line" />
+
+        <LinearLayout
+            android:id="@+id/llayout_deliver_range"
+            style="@style/shop_item_llayout">
+
+            <TextView
+                style="@style/shop_item_llayou_tv"
+                android:text="@string/delivery_range" />
+
+            <ImageView style="@style/shop_item_llayou_iv" />
+        </LinearLayout>
+
+        <View style="@style/line_h" />
+
+        <LinearLayout
+            android:id="@+id/llayout_deliver_list"
+            style="@style/shop_item_llayout">
+
+            <TextView
+                style="@style/shop_item_llayou_tv"
+                android:text="@string/delivery_list" />
+
+            <ImageView style="@style/shop_item_llayou_iv" />
+        </LinearLayout>
+
+        <View style="@style/shop_item_line" />
+
+        <LinearLayout
+            android:id="@+id/llayout_my_bill"
+            style="@style/shop_item_llayout">
+
+            <TextView
+                style="@style/shop_item_llayou_tv"
+                android:text="@string/my_bill" />
+
+            <ImageView style="@style/shop_item_llayou_iv" />
+        </LinearLayout>
+
+        <View style="@style/line_h" />
+
+        <LinearLayout
+            android:id="@+id/llayout_deposit"
+            style="@style/shop_item_llayout">
+
+            <TextView
+                style="@style/shop_item_llayou_tv"
+                android:text="@string/deposit" />
+
+            <ImageView style="@style/shop_item_llayou_iv" />
+        </LinearLayout>
+
+        <View style="@style/line_h" />
+
+        <LinearLayout
+            android:id="@+id/llayout_contribute"
+            style="@style/shop_item_llayout">
+
+            <TextView
+                style="@style/shop_item_llayou_tv"
+                android:text="@string/seller_contribute" />
+
+            <ImageView style="@style/shop_item_llayou_iv" />
+        </LinearLayout>
+
+        <View style="@style/shop_item_line" />
+
+        <TextView
+            android:id="@+id/tv_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_common_selector"
+            android:gravity="center"
             android:padding="12dp"
-            android:textColor="@color/black"
-            android:text="店铺名称" />
-    </RelativeLayout>
-
-    <View style="@style/shop_item_line" />
-
-    <LinearLayout
-        android:id="@+id/llayout_address"
-        style="@style/shop_item_llayout">
-
-        <TextView
-            style="@style/shop_item_llayou_tv"
-            android:text="@string/shop_address" />
-
-        <ImageView style="@style/shop_item_llayou_iv" />
+            android:text="@string/logout"
+            android:textColor="@color/red"
+            android:textStyle="bold" />
     </LinearLayout>
-
-    <View style="@style/line_h" />
-
-    <LinearLayout
-        android:id="@+id/llayout_phone"
-        style="@style/shop_item_llayout">
-
-        <TextView
-            style="@style/shop_item_llayou_tv"
-            android:text="@string/contact_number" />
-
-        <ImageView style="@style/shop_item_llayou_iv" />
-    </LinearLayout>
-
-    <View style="@style/shop_item_line" />
-
-    <LinearLayout
-        android:id="@+id/llayout_deliver_range"
-        style="@style/shop_item_llayout">
-
-        <TextView
-            style="@style/shop_item_llayou_tv"
-            android:text="@string/delivery_range" />
-
-        <ImageView style="@style/shop_item_llayou_iv" />
-    </LinearLayout>
-
-    <View style="@style/line_h" />
-
-    <LinearLayout style="@style/shop_item_llayout"
-        android:id="@+id/llayout_deliver_list">
-
-        <TextView
-            style="@style/shop_item_llayou_tv"
-            android:text="@string/delivery_list" />
-
-        <ImageView style="@style/shop_item_llayou_iv" />
-    </LinearLayout>
-
-    <View style="@style/shop_item_line" />
-
-    <LinearLayout
-        android:id="@+id/llayout_my_bill"
-        style="@style/shop_item_llayout">
-
-        <TextView
-            style="@style/shop_item_llayou_tv"
-            android:text="@string/my_bill" />
-
-        <ImageView style="@style/shop_item_llayou_iv" />
-    </LinearLayout>
-
-    <View style="@style/line_h" />
-
-    <LinearLayout
-        android:id="@+id/llayout_deposit"
-        style="@style/shop_item_llayout">
-
-        <TextView
-            style="@style/shop_item_llayou_tv"
-            android:text="@string/deposit" />
-
-        <ImageView style="@style/shop_item_llayou_iv" />
-    </LinearLayout>
-
-    <View style="@style/line_h" />
-
-    <LinearLayout
-        android:id="@+id/llayout_contribute"
-        style="@style/shop_item_llayout">
-
-        <TextView
-            style="@style/shop_item_llayou_tv"
-            android:text="@string/seller_contribute" />
-
-        <ImageView style="@style/shop_item_llayou_iv" />
-    </LinearLayout>
-
-    <View style="@style/shop_item_line" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:gravity="center"
-        android:padding="12dp"
-        android:text="@string/logout"
-        android:textColor="@color/red"
-        android:textStyle="bold" />
-</LinearLayout>
+</ScrollView>

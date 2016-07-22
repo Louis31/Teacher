@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import com.haiku.wateroffer.common.util.ui.ActivityUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 
 import org.xutils.x;
@@ -21,6 +22,7 @@ public class BaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        ActivityUtils.add(this);
         x.view().inject(this);
     }
 
@@ -34,6 +36,12 @@ public class BaseActivity extends Activity {
     protected void onPause() {
         super.onPause();
         ToastUtils.getInstant().destroy();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityUtils.remove(this);
     }
 
     // 绑定view id

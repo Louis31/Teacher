@@ -45,7 +45,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".mvp.view.activity.MainActivity" />
+        <activity
+            android:name=".mvp.view.activity.MainActivity"
+            android:launchMode="singleTask" />
         <!-- 订单相关 -->
         <activity android:name=".mvp.view.activity.OrderInfoActivity" />
         <!-- 商品相关 -->
@@ -60,13 +62,12 @@
         <activity android:name=".mvp.view.activity.MyBillActivity" />
         <activity android:name=".mvp.view.activity.DepositActivity" />
         <activity android:name=".mvp.view.activity.ContributionActivity" />
-        <activity android:name=".mvp.view.activity.AddressActivity"/>
+        <activity android:name=".mvp.view.activity.AddressActivity" />
         <!-- 高德定位 -->
         <service android:name="com.amap.api.location.APSService"></service>
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="ece3991cd0e6c12cc5ff4f00e35284e2">
-        </meta-data>
+            android:value="ece3991cd0e6c12cc5ff4f00e35284e2"></meta-data>
 
     </application>
 
