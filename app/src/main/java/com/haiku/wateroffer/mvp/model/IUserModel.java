@@ -41,6 +41,11 @@ public interface IUserModel {
         void addDeliverSuccess(Deliver deliver);
     }
 
+    // 我的店铺回调
+    interface MyShopCallback extends IRequestCallback {
+        void uploadLogoSuccess(String logo);
+    }
+
     // 登陆
     void login(Map<String, Object> params, @NonNull IRequestCallback callback);
 
@@ -69,7 +74,7 @@ public interface IUserModel {
     void changePhone(Map<String, Object> params, @NonNull GetVerifyCodeCallback callback);
 
     // 修改店铺logo
-    void changeShopLogo(Map<String, Object> params, @NonNull IRequestCallback callback);
+    void changeShopLogo(Map<String, Object> params, @NonNull MyShopCallback callback);
 
     // 修改店铺地址
     void addShopAddress(Map<String, Object> params, @NonNull IRequestCallback callback);

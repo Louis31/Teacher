@@ -3,6 +3,7 @@ package com.haiku.wateroffer.mvp.model.impl;
 import android.support.annotation.NonNull;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.haiku.wateroffer.App;
 import com.haiku.wateroffer.bean.Bill;
 import com.haiku.wateroffer.bean.Deliver;
@@ -197,14 +198,20 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
     }
 
     // 修改店铺logo
-    public void changeShopLogo(Map<String, Object> params, @NonNull final IRequestCallback callback) {
+    public void changeShopLogo(Map<String, Object> params, @NonNull final MyShopCallback callback) {
         XUtils.Post(UrlConstant.User.changeShopLogo(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.getRetcode() == BaseConstant.SUCCESS) {
-                    callback.onSuccess();
+                    // ResultData{retcode=0, retmsg={"logoUrl":"http://sendwater.api.youdians.com/uploads/8/05f03c7b0f90889dc8a9ba8b158ecbf7."}}
+                    JsonObject jObj = result.getRetmsg().getAsJsonObject();
+                    if (null != jObj) {
+                        callback.uploadLogoSuccess(jObj.get("logoUrl").getAsString());
+                    } else {
+                        callback.uploadLogoSuccess("");
+                    }
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
                 }
@@ -215,7 +222,7 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
     // 修改店铺地址
     @Override
     public void addShopAddress(Map<String, Object> params, @NonNull final IRequestCallback callback) {
-        XUtils.Post(UrlConstant.User.changeShopLogo(), params, new XUtilsCallback<ResultData>(callback) {
+        XUtils.Post(UrlConstant.User.addShopAddress(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);

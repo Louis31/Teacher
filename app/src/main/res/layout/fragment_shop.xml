@@ -8,8 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
-        android:paddingBottom="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -17,11 +17,10 @@
             android:background="@color/white"
             android:padding="12dp">
 
-            <com.haiku.wateroffer.mvp.view.widget.CircleImageView
+            <ImageView
                 android:id="@+id/iv_shop_logo"
                 android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ic_image_loading" />
+                android:layout_height="60dp" />
 
             <ImageView
                 android:id="@+id/iv_arrow_right"

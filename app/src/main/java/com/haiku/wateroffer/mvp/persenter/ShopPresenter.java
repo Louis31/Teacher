@@ -2,7 +2,6 @@ package com.haiku.wateroffer.mvp.persenter;
 
 import android.support.annotation.NonNull;
 
-import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.mvp.contract.ShopContract;
 import com.haiku.wateroffer.mvp.model.IUserModel;
 
@@ -13,7 +12,7 @@ import java.util.Map;
  * 我的店铺Presenter
  * Created by hyming on 2016/7/19.
  */
-public class ShopPresenter implements ShopContract.Presenter, IRequestCallback {
+public class ShopPresenter implements ShopContract.Presenter, IUserModel.MyShopCallback {
 
     @NonNull
     private final IUserModel mUserModel;
@@ -47,11 +46,16 @@ public class ShopPresenter implements ShopContract.Presenter, IRequestCallback {
         mUserModel.changeShopLogo(params, this);
     }
 
+    @Override
+    public void uploadLogoSuccess(String logo) {
+        mView.showLoadingDialog(false);
+        mView.setLogo(logo);
+    }
+
     // 成功回调
     @Override
     public void onSuccess() {
-        mView.showLoadingDialog(false);
-        mView.setLogo();
+
     }
 
     @Override

@@ -13,7 +13,7 @@ public interface ShopContract {
         void showLoadingDialog(boolean isShow);
 
         // 设置店铺logo
-        void setLogo();
+        void setLogo(String logo);
 
         // 显示信息
         void showMessage(String msg);

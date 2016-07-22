@@ -1,6 +1,7 @@
 package com.haiku.wateroffer.mvp.view.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.data.FileUtils;
+import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.ui.ActivityUtils;
 import com.haiku.wateroffer.common.util.ui.DialogUtils;
 import com.haiku.wateroffer.common.util.ui.ImageUtils;
@@ -36,6 +38,7 @@ import com.haiku.wateroffer.mvp.view.activity.ShopAddressActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopNameActivity;
 import com.haiku.wateroffer.mvp.view.dialog.ActionSheetDialog;
 import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
+import com.haiku.wateroffer.mvp.view.widget.CircleImageView;
 
 import java.io.File;
 
@@ -51,7 +54,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
     private Uri mImageUri;
 
     private ShopContract.Presenter mPresenter;
-    private SweetAlertDialog mDialog;
+    private ProgressDialog mDialog;
 
     private View rootView;
 
@@ -119,6 +122,8 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         llayout_deposit.setOnClickListener(this);
         llayout_contribute.setOnClickListener(this);
         tv_logout.setOnClickListener(this);
+
+        ImageUtils.showCircleImage(getContext(), R.drawable.ic_image_loading, iv_shop_logo);
     }
 
     @Override
@@ -266,8 +271,8 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         else if (requestCode == BaseConstant.REQUEST_CROP_PICTURE && resultCode == Activity.RESULT_OK) {
             Bitmap bmp = ImageUtils.decodeUriAsBitmap(mContext, mImageUri);
             String base64 = ImageUtils.imgToBase64(bmp);
-            if (bmp != null)
-                bmp.recycle();
+           /* if (bmp != null)
+                bmp.recycle();*/
             FileUtils.deleteFile(mImagePath);
             mImagePath = "";
             // 上传图片
@@ -279,7 +284,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
     @Override
     public void showLoadingDialog(boolean isShow) {
         if (isShow) {
-            mDialog = DialogUtils.makeLoadingDialog(mContext, getString(R.string.dlg_upload_image));
+            mDialog = ProgressDialog.show(mContext, "", getString(R.string.dlg_upload_image));
             mDialog.show();
         } else {
             if (mDialog != null && mDialog.isShowing()) {
@@ -289,8 +294,8 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
     }
 
     @Override
-    public void setLogo() {
-        ToastUtils.getInstant().showToast("修改图片成功");
+    public void setLogo(String logo) {
+        ImageUtils.showCircleImage(getContext(), logo, iv_shop_logo);
     }
 
     @Override
