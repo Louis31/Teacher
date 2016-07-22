@@ -18,6 +18,11 @@ public class TypeConstant {
 
     }
 
+    public static class OrderOpera {
+        public final static int SEND_ORDER = 0;// 派单
+        public final static int CANCEL_DELIVER = 1;// 取消配送
+    }
+
     public static class Goods {
         public final static int OFF_SHELF = 0;// 已下架
         public final static int ON_SALE = 1;// 出售中

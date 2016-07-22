@@ -4,9 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.constant.TypeConstant;
+import com.haiku.wateroffer.mvp.contract.OrderListContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IOrderModel;
-import com.haiku.wateroffer.mvp.contract.OrderListContract;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Map;
  */
 public class OrderListPersenter implements OrderListContract.Presenter, IOrderModel.OrderListCallback {
     private final int REQUEST_LIST = 1;
-    private final int REQUEST_CANCEL = 2;
+    private final int REQUEST_CANCEL = 2;// 取消配送
     private final int REQUEST_SEND = 3;
     private int requesType;
 
@@ -56,8 +57,11 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
 
     // 取消订单
     @Override
-    public void cancelOrder() {
+    public void cancelOrder(int id, int uid) {
+        mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("uid", uid);
         if (UserManager.isTokenEmpty()) {
             requesType = REQUEST_CANCEL;
             // 获取token
@@ -69,8 +73,11 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
 
     // 派单
     @Override
-    public void sendOrder() {
+    public void sendOrder(int id, int uid) {
+        mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("uid", uid);
         if (UserManager.isTokenEmpty()) {
             requesType = REQUEST_SEND;
             // 获取token
@@ -90,18 +97,6 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
         mView.showListView(list);
     }
 
-    // 取消订单成功
-    @Override
-    public void cancelOrderSuccess() {
-
-    }
-
-    // 派送订单成功
-    @Override
-    public void sendOrderSuccess() {
-
-    }
-
     // 获取token成功
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
@@ -117,12 +112,20 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
     // 成功回调
     @Override
     public void onSuccess() {
-
+        mView.showLoadingDialog(false);
+        if (requesType == REQUEST_CANCEL) {
+            // 取消配送成功
+            mView.refreshListView(TypeConstant.OrderOpera.CANCEL_DELIVER);
+        } else if (requesType == REQUEST_SEND) {
+            // 派单成功
+            mView.refreshListView(TypeConstant.OrderOpera.SEND_ORDER);
+        }
     }
 
     // 错误回调
     @Override
     public void onError(int errorCode, String errorMsg) {
+        mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
     }
 }

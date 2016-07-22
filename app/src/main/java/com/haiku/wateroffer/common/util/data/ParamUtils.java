@@ -32,6 +32,14 @@ public class ParamUtils {
             map.putAll(params);
             return map;
         }
+
+        // 取消配送
+        public static Map<String, Object> cancelOrderParams(Map<String, Object> params) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("role", BaseConstant.LOGIN_TYPE_MERCHANT);
+            map.putAll(params);
+            return map;
+        }
     }
 
     /**

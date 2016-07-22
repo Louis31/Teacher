@@ -9,6 +9,7 @@ import com.haiku.wateroffer.bean.ResultData;
 import com.haiku.wateroffer.common.util.data.GsonUtils;
 import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.data.ParamUtils;
+import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.common.util.net.XUtils;
 import com.haiku.wateroffer.common.util.net.XUtilsCallback;
 import com.haiku.wateroffer.constant.BaseConstant;
@@ -68,13 +69,35 @@ public class OrderModelImpl implements IOrderModel {
 
     // 取消订单
     @Override
-    public void cancelOrder(Map<String, Object> params, @NonNull OrderOperateCallback callback) {
-
+    public void cancelOrder(Map<String, Object> params, @NonNull final IRequestCallback callback) {
+        XUtils.Post(UrlConstant.Order.cancelUrl(), ParamUtils.Order.cancelOrderParams(params), new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                    callback.onSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
     }
 
     // 派送订单
     @Override
-    public void sendOrder(Map<String, Object> params, @NonNull OrderOperateCallback callback) {
-
+    public void sendOrder(Map<String, Object> params, @NonNull final IRequestCallback callback) {
+        XUtils.Post(UrlConstant.Order.sendUrl(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                    callback.onSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
     }
 }

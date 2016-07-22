@@ -1,12 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" >
+<items version="2" />
 
-    <item
-        jar="D:\AndroidProjects\OneKeyDeliverySeller\app\libs\AMap_Search_V3.3.0_20160616.jar"
-        jumboMode="false"
-        revision="23.0.3"
-        sha1="c48cb8f3e8bde93009a28c13b0f7b984b3039d3b">
-        <dex dex="D:\AndroidProjects\OneKeyDeliverySeller\app\build\intermediates\pre-dexed\debug\AMap_Search_V3.3.0_20160616_d539378f904704b1ee3272fd19c6aeeea7da3315.jar" />
-    </item>
-
-</items>

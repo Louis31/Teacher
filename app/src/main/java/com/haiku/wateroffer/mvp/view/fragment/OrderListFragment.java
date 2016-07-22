@@ -1,5 +1,6 @@
 package com.haiku.wateroffer.mvp.view.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +14,12 @@ import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.OrderListListener;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.BaseConstant;
-import com.haiku.wateroffer.mvp.model.impl.OrderModelImpl;
-import com.haiku.wateroffer.mvp.view.activity.OrderInfoActivity;
-import com.haiku.wateroffer.mvp.contract.OrderListContract;
-import com.haiku.wateroffer.mvp.persenter.OrderListPersenter;
+import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.base.LazyFragment;
+import com.haiku.wateroffer.mvp.contract.OrderListContract;
+import com.haiku.wateroffer.mvp.model.impl.OrderModelImpl;
+import com.haiku.wateroffer.mvp.persenter.OrderListPersenter;
+import com.haiku.wateroffer.mvp.view.activity.OrderInfoActivity;
 import com.haiku.wateroffer.mvp.view.adapter.OrderListAdapter;
 import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
 import com.haiku.wateroffer.mvp.view.divider.BroadDividerItem;
@@ -35,8 +37,11 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     private Context mContext;
 
     private int uid;
+    private int mItemPos;// 记录当前操作item的位置
     private String mType;// 标记当前列表数据的类型
     private List<OrderItem> mDatas;
+
+    private ProgressDialog mDialog;
 
     private View rootView;
     private MyRefreshLayout mRefreshLayout;
@@ -131,10 +136,37 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
         mRefreshLayout.loadingCompleted(true);
     }
 
+    // 刷新页面
+    @Override
+    public void refreshListView(int type) {
+        if (type == TypeConstant.OrderOpera.CANCEL_DELIVER) {
+            // 取消配送成功
+            mDatas.remove(mItemPos);
+            mAdapter.notifyItemRemoved(mItemPos);
+        } else if (type == TypeConstant.OrderOpera.SEND_ORDER) {
+            // 派单成功
+            mDatas.remove(mItemPos);
+            mAdapter.notifyItemRemoved(mItemPos);
+        }
+    }
+
     @Override
     public void showMessage(String msg) {
         mRefreshLayout.loadingCompleted(false);
         ToastUtils.getInstant().showToast(msg);
+    }
+
+    // 显示/隐藏加载对话框
+    @Override
+    public void showLoadingDialog(boolean isShow) {
+        if (isShow) {
+            mDialog = ProgressDialog.show(mContext, "", getString(R.string.dlg_submiting));
+            mDialog.setCancelable(false);
+        } else {
+            if (mDialog != null && mDialog.isShowing()) {
+                mDialog.dismiss();
+            }
+        }
     }
 
     /**
@@ -145,20 +177,20 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     public void onOrderDetailClick(int pos) {
         int order_id = mDatas.get(pos).getOrder_id();
         Intent intent = new Intent(mContext, OrderInfoActivity.class);
-        intent.putExtra("order_id",order_id);
+        intent.putExtra("order_id", order_id);
         startActivity(intent);
     }
 
     // 取消配送
     @Override
-    public void onOrderCancelClick(int pos) {
+    public void onOrderCancelClick(final int pos) {
         new IOSAlertDialog(mContext).builder().setMsg(getString(R.string.dlg_order_cancel))
                 .setCancelable(false)
                 .setPositiveButton("是", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // 取消配送
-                        mPresenter.cancelOrder();
+                        mItemPos = pos;
+                        mPresenter.cancelOrder(mDatas.get(pos).getOrder_id(), uid);  // 取消配送
                     }
                 }).setNegativeButton("否", null).show();
     }
@@ -167,10 +199,10 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     @Override
     public void onOrderSendClick(int pos) {
         // 判断配送列表是否已经添加配送员
-        boolean isHas = false;
+        boolean isHas = true;
         if (isHas) {
-            // 派送订单
-            mPresenter.sendOrder();
+            mItemPos = pos;
+            mPresenter.sendOrder(mDatas.get(pos).getOrder_id(), uid);// 派送订单
         } else {
             new IOSAlertDialog(mContext).builder().setMsg(getString(R.string.dlg_deliver_add))
                     .setCancelable(false)

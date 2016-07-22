@@ -49,8 +49,8 @@
     <string name="dlg_submiting">正在提交...</string>
     <string name="dlg_updating">正在更新...</string>
     <string name="dlg_upload_image">正在上传图片...</string>
-    <string name="dlg_order_cancel">取消配送请先和对方电话沟通，是否取消配送？</string>
-    <string name="dlg_deliver_add">您还没有添加配送员，是否添加？</string>
+    <string name="dlg_order_cancel">取消配送请先和对方电话沟通，\n是否取消配送？</string>
+    <string name="dlg_deliver_add">您还没有添加配送员，\n是否添加？</string>
     <string name="dlg_deliver_delete">是否确定删除该配送员？</string>
     <string name="dlg_delete_goods">是否删除此商品？</string>
     <string name="dlg_limit_title">请输入限购次数</string>

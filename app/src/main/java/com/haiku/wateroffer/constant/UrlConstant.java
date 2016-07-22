@@ -125,14 +125,14 @@ public class UrlConstant {
             return getOrderPath() + "/get_info" + getToken();
         }
 
-        // 取消配送
+        // 取消配送，Post
         public static String cancelUrl() {
-            return "";
+            return getOrderPath() + "/cancel_delivery" + getToken();
         }
 
-        // 派单
+        // 派单，Post
         public static String sendUrl() {
-            return "";
+            return getOrderPath() + "/send_orders" + getToken();
         }
     }
 

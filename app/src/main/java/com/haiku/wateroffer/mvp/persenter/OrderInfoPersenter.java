@@ -84,18 +84,6 @@ public class OrderInfoPersenter implements OrderInfoContract.Presenter, IOrderMo
         mView.setOrderInfo(bean);
     }
 
-    // 取消订单成功
-    @Override
-    public void cancelOrderSuccess() {
-
-    }
-
-    // 派送订单成功
-    @Override
-    public void sendOrderSuccess() {
-
-    }
-
     // 获取token成功
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
