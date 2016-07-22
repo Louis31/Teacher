@@ -1,5 +1,6 @@
 package com.haiku.wateroffer.mvp.view.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.GoodsListListener;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.BaseConstant;
+import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.base.LazyFragment;
 import com.haiku.wateroffer.mvp.contract.GoodsListContract;
 import com.haiku.wateroffer.mvp.model.impl.GoodsModelImpl;
@@ -32,9 +34,10 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     private Context mContext;
 
     private int uid;
+    private int mItemPos;// 记录当前操作item的位置
     private int mType;// 标记当前列表数据的类型
     private List<Goods> mDatas;
-
+    private ProgressDialog mDialog;
     private View rootView;
     private MyRefreshLayout mRefreshLayout;
 
@@ -131,21 +134,49 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     }
 
 
+    // 刷新页面
+    @Override
+    public void refreshListView(int type) {
+        if (type == TypeConstant.GoodsOpera.DELETE_GOODS) {
+            // 删除成功
+            mDatas.remove(mItemPos);
+            mAdapter.notifyItemRemoved(mItemPos);
+        }
+    }
+
     @Override
     public void showMessage(String msg) {
         mRefreshLayout.loadingCompleted(false);
         ToastUtils.getInstant().showToast(msg);
     }
 
+    // 显示/隐藏加载对话框
+    @Override
+    public void showLoadingDialog(boolean isShow) {
+        if (isShow) {
+            mDialog = ProgressDialog.show(mContext, "", getString(R.string.dlg_submiting));
+            mDialog.setCancelable(false);
+        } else {
+            if (mDialog != null && mDialog.isShowing()) {
+                mDialog.dismiss();
+            }
+        }
+    }
+
+    /**
+     * 事件回调
+     */
     // 删除商品
     @Override
-    public void onGoodsDeleteClick(int pos) {
+    public void onGoodsDeleteClick(final int pos) {
         new IOSAlertDialog(mContext).builder().setMsg(getString(R.string.dlg_delete_goods))
                 .setCancelable(false)
                 .setPositiveButton("是", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //  删除商品
+                        mItemPos = pos;
+                        mPresenter.deleteGoods(uid, mDatas.get(pos).getProduct_id());
                     }
                 }).setNegativeButton("否", null).show();
     }

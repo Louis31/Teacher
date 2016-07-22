@@ -29,6 +29,10 @@ public class TypeConstant {
         public final static int SALE_NONE = 2;// 已售罄
     }
 
+    public static class GoodsOpera {
+        public final static int DELETE_GOODS = 0;// 删除商品
+    }
+
     public static class Deliver {
         public final static int DELETE = 0;// 未添加和删除状态
         public final static int PAUSE = 1;// 暂停状态

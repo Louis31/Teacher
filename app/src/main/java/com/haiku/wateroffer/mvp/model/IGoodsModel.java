@@ -22,4 +22,7 @@ public interface IGoodsModel {
 
     // 获取商品列表
     void getGoodsList(Map<String, Object> params, @NonNull GoodsListCallback callback);
+
+    // 删除商品
+    void deleteGoods(Map<String, Object> params, @NonNull GoodsListCallback callback);
 }

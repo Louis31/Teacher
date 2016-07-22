@@ -47,4 +47,21 @@ public class GoodsModelImpl implements IGoodsModel {
             }
         });
     }
+
+    // 删除商品
+    @Override
+    public void deleteGoods(Map<String, Object> params, @NonNull final GoodsListCallback callback) {
+        XUtils.Get(UrlConstant.Goods.deleteUrl(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                    callback.onSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
 }

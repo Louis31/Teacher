@@ -18,7 +18,7 @@ public interface OrderListContract {
         // 显示列表界面
         void showListView(List<OrderItem> list);
 
-        // 取消订单成功
+        // 更新列表界面
         void refreshListView(int type);
 
         // 显示信息

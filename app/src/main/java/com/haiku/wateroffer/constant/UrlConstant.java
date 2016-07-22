@@ -144,5 +144,10 @@ public class UrlConstant {
         public static String listUrl() {
             return getGoodsPath() + "/get_list" + getToken();
         }
+
+        // 删除商品，Get
+        public static String deleteUrl() {
+            return getGoodsPath() + "/deleteProduct" + getToken();
+        }
     }
 }

@@ -4,9 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.Goods;
 import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.constant.TypeConstant;
+import com.haiku.wateroffer.mvp.contract.GoodsListContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IGoodsModel;
-import com.haiku.wateroffer.mvp.contract.GoodsListContract;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,9 @@ import java.util.Map;
  * Created by hyming on 2016/7/12.
  */
 public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsModel.GoodsListCallback {
+    private final int REQUEST_LIST = 1;
+    private final int REQUEST_DELETE = 2;// 删除
+    private int requesType;
 
     @NonNull
     private final IGoodsModel mGoodsModel;
@@ -41,10 +45,28 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         params.put("pageno", pageno);
 
         if (UserManager.isTokenEmpty()) {
+            requesType = REQUEST_LIST;
             // 获取token
             ((IBaseModel) mGoodsModel).getAccessToken(params, this);
         } else {
             mGoodsModel.getGoodsList(params, this);
+        }
+    }
+
+    // 删除商品
+    @Override
+    public void deleteGoods(int uid, int product_id) {
+        mView.showLoadingDialog(true);
+        Map<String, Object> params = new HashMap<>();
+        params.put("uid", uid);
+        params.put("product_id", product_id);
+
+        if (UserManager.isTokenEmpty()) {
+            requesType = REQUEST_DELETE;
+            // 获取token
+            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
+        } else {
+            mGoodsModel.deleteGoods(params, this);
         }
     }
 
@@ -59,18 +81,27 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
 
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
-        mGoodsModel.getGoodsList(params, this);
+        if (requesType == REQUEST_LIST) {
+            mGoodsModel.getGoodsList(params, this);
+        } else if (requesType == REQUEST_DELETE) {
+            mGoodsModel.deleteGoods(params, this);
+        }
     }
 
     // 成功回调
     @Override
     public void onSuccess() {
-
+        mView.showLoadingDialog(false);
+        if (requesType == REQUEST_DELETE) {
+            // 删除成功
+            mView.refreshListView(TypeConstant.GoodsOpera.DELETE_GOODS);
+        }
     }
 
     // 错误回调
     @Override
     public void onError(int errorCode, String errorMsg) {
+        mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
     }
 }

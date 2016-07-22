@@ -12,8 +12,14 @@ import java.util.List;
  */
 public interface GoodsListContract {
     interface View extends BaseView<Presenter> {
+        // 显示/隐藏加载对话框
+        void showLoadingDialog(boolean isShow);
+
         // 显示列表界面
         void showListView(List<Goods> list);
+
+        // 更新列表界面
+        void refreshListView(int type);
 
         // 显示信息
         void showMessage(String msg);
@@ -22,5 +28,8 @@ public interface GoodsListContract {
     interface Presenter extends BasePresenter {
         // 获取列表数据
         void getListDatas(int uid, int status, int pageno);
+
+        // 删除商品
+        void deleteGoods(int uid, int product_id);
     }
 }
