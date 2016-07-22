@@ -57,6 +57,7 @@
     <string name="dlg_limit_tip">限购次数不能为0</string>
     <string name="dlg_overrange_title">请输入金额</string>
     <string name="dlg_overrange_tip">不填代表原价</string>
+    <string name="dlg_logout">是否确定退出登录？</string>
 
     <!-- 编辑相关 -->
     <string name="hint_phone_old">请输入当前手机号码</string>

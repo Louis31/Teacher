@@ -35,6 +35,7 @@ import com.haiku.wateroffer.mvp.view.activity.PhoneChangeActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopAddressActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopNameActivity;
 import com.haiku.wateroffer.mvp.view.dialog.ActionSheetDialog;
+import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
 
 import java.io.File;
 
@@ -187,8 +188,15 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                 break;
             // 注销登录
             case R.id.tv_logout:
-                ActivityUtils.cleanActivitys();
-                startActivity(new Intent(mContext, LoginActivity.class));
+                new IOSAlertDialog(mContext).builder().setMsg(getString(R.string.dlg_logout))
+                        .setCancelable(false)
+                        .setPositiveButton("确定", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ActivityUtils.cleanActivitys();
+                                startActivity(new Intent(mContext, LoginActivity.class));
+                            }
+                        }).setNegativeButton("取消", null).show();
                 break;
         }
     }

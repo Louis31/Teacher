@@ -40,6 +40,7 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
     // 获取列表数据
     @Override
     public void getListDatas(int uid, String status, String key, int pageno) {
+        requesType = REQUEST_LIST;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("status", status);
@@ -47,7 +48,6 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
         params.put("pageno", pageno);
 
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_LIST;
             // 获取token
             ((IBaseModel) mOrderModel).getAccessToken(params, this);
         } else {
@@ -59,11 +59,11 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
     @Override
     public void cancelOrder(int id, int uid) {
         mView.showLoadingDialog(true);
+        requesType = REQUEST_CANCEL;
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("uid", uid);
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_CANCEL;
             // 获取token
             ((IBaseModel) mOrderModel).getAccessToken(params, this);
         } else {
@@ -75,11 +75,11 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
     @Override
     public void sendOrder(int id, int uid) {
         mView.showLoadingDialog(true);
+        requesType = REQUEST_SEND;
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("uid", uid);
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_SEND;
             // 获取token
             ((IBaseModel) mOrderModel).getAccessToken(params, this);
         } else {

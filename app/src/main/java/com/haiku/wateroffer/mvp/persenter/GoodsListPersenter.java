@@ -40,13 +40,13 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
     // 获取列表数据
     @Override
     public void getListDatas(int uid, int status, int pageno) {
+        requesType = REQUEST_LIST;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("status", status);
         params.put("pageno", pageno);
 
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_LIST;
             // 获取token
             ((IBaseModel) mGoodsModel).getAccessToken(params, this);
         } else {
@@ -58,12 +58,12 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
     @Override
     public void deleteGoods(int uid, int product_id) {
         mView.showLoadingDialog(true);
+        requesType = REQUEST_DELETE;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("product_id", product_id);
 
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_DELETE;
             // 获取token
             ((IBaseModel) mGoodsModel).getAccessToken(params, this);
         } else {
@@ -75,12 +75,12 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
     @Override
     public void offShelfGoods(int uid, int product_id) {
         mView.showLoadingDialog(true);
+        requesType = REQUEST_OFF_SHELF;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("product_id", product_id);
 
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_OFF_SHELF;
             // 获取token
             ((IBaseModel) mGoodsModel).getAccessToken(params, this);
         } else {

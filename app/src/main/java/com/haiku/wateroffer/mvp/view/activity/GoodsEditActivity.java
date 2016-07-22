@@ -31,7 +31,7 @@ import java.util.List;
 @ContentView(R.layout.act_goods_edit)
 public class GoodsEditActivity extends BaseActivity {
 
-    private boolean isEditView;// 当前是否为编辑界面
+    private boolean isUpdate;// 当前是否为编辑界面
     private List<String> images;
 
     private AlertDialog mChoseDialog;
@@ -135,11 +135,11 @@ public class GoodsEditActivity extends BaseActivity {
     }
 
     private void initDatas() {
-        isEditView = getIntent().getBooleanExtra("isEdit", false);
+        isUpdate = getIntent().getBooleanExtra("isUpdate", false);
     }
 
     private void initViews() {
-        if (isEditView) {
+        if (isUpdate) {
             mTitlebar.initDatas(getString(R.string.goods_edit), true);
             mTitlebar.showRightTextView(getString(R.string.save));
         } else {

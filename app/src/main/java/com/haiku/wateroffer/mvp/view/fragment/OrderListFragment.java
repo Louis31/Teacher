@@ -1,9 +1,12 @@
 package com.haiku.wateroffer.mvp.view.fragment;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +15,10 @@ import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.OrderListListener;
+import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
+import com.haiku.wateroffer.constant.ActionConstant;
 import com.haiku.wateroffer.constant.BaseConstant;
-import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.base.LazyFragment;
 import com.haiku.wateroffer.mvp.contract.OrderListContract;
 import com.haiku.wateroffer.mvp.model.impl.OrderModelImpl;
@@ -33,7 +37,7 @@ import java.util.List;
  * Created by hyming on 2016/7/11.
  */
 public class OrderListFragment extends LazyFragment implements OrderListContract.View, MyRefreshLayout.OnRefreshLayoutListener, OrderListListener {
-
+    private final String TAG = "OrderListFragment";
     private Context mContext;
 
     private int uid;
@@ -85,6 +89,34 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // 注册广播接收者
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ActionConstant.REFRESH_ORDER_LIST);
+        broadcastManager.registerReceiver(mBroadcastReceiver, intentFilter);
+    }
+
+    BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String type = intent.getStringExtra("type");
+            if (mType.equals(type)) {
+                LogUtils.showLogE(TAG, "onReceive Success");
+                mRefreshLayout.refresh();// 刷新列表
+            }
+        }
+    };
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        broadcastManager.unregisterReceiver(mBroadcastReceiver);
+    }
+
     private void initDatas() {
         uid = UserManager.getInstance().getUser().getUid();
         mDatas = new ArrayList<>();
@@ -119,7 +151,9 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     // 下拉刷新
     @Override
     public void onRefresh() {
-
+        mDatas.clear();
+        mAdapter.notifyDataSetChanged();
+        mPresenter.getListDatas(uid, mType, BaseConstant.ORDER_SORT_SYNTHESIS, mRefreshLayout.getCurrentPage());
     }
 
     // 加载更多
@@ -139,15 +173,22 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     // 刷新页面
     @Override
     public void refreshListView(int type) {
-        if (type == TypeConstant.OrderOpera.CANCEL_DELIVER) {
+        /*if (type == TypeConstant.OrderOpera.CANCEL_DELIVER) {
             // 取消配送成功
             mDatas.remove(mItemPos);
             mAdapter.notifyItemRemoved(mItemPos);
+
         } else if (type == TypeConstant.OrderOpera.SEND_ORDER) {
             // 派单成功
             mDatas.remove(mItemPos);
             mAdapter.notifyItemRemoved(mItemPos);
-        }
+        }*/
+        mDatas.remove(mItemPos);
+        mAdapter.notifyItemRemoved(mItemPos);
+        // 发送广播
+        Intent intent = new Intent(ActionConstant.REFRESH_ORDER_LIST);
+        intent.putExtra("type", mType);
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 
     @Override
@@ -199,6 +240,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     @Override
     public void onOrderSendClick(int pos) {
         // 判断配送列表是否已经添加配送员
+        mPresenter
         boolean isHas = true;
         if (isHas) {
             mItemPos = pos;

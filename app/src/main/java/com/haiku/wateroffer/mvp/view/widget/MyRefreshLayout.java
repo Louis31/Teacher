@@ -136,6 +136,18 @@ public class MyRefreshLayout extends FrameLayout {
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
+    // 开始刷新
+    public void refresh() {
+        if(!isLoading){
+            isLoading = true;
+            mSwipeRefreshLayout.setRefreshing(true);
+            setStartPage(mStartPage);
+            if (mListener != null) {
+                mListener.onRefresh();
+            }
+        }
+    }
+
     // 刷新数据完成
     public void refreshCompleted(boolean isSuccess) {
         if (isSuccess) {
@@ -165,7 +177,6 @@ public class MyRefreshLayout extends FrameLayout {
     public void setLoadMoreEnable(boolean enable) {
         isCanLoadMore = enable;
     }
-
 
     private class MyScrollListener extends OnScrollListener {
         public MyScrollListener() {

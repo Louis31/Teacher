@@ -1,8 +1,12 @@
 package com.haiku.wateroffer.mvp.view.fragment;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +15,15 @@ import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.Goods;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.GoodsListListener;
+import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
+import com.haiku.wateroffer.constant.ActionConstant;
 import com.haiku.wateroffer.constant.BaseConstant;
-import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.base.LazyFragment;
 import com.haiku.wateroffer.mvp.contract.GoodsListContract;
 import com.haiku.wateroffer.mvp.model.impl.GoodsModelImpl;
 import com.haiku.wateroffer.mvp.persenter.GoodsListPersenter;
+import com.haiku.wateroffer.mvp.view.activity.GoodsEditActivity;
 import com.haiku.wateroffer.mvp.view.adapter.GoodsListAdapter;
 import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
 import com.haiku.wateroffer.mvp.view.divider.BroadDividerItem;
@@ -31,8 +37,9 @@ import java.util.List;
  * Created by hyming on 2016/7/11.
  */
 public class GoodsListFragment extends LazyFragment implements GoodsListContract.View, MyRefreshLayout.OnRefreshLayoutListener, GoodsListListener {
-    private Context mContext;
+    private final String TAG = "GoodsListFragment";
 
+    private Context mContext;
     private int uid;
     private int mItemPos;// 记录当前操作item的位置
     private int mType;// 标记当前列表数据的类型
@@ -81,6 +88,34 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // 注册广播接收者
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ActionConstant.REFRESH_GOODS_LIST);
+        broadcastManager.registerReceiver(mBroadcastReceiver, intentFilter);
+    }
+
+    BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int type = intent.getIntExtra("type", -1);
+            if (mType == type) {
+                LogUtils.showLogE(TAG, "onReceive Success");
+                mRefreshLayout.refresh();// 刷新列表
+            }
+        }
+    };
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        broadcastManager.unregisterReceiver(mBroadcastReceiver);
+    }
+
     private void initDatas() {
         uid = UserManager.getInstance().getUser().getUid();
         mDatas = new ArrayList<>();
@@ -116,7 +151,9 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     // 下拉刷新
     @Override
     public void onRefresh() {
-
+        mDatas.clear();
+        mAdapter.notifyDataSetChanged();
+        mPresenter.getListDatas(uid, mType, mRefreshLayout.getCurrentPage());
     }
 
     // 加载更多
@@ -137,15 +174,20 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     // 刷新页面
     @Override
     public void refreshListView(int type) {
-        if (type == TypeConstant.GoodsOpera.DELETE_GOODS) {
+        /*if (type == TypeConstant.GoodsOpera.DELETE_GOODS) {
             // 删除成功
-            mDatas.remove(mItemPos);
-            mAdapter.notifyItemRemoved(mItemPos);
         } else if (type == TypeConstant.GoodsOpera.OFF_SHELF) {
             // 下架成功
             mDatas.remove(mItemPos);
             mAdapter.notifyItemRemoved(mItemPos);
-        }
+        }*/
+
+        mDatas.remove(mItemPos);
+        mAdapter.notifyItemRemoved(mItemPos);
+        // 发送广播
+        Intent intent = new Intent(ActionConstant.REFRESH_GOODS_LIST);
+        intent.putExtra("type", mType);
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 
     @Override
@@ -201,6 +243,8 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     // 编辑商品
     @Override
     public void onGoodsEditClick(int pos) {
-
+        Intent intent = new Intent(mContext, GoodsEditActivity.class);
+        intent.putExtra("isUpdate", true);
+        startActivity(intent);
     }
 }
