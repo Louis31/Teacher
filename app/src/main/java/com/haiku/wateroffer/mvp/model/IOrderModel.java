@@ -17,6 +17,8 @@ public interface IOrderModel {
     interface OrderListCallback extends IRequestCallback {
         // 获取列表数据成功
         void getListDataSuccess(List<OrderItem> list);
+
+        void checkHasDeliver(boolean isHas, int order_id, int uid);
     }
 
     //  订单详情模块相关回调
@@ -36,4 +38,7 @@ public interface IOrderModel {
 
     // 派送订单
     void sendOrder(Map<String, Object> params, @NonNull IRequestCallback callback);
+
+    // 是否有配送员
+    void isHasDeliver(Map<String, Object> params, @NonNull OrderListCallback callback);
 }

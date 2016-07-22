@@ -155,6 +155,24 @@ public class OrderListAdapter extends MyBaseAdapter {
                 tv_order_finish = bind(v, R.id.tv_order_finish);
                 tv_order_cancel = bind(v, R.id.tv_order_cancel);
                 tv_order_send = bind(v, R.id.tv_order_send);
+
+                tv_order_send.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (listener != null) {
+                            listener.onOrderSendClick(getPosition());
+                        }
+                    }
+                });
+
+                tv_order_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (listener != null) {
+                            listener.onOrderCancelClick(getPosition());
+                        }
+                    }
+                });
             }
             // 列表状态为待发货
             else if (mStatus.equals(TypeConstant.Order.PAYED)) {

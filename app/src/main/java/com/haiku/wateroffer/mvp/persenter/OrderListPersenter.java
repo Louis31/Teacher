@@ -20,7 +20,8 @@ import java.util.Map;
 public class OrderListPersenter implements OrderListContract.Presenter, IOrderModel.OrderListCallback {
     private final int REQUEST_LIST = 1;
     private final int REQUEST_CANCEL = 2;// 取消配送
-    private final int REQUEST_SEND = 3;
+    private final int REQUEST_SEND = 3;// 派送
+    private final int REQUEST_HAS_DELIVER = 4;// 是否有配送员
     private int requesType;
 
     @NonNull
@@ -74,7 +75,27 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
     // 派单
     @Override
     public void sendOrder(int id, int uid) {
+        isHasDeliver(id, uid);
+    }
+
+    // 判断有没有已添加的配送员
+    private void isHasDeliver(int order_id, int uid) {
         mView.showLoadingDialog(true);
+        requesType = REQUEST_HAS_DELIVER;
+        Map<String, Object> params = new HashMap<>();
+        params.put("uid", uid);
+        params.put("order_id", order_id);
+
+        if (UserManager.isTokenEmpty()) {
+            // 获取token
+            ((IBaseModel) mOrderModel).getAccessToken(params, this);
+        } else {
+            mOrderModel.isHasDeliver(params, this);
+        }
+    }
+
+    // 派送订单
+    private void sendOrderOpera(int id, int uid) {
         requesType = REQUEST_SEND;
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
@@ -106,6 +127,18 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
             mOrderModel.cancelOrder(params, this);
         } else if (requesType == REQUEST_SEND) {
             mOrderModel.sendOrder(params, this);
+        } else if (requesType == REQUEST_HAS_DELIVER) {
+            mOrderModel.isHasDeliver(params, this);
+        }
+    }
+
+    @Override
+    public void checkHasDeliver(boolean isHas, int order_id, int uid) {
+        if (isHas) {
+            sendOrderOpera(order_id, uid);// 派送订单
+        } else {
+            mView.showLoadingDialog(false);
+            mView.showDeliverView(); // 跳转配送员列表
         }
     }
 

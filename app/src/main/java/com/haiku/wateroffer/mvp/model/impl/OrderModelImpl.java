@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.JsonArray;
 import com.haiku.wateroffer.App;
+import com.haiku.wateroffer.bean.Deliver;
 import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.bean.ResultData;
 import com.haiku.wateroffer.common.util.data.GsonUtils;
@@ -13,6 +14,7 @@ import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.common.util.net.XUtils;
 import com.haiku.wateroffer.common.util.net.XUtilsCallback;
 import com.haiku.wateroffer.constant.BaseConstant;
+import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.constant.UrlConstant;
 import com.haiku.wateroffer.mvp.model.IOrderModel;
 
@@ -94,6 +96,33 @@ public class OrderModelImpl implements IOrderModel {
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.getRetcode() == BaseConstant.SUCCESS) {
                     callback.onSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
+
+    // 是否有配送员
+    @Override
+    public void isHasDeliver(final Map<String, Object> params, @NonNull final OrderListCallback callback) {
+        XUtils.Get(UrlConstant.User.getDeliverList(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                    JsonArray jArry = result.getRetmsg().getAsJsonArray();
+                    if (!GsonUtils.isJsonArrayEmpty(jArry)) {
+                        List<Deliver> list = GsonUtils.gsonToList(jArry.toString(), Deliver.class);
+                        for (Deliver bean : list) {
+                            if (TypeConstant.Deliver.CONTINUE == bean.getDiliveryman_status()) {
+                                callback.checkHasDeliver(true, (Integer) params.get("order_id"), (Integer) params.get("uid"));
+                                return;
+                            }
+                        }
+                    }
+                    callback.checkHasDeliver(false, -1, -1);
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
                 }

@@ -19,10 +19,12 @@ import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.ActionConstant;
 import com.haiku.wateroffer.constant.BaseConstant;
+import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.base.LazyFragment;
 import com.haiku.wateroffer.mvp.contract.OrderListContract;
 import com.haiku.wateroffer.mvp.model.impl.OrderModelImpl;
 import com.haiku.wateroffer.mvp.persenter.OrderListPersenter;
+import com.haiku.wateroffer.mvp.view.activity.DeliverListActivity;
 import com.haiku.wateroffer.mvp.view.activity.OrderInfoActivity;
 import com.haiku.wateroffer.mvp.view.adapter.OrderListAdapter;
 import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
@@ -173,21 +175,16 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     // 刷新页面
     @Override
     public void refreshListView(int type) {
-        /*if (type == TypeConstant.OrderOpera.CANCEL_DELIVER) {
-            // 取消配送成功
-            mDatas.remove(mItemPos);
-            mAdapter.notifyItemRemoved(mItemPos);
-
-        } else if (type == TypeConstant.OrderOpera.SEND_ORDER) {
-            // 派单成功
-            mDatas.remove(mItemPos);
-            mAdapter.notifyItemRemoved(mItemPos);
-        }*/
         mDatas.remove(mItemPos);
         mAdapter.notifyItemRemoved(mItemPos);
-        // 发送广播
         Intent intent = new Intent(ActionConstant.REFRESH_ORDER_LIST);
-        intent.putExtra("type", mType);
+        if (mType.equals(TypeConstant.Order.ALL)) {
+            // 当前为全部订单页面
+            intent.putExtra("type", mDatas.get(mItemPos).getStatus());
+        } else {
+            intent.putExtra("type", mType);
+        }
+        // 发送广播
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 
@@ -208,6 +205,20 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
                 mDialog.dismiss();
             }
         }
+    }
+
+    // 跳转配送员列表
+    @Override
+    public void showDeliverView() {
+        new IOSAlertDialog(mContext).builder().setMsg(getString(R.string.dlg_deliver_add))
+                .setCancelable(false)
+                .setPositiveButton("是", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 跳转到配送列表页面
+                        startActivity(new Intent(mContext, DeliverListActivity.class));
+                    }
+                }).setNegativeButton("否", null).show();
     }
 
     /**
@@ -239,21 +250,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     // 派单
     @Override
     public void onOrderSendClick(int pos) {
-        // 判断配送列表是否已经添加配送员
-        mPresenter
-        boolean isHas = true;
-        if (isHas) {
-            mItemPos = pos;
-            mPresenter.sendOrder(mDatas.get(pos).getOrder_id(), uid);// 派送订单
-        } else {
-            new IOSAlertDialog(mContext).builder().setMsg(getString(R.string.dlg_deliver_add))
-                    .setCancelable(false)
-                    .setPositiveButton("是", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            // 跳转到配送列表页面
-                        }
-                    }).setNegativeButton("否", null).show();
-        }
+        mItemPos = pos;
+        mPresenter.sendOrder(mDatas.get(pos).getOrder_id(), uid);// 派送订单
     }
 }

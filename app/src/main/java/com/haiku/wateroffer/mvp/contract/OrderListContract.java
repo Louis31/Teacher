@@ -21,6 +21,9 @@ public interface OrderListContract {
         // 更新列表界面
         void refreshListView(int type);
 
+        // 跳转配送员列表
+        void showDeliverView();
+
         // 显示信息
         void showMessage(String msg);
     }
@@ -30,9 +33,9 @@ public interface OrderListContract {
         void getListDatas(int uid, String status, String key, int pageno);
 
         // 取消订单
-        void cancelOrder(int id, int uid) ;
+        void cancelOrder(int id, int uid);
 
-        // 派单
+        // 如果有就执行派送订单操作
         void sendOrder(int id, int uid);
     }
 }
