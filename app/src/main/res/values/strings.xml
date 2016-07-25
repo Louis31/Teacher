@@ -39,6 +39,7 @@
     <string name="msg_phone_invalid">请输入正确的手机号码</string>
     <string name="msg_verifycode_invalid">请输入正确的验证码</string>
     <string name="msg_shop_name_empty">店铺名称不能为空</string>
+    <string name="msg_shop_qq_empty">店铺QQ不能为空</string>
     <string name="msg_bill_search_invalid">请选择需要查询的时间段和配送员</string>
     <string name="msg_price_invalid">价格输入错误</string>
     <string name="msg_stock_invalid">库存输入错误</string>
@@ -141,6 +142,8 @@
     <string name="my_bill">我的账单</string>
     <string name="deposit">保证金</string>
     <string name="seller_contribute">商家贡献值</string>
+    <string name="shop_qq">店铺QQ</string>
+    <string name="hint_shop_qq">请输入店铺QQ</string>
 
     <string name="contribution">贡献值</string>
     <string name="current_contribution">当前贡献值</string>

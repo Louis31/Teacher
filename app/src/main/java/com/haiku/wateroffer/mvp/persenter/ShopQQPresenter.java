@@ -3,8 +3,7 @@ package com.haiku.wateroffer.mvp.persenter;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.common.UserManager;
-import com.haiku.wateroffer.common.util.net.IRequestCallback;
-import com.haiku.wateroffer.mvp.contract.ShopNameContract;
+import com.haiku.wateroffer.mvp.contract.ShopQQContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IShopModel;
 
@@ -12,20 +11,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 添加/修改店铺名称Presenter
+ * 添加/修改店铺QQPresenter
  * Created by hyming on 2016/7/13.
  */
-public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCallback {
-    private final int REQUEST_ADD = 1;
+public class ShopQQPresenter implements ShopQQContract.Presenter, IShopModel.IShopQQCallback {
+    private final int REQUEST_GET = 1;
     private final int REQUEST_CHANGE = 2;
     private int requesType;
-
     @NonNull
     private final IShopModel mShopModel;
     @NonNull
-    private final ShopNameContract.View mView;
+    private final ShopQQContract.View mView;
 
-    public ShopNamePresenter(@NonNull IShopModel shopModel, @NonNull ShopNameContract.View view) {
+    public ShopQQPresenter(@NonNull IShopModel shopModel, @NonNull ShopQQContract.View view) {
         this.mShopModel = shopModel;
         this.mView = view;
         mView.setPresenter(this);
@@ -35,27 +33,30 @@ public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCa
      * Presenter 接口方法
      */
     @Override
-    public void addShopName(int uid, String shopName) {
-        requesType = REQUEST_ADD;
-        mView.showLoadingDialog(true);
-        Map<String, Object> params = new HashMap<>();
-        params.put("uid", uid);
-        params.put("shopname", shopName);
-        // mShopModel.addShopName(params, this);
-    }
-
-    @Override
-    public void changeShopName(int uid, String shopName) {
+    public void changeQQNumber(int id, String qq) {
         requesType = REQUEST_CHANGE;
         mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
-        params.put("id", uid);
-        params.put("shopname", shopName);
+        params.put("id", id);
+        params.put("qq", qq);
         if (UserManager.isTokenEmpty()) {
             // 获取token
             ((IBaseModel) mShopModel).getAccessToken(params, this);
         } else {
-            mShopModel.changeShopName(params, this);
+            mShopModel.changeShopQQ(params, this);
+        }
+    }
+
+    @Override
+    public void getQQNumber(int id) {
+        requesType = REQUEST_GET;
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        if (UserManager.isTokenEmpty()) {
+            // 获取token
+            ((IBaseModel) mShopModel).getAccessToken(params, this);
+        } else {
+            mShopModel.getShopQQ(params, this);
         }
     }
 
@@ -64,11 +65,16 @@ public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCa
      */
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
-        if (requesType == REQUEST_ADD) {
-            // mShopModel.changeShopName(params, this);
+        if (requesType == REQUEST_GET) {
+            mShopModel.getShopQQ(params, this);
         } else if (requesType == REQUEST_CHANGE) {
-            mShopModel.changeShopName(params, this);
+            mShopModel.changeShopQQ(params, this);
         }
+    }
+
+    @Override
+    public void getShopQQSuccess(String qq) {
+        mView.setShopQQ(qq);
     }
 
     // 成功回调

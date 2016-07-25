@@ -25,7 +25,6 @@ import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.base.LazyFragment;
 import com.haiku.wateroffer.mvp.contract.ShopContract;
 import com.haiku.wateroffer.mvp.model.impl.ShopModelImpl;
-import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
 import com.haiku.wateroffer.mvp.persenter.ShopPresenter;
 import com.haiku.wateroffer.mvp.view.activity.ContributionActivity;
 import com.haiku.wateroffer.mvp.view.activity.DeliverListActivity;
@@ -35,6 +34,7 @@ import com.haiku.wateroffer.mvp.view.activity.MyBillActivity;
 import com.haiku.wateroffer.mvp.view.activity.PhoneChangeActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopAddressActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopNameActivity;
+import com.haiku.wateroffer.mvp.view.activity.ShopQQActivity;
 import com.haiku.wateroffer.mvp.view.dialog.ActionSheetDialog;
 import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
 
@@ -65,6 +65,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
     private View llayout_my_bill;// 我的订单
     private View llayout_deposit;// 保证金
     private View llayout_contribute;// 商家贡献值
+    private View llayout_qq;// 店铺QQ
     private View tv_logout;// 注销
 
     @Override
@@ -110,6 +111,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         llayout_my_bill = findView(rootView, R.id.llayout_my_bill);
         llayout_deposit = findView(rootView, R.id.llayout_deposit);
         llayout_contribute = findView(rootView, R.id.llayout_contribute);
+        llayout_qq = findView(rootView, R.id.llayout_qq);
         tv_logout = findView(rootView, R.id.tv_logout);
 
         iv_shop_logo.setOnClickListener(this);
@@ -120,6 +122,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         llayout_my_bill.setOnClickListener(this);
         llayout_deposit.setOnClickListener(this);
         llayout_contribute.setOnClickListener(this);
+        llayout_qq.setOnClickListener(this);
         tv_logout.setOnClickListener(this);
 
         ImageUtils.showCircleImage(getContext(), R.drawable.ic_image_loading, iv_shop_logo);
@@ -189,6 +192,10 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             // 跳转到商家贡献值界面
             case R.id.llayout_contribute:
                 startActivity(new Intent(mContext, ContributionActivity.class));
+                break;
+            // 跳转到QQ页面
+            case R.id.llayout_qq:
+                startActivity(new Intent(mContext, ShopQQActivity.class));
                 break;
             // 注销登录
             case R.id.tv_logout:

@@ -66,6 +66,9 @@
         <activity
             android:name=".mvp.view.activity.PhoneChangeActivity"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".mvp.view.activity.ShopQQActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity android:name=".mvp.view.activity.DeliverListActivity" />
         <activity android:name=".mvp.view.activity.DeliverSelectActivity" />
         <activity android:name=".mvp.view.activity.DeliverOrderActivity" />

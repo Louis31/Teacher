@@ -132,6 +132,19 @@
 
         <View style="@style/shop_item_line" />
 
+        <LinearLayout
+            android:id="@+id/llayout_qq"
+            style="@style/shop_item_llayout">
+
+            <TextView
+                style="@style/shop_item_llayou_tv"
+                android:text="@string/shop_qq" />
+
+            <ImageView style="@style/shop_item_llayou_iv" />
+        </LinearLayout>
+
+        <View style="@style/shop_item_line" />
+
         <TextView
             android:id="@+id/tv_logout"
             android:layout_width="match_parent"

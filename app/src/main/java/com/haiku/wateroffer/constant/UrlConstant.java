@@ -196,5 +196,15 @@ public class UrlConstant {
         public static String changeShopPhoneUrl() {
             return getShopPath() + "/changeShopPhone" + getToken();
         }
+
+        // 获取店铺QQ，Get
+        public static String getShopQQUrl() {
+            return getShopPath() + "/getShopQQ" + getToken();
+        }
+
+        // 修改店铺QQ，Post
+        public static String changeShopQQUrl() {
+            return getShopPath() + "/changeShopQQ" + getToken();
+        }
     }
 }

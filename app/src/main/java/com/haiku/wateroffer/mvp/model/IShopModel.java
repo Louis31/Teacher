@@ -20,6 +20,10 @@ public interface IShopModel {
         void getVerifyCodeSuccess(String verifyCode);
     }
 
+    interface IShopQQCallback extends IRequestCallback {
+        void getShopQQSuccess(String qq);
+    }
+
     // 获取验证码
     void getVerifyCode(Map<String, Object> params, @NonNull IPhoneCallback callback);
 
@@ -30,10 +34,10 @@ public interface IShopModel {
     void changeShopName(Map<String, Object> params, @NonNull IRequestCallback callback);
 
     // 获取店铺QQ
-    void getShopQQ(Map<String, Object> params);
+    void getShopQQ(Map<String, Object> params, @NonNull IShopQQCallback callback);
 
     // 修改店铺QQ
-    void changeShopQQ(Map<String, Object> params);
+    void changeShopQQ(Map<String, Object> params, @NonNull IRequestCallback callback);
 
     // 修改店铺联系电话
     void changeShopPhone(Map<String, Object> param, @NonNull IPhoneCallback callback);

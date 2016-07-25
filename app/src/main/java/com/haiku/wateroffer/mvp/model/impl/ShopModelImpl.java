@@ -2,6 +2,7 @@ package com.haiku.wateroffer.mvp.model.impl;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.JsonObject;
 import com.haiku.wateroffer.App;
 import com.haiku.wateroffer.bean.ResultData;
 import com.haiku.wateroffer.common.util.data.LogUtils;
@@ -74,14 +75,38 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
 
     // 获取店铺QQ
     @Override
-    public void getShopQQ(Map<String, Object> params) {
-
+    public void getShopQQ(Map<String, Object> params, @NonNull final IShopQQCallback callback) {
+        XUtils.Get(UrlConstant.Shop.getShopQQUrl(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.isSuccess()) {
+                    JsonObject jobj = result.getRetmsg().getAsJsonObject();
+                    String qq = jobj.get("qq").getAsString();
+                    callback.getShopQQSuccess(qq);
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
     }
 
     // 修改店铺QQ
     @Override
-    public void changeShopQQ(Map<String, Object> params) {
-
+    public void changeShopQQ(Map<String, Object> params, @NonNull final IRequestCallback callback) {
+        XUtils.Post(UrlConstant.Shop.changeShopQQUrl(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.isSuccess()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
     }
 
     // 修改店铺联系电话
