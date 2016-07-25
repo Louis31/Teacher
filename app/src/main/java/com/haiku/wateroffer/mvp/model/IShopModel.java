@@ -2,6 +2,7 @@ package com.haiku.wateroffer.mvp.model;
 
 import android.support.annotation.NonNull;
 
+import com.haiku.wateroffer.bean.ShopInfo;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 
 import java.util.Map;
@@ -13,6 +14,10 @@ import java.util.Map;
 public interface IShopModel {
     // 店铺相关回调
     interface ShopCallback extends IRequestCallback {
+        // 获取店铺信息
+        void getShopInfoSuccess(ShopInfo bean);
+
+        // 上传logo成功
         void uploadLogoSuccess(String logo);
     }
 

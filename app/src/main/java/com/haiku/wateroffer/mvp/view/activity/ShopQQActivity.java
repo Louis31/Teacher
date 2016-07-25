@@ -1,6 +1,8 @@
 package com.haiku.wateroffer.mvp.view.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -40,8 +42,8 @@ public class ShopQQActivity extends BaseActivity implements ShopQQContract.View 
     @ViewInject(R.id.et_shop_qq)
     private EditText et_shop_qq;
 
-    @ViewInject(R.id.progressBar)
-    private ProgressBar progressBar;
+    //@ViewInject(R.id.progressBar)
+    //private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class ShopQQActivity extends BaseActivity implements ShopQQContract.View 
         initDatas();
         initViews();
         new ShopQQPresenter(new ShopModelImpl(), this);
-        mPresenter.getQQNumber(uid);
+        //mPresenter.getQQNumber(uid);
     }
 
     @Override
@@ -81,6 +83,8 @@ public class ShopQQActivity extends BaseActivity implements ShopQQContract.View 
                 }
             }
         });
+
+        et_shop_qq.setText(getIntent().getStringExtra("qq"));
     }
 
     // 显示/隐藏加载对话框
@@ -98,18 +102,21 @@ public class ShopQQActivity extends BaseActivity implements ShopQQContract.View 
 
     @Override
     public void setShopQQ(String qq) {
-        progressBar.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.GONE);
         et_shop_qq.setText(qq);
     }
 
     @Override
     public void showSuccessView() {
+        Intent data = new Intent();
+        data.putExtra("qq", et_shop_qq.getText().toString().trim());
+        setResult(Activity.RESULT_OK, data);
         finish();
     }
 
     @Override
     public void showMessage(String msg) {
-        progressBar.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.GONE);
         ToastUtils.getInstant().showToast(msg);
     }
 

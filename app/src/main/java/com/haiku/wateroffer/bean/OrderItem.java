@@ -1,5 +1,7 @@
 package com.haiku.wateroffer.bean;
 
+import com.haiku.wateroffer.common.OrderStatus;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -23,6 +25,8 @@ public class OrderItem implements Serializable {
 
     private List<Goods> details;// 订单商品列表
     private AddressInfo address_info;
+
+    private OrderStatus mOrderStatus;
 
     public int getOrder_id() {
         return order_id;
@@ -134,5 +138,18 @@ public class OrderItem implements Serializable {
 
     public void setAddress_info(AddressInfo address_info) {
         this.address_info = address_info;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return mOrderStatus;
+    }
+
+    public void setOrderStatus() {
+        for (OrderStatus orderStatus : OrderStatus.values()) {
+            if (status.equals(orderStatus.getStatus())) {
+                this.mOrderStatus = orderStatus;
+                break;
+            }
+        }
     }
 }

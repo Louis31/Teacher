@@ -1,5 +1,6 @@
 package com.haiku.wateroffer.mvp.contract;
 
+import com.haiku.wateroffer.bean.ShopInfo;
 import com.haiku.wateroffer.mvp.base.BasePresenter;
 import com.haiku.wateroffer.mvp.base.BaseView;
 
@@ -11,6 +12,8 @@ public interface ShopContract {
     interface View extends BaseView<Presenter> {
         // 显示/隐藏加载对话框
         void showLoadingDialog(boolean isShow);
+
+        void setShopInfo(ShopInfo bean);
 
         // 设置店铺logo
         void setLogo(String logo);

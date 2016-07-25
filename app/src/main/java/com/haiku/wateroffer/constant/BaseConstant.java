@@ -10,7 +10,8 @@ public class BaseConstant {
     public final static int REQUEST_CROP_PICTURE = 3;// 裁剪
 
     public final static int REQUEST_EDIT_SHOP_NAME = 10;// 编辑店铺名称
-
+    public final static int REQUEST_EDIT_SHOP_PHONE = 11;// 编辑联系电话
+    public final static int REQUEST_EDIT_SHOP_QQ = 12;// 编辑店铺QQ
     // 网络返回的错误代码常量
     public final static int SUCCESS = 0;// 返回成功
     public final static int SERVER_ERROR = 998;// 服务器错误

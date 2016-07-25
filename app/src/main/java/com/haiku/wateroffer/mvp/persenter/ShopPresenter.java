@@ -2,6 +2,7 @@ package com.haiku.wateroffer.mvp.persenter;
 
 import android.support.annotation.NonNull;
 
+import com.haiku.wateroffer.bean.ShopInfo;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.mvp.contract.ShopContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
@@ -69,6 +70,11 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
         } else if (requesType == REQUEST_LOGO) {
             mShopModel.changeShopLogo(params, this);
         }
+    }
+
+    @Override
+    public void getShopInfoSuccess(ShopInfo bean) {
+        mView.setShopInfo(bean);
     }
 
     @Override

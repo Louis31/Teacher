@@ -5,11 +5,12 @@ import android.support.annotation.NonNull;
 import com.google.gson.JsonObject;
 import com.haiku.wateroffer.App;
 import com.haiku.wateroffer.bean.ResultData;
+import com.haiku.wateroffer.bean.ShopInfo;
+import com.haiku.wateroffer.common.util.data.GsonUtils;
 import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.common.util.net.XUtils;
 import com.haiku.wateroffer.common.util.net.XUtilsCallback;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.constant.UrlConstant;
 import com.haiku.wateroffer.mvp.model.IShopModel;
 
@@ -30,7 +31,7 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                if (result.isSuccess()) {
                     callback.getVerifyCodeSuccess(result.getRetmsg().getAsString());
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
@@ -48,7 +49,8 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.isSuccess()) {
-                    callback.onSuccess();
+                    ShopInfo bean = GsonUtils.gsonToBean(result.getRetmsg().getAsJsonObject().toString(), ShopInfo.class);
+                    callback.getShopInfoSuccess(bean);
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
                 }
@@ -134,7 +136,7 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                if (result.isSuccess()) {
                     // ResultData{retcode=0, retmsg={"logoUrl":"http://sendwater.api.youdians.com/uploads/8/05f03c7b0f90889dc8a9ba8b158ecbf7."}}
                     String logoUrl = "";
                     if (!result.getRetmsg().isJsonNull()) {

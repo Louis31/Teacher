@@ -184,7 +184,7 @@ public class UrlConstant {
     public static class Shop {
         // 获取店铺信息，Get
         public static String shopInfoUrl() {
-            return getOrderPath() + "/get_shop_info" + getToken();
+            return getShopPath() + "/get_shop_info" + getToken();
         }
 
         // 修改店铺名称，Post

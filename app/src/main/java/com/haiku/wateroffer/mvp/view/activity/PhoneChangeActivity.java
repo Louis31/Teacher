@@ -1,6 +1,8 @@
 package com.haiku.wateroffer.mvp.view.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -90,7 +92,6 @@ public class PhoneChangeActivity extends BaseActivity implements PhoneChangeCont
 
             @Override
             public void onRightTextClick() {
-                // 保存修改
                 // 判断输入的数据是否正确
                 String old_phone = et_phone_old.getText().toString().trim();
                 String phone = et_phone_new.getText().toString().trim();
@@ -105,6 +106,8 @@ public class PhoneChangeActivity extends BaseActivity implements PhoneChangeCont
                 }
             }
         });
+
+        et_phone_old.setText(getIntent().getStringExtra("phone"));
     }
 
     // 显示/隐藏加载对话框
@@ -139,6 +142,9 @@ public class PhoneChangeActivity extends BaseActivity implements PhoneChangeCont
     // 返回店铺界面
     @Override
     public void showShopView() {
+        Intent data = new Intent();
+        data.putExtra("phone", et_phone_new.getText().toString().trim());
+        setResult(Activity.RESULT_OK, data);
         finish();
     }
 

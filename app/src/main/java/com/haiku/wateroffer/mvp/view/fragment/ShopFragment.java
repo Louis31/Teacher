@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.bean.ShopInfo;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.data.FileUtils;
 import com.haiku.wateroffer.common.util.ui.ActivityUtils;
@@ -48,6 +49,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
     private Context mContext;
     private int uid;
 
+    private ShopInfo mShopInfo;
     private String mImagePath;
     private Uri mImageUri;
 
@@ -162,10 +164,12 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                 break;
             // 店铺名称点击
             case R.id.tv_shop_name:
-                Intent iShopName = new Intent(mContext, ShopNameActivity.class);
-                iShopName.putExtra("isUpdate", true);
-                iShopName.putExtra("shop_name", "测试名称");
-                startActivityForResult(iShopName, BaseConstant.REQUEST_EDIT_SHOP_NAME);
+                if (mShopInfo != null) {
+                    Intent iShopName = new Intent(mContext, ShopNameActivity.class);
+                    iShopName.putExtra("isUpdate", true);
+                    iShopName.putExtra("shop_name", mShopInfo.getMerchant_shopname());
+                    startActivityForResult(iShopName, BaseConstant.REQUEST_EDIT_SHOP_NAME);
+                }
                 break;
             // 跳转到店铺地址界面
             case R.id.llayout_address:
@@ -175,7 +179,11 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                 break;
             // 跳转编辑联系电话界面
             case R.id.llayout_phone:
-                startActivity(new Intent(mContext, PhoneChangeActivity.class));
+                if (mShopInfo != null) {
+                    Intent iPhone = new Intent(mContext, PhoneChangeActivity.class);
+                    iPhone.putExtra("phone", mShopInfo.getMerchant_phone());
+                    startActivityForResult(iPhone, BaseConstant.REQUEST_EDIT_SHOP_PHONE);
+                }
                 break;
             // 配送列表
             case R.id.llayout_deliver_list:
@@ -195,7 +203,11 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                 break;
             // 跳转到QQ页面
             case R.id.llayout_qq:
-                startActivity(new Intent(mContext, ShopQQActivity.class));
+                if (mShopInfo != null) {
+                    Intent iQQ = new Intent(mContext, ShopQQActivity.class);
+                    iQQ.putExtra("qq", mShopInfo.getMerchant_qq());
+                    startActivityForResult(iQQ, BaseConstant.REQUEST_EDIT_SHOP_QQ);
+                }
                 break;
             // 注销登录
             case R.id.tv_logout:
@@ -260,7 +272,17 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 修改店铺名称
         if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_NAME && resultCode == Activity.RESULT_OK) {
-            tv_shop_name.setText(data.getStringExtra("shop_name"));
+            String shopName = data.getStringExtra("shop_name");
+            mShopInfo.setMerchant_shopname(shopName);
+            tv_shop_name.setText(shopName);
+        }
+        // 修改店铺电话
+        if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_PHONE && resultCode == Activity.RESULT_OK) {
+            mShopInfo.setMerchant_phone(data.getStringExtra("phone"));
+        }
+        // 修改店铺qq
+        if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_QQ && resultCode == Activity.RESULT_OK) {
+            mShopInfo.setMerchant_qq(data.getStringExtra("qq"));
         }
         // 手机拍照
         else if (requestCode == BaseConstant.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
@@ -300,7 +322,17 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
     }
 
     @Override
+    public void setShopInfo(ShopInfo bean) {
+        mShopInfo = bean;
+        tv_shop_name.setText(bean.getMerchant_shopname());
+        ImageUtils.showImage(this, bean.getMerchant_logo(), iv_shop_logo);
+    }
+
+    @Override
     public void setLogo(String logo) {
+        if (mShopInfo != null) {
+            mShopInfo.setMerchant_logo(logo);
+        }
         ImageUtils.showCircleImage(getContext(), logo, iv_shop_logo);
     }
 

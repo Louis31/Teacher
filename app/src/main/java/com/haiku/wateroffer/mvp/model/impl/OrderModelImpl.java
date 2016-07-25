@@ -58,7 +58,7 @@ public class OrderModelImpl implements IOrderModel {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.getRetcode() == BaseConstant.SUCCESS) {
-                    OrderItem bean = GsonUtils.gsonToBean(result.getRetmsg().getAsJsonObject().getAsString(), OrderItem.class);
+                    OrderItem bean = GsonUtils.gsonToBean(result.getRetmsg().getAsJsonObject().toString(), OrderItem.class);
                     callback.getOrderInfoSuccess(bean);
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
