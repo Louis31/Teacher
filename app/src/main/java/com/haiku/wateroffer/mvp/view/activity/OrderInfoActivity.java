@@ -247,11 +247,13 @@ public class OrderInfoActivity extends BaseActivity implements OrderInfoContract
         TextView tv_order_number = findView(llayout_order_detail, R.id.tv_order_number);
         TextView tv_order_status = findView(llayout_order_detail, R.id.tv_order_status);
         TextView tv_order_time = findView(llayout_order_detail, R.id.tv_order_time);
-        TextView tv_deliver_name = findView(llayout_order_detail, R.id.tv_deliver_name);
-        TextView tv_deliver_phone = findView(llayout_order_detail, R.id.tv_deliver_phone);
-        TextView tv_deliver_addr = findView(llayout_order_detail, R.id.tv_deliver_addr);
+        TextView tv_user_name = findView(llayout_order_detail, R.id.tv_user_name);
+        TextView tv_user_phone = findView(llayout_order_detail, R.id.tv_user_phone);
+        TextView tv_user_addr = findView(llayout_order_detail, R.id.tv_user_addr);
         TextView tv_deliver_time = findView(llayout_order_detail, R.id.tv_deliver_time);
-        TextView tv_deliver_remark = findView(llayout_order_detail, R.id.tv_deliver_remark);
+        TextView tv_remark = findView(llayout_order_detail, R.id.tv_remark);
+        TextView tv_wepay_method = findView(llayout_order_detail, R.id.tv_wepay_method);
+        TextView tv_order_amount = findView(llayout_order_detail, R.id.tv_order_amount);
         LinearLayout llayout_goods = findView(llayout_order_detail, R.id.llayout_goods);
         FrameLayout flayout_bottom = findView(llayout_order_detail, R.id.flayout_bottom);
 
@@ -259,11 +261,18 @@ public class OrderInfoActivity extends BaseActivity implements OrderInfoContract
         setOrderStatus(tv_order_status);
         tv_order_number.setText(mOrderItem.getSerial_number());
         tv_order_time.setText(mOrderItem.getOrder_time());
-        tv_deliver_name.setText(mOrderItem.getAddress_info().getUname());
-        tv_deliver_phone.setText(mOrderItem.getAddress_info().getPhone());
-        tv_deliver_addr.setText(mOrderItem.getAddress_info().getAddrs());
+        tv_user_name.setText(mOrderItem.getAddress_info().getUname());
+        tv_user_phone.setText(mOrderItem.getAddress_info().getPhone());
+        tv_user_addr.setText(mOrderItem.getAddress_info().getAddrs());
         tv_deliver_time.setText(mOrderItem.getExptime());
-        tv_deliver_remark.setText(mOrderItem.getRemark());
+        tv_remark.setText(mOrderItem.getRemark());
+        // 0，1为线上付款；2为线下付款
+        if (mOrderItem.getWepay_method() == 2) {
+            tv_wepay_method.setText(getString(R.string.order_off_pay));
+        } else {
+            tv_wepay_method.setText(getString(R.string.order_up_pay));
+        }
+        tv_order_amount.setText(rmb + mOrderItem.getOrder_amount());
 
         // 设置订单商品列表
         if (mOrderItem.getDetails() != null && mOrderItem.getDetails().size() > 0) {

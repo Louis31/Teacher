@@ -230,7 +230,7 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     // 上架商品
     @Override
     public void onGoodsUpShelfClick(int pos) {
-
+        mItemPos = pos;
     }
 
     // 下架商品

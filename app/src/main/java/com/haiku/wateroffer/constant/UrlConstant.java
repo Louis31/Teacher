@@ -17,7 +17,7 @@ public class UrlConstant {
     private final static String PATH_USER = "/user";
     private final static String PATH_ORDER = "/order";
     private final static String PATH_GOODS = "/product";
-    private final static String PATH_DELIVER = "/product";
+    private final static String PATH_DELIVER = "/diliveryman";
     private final static String PATH_SHOP = "/shops";
 
     // 用户相关path
@@ -175,6 +175,11 @@ public class UrlConstant {
         // 获取配送员订单列表
         public static String getOrderList() {
             return getDeliverPath() + "/get_order" + getToken();
+        }
+
+        // 判断某店铺是否有配送员
+        public static String isShopHasDeliver() {
+            return getDeliverPath() + "/judge_dilivery_in_shop" + getToken();
         }
     }
 

@@ -56,64 +56,64 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tv_deliver_name_tip"
+            android:id="@+id/tv_user_name_tip"
             style="@style/order_detail_tv_l"
             android:layout_marginTop="0dp"
             android:text="@string/name_tip" />
 
         <TextView
-            android:id="@+id/tv_deliver_name"
+            android:id="@+id/tv_user_name"
             style="@style/order_detail_tv_r"
             android:layout_marginTop="0dp"
-            android:layout_toRightOf="@id/tv_deliver_name_tip" />
+            android:layout_toRightOf="@id/tv_user_name_tip" />
 
         <TextView
-            android:id="@+id/tv_deliver_phone_tip"
+            android:id="@+id/tv_user_phone_tip"
             style="@style/order_detail_tv_l"
-            android:layout_below="@id/tv_deliver_name_tip"
+            android:layout_below="@id/tv_user_name_tip"
             android:text="@string/phone_tip" />
 
         <TextView
-            android:id="@+id/tv_deliver_phone"
+            android:id="@+id/tv_user_phone"
             style="@style/order_detail_tv_r"
-            android:layout_below="@id/tv_deliver_name_tip"
-            android:layout_toRightOf="@id/tv_deliver_phone_tip" />
+            android:layout_below="@id/tv_user_name_tip"
+            android:layout_toRightOf="@id/tv_user_phone_tip" />
 
         <TextView
-            android:id="@+id/tv_deliver_addr_tip"
+            android:id="@+id/tv_user_addr_tip"
             style="@style/order_detail_tv_l"
-            android:layout_below="@id/tv_deliver_phone_tip"
+            android:layout_below="@id/tv_user_phone_tip"
             android:text="@string/address_tip" />
 
         <TextView
-            android:id="@+id/tv_deliver_addr"
+            android:id="@+id/tv_user_addr"
             style="@style/order_detail_tv_r"
-            android:layout_below="@id/tv_deliver_phone_tip"
-            android:layout_toRightOf="@id/tv_deliver_addr_tip" />
+            android:layout_below="@id/tv_user_phone_tip"
+            android:layout_toRightOf="@id/tv_user_addr_tip" />
 
         <TextView
             android:id="@+id/tv_deliver_time_tip"
             style="@style/order_detail_tv_l"
-            android:layout_below="@id/tv_deliver_addr"
+            android:layout_below="@id/tv_user_addr"
             android:text="@string/order_delivertime_tip" />
 
         <TextView
             android:id="@+id/tv_deliver_time"
             style="@style/order_detail_tv_r"
-            android:layout_below="@id/tv_deliver_addr"
+            android:layout_below="@id/tv_user_addr"
             android:layout_toRightOf="@id/tv_deliver_time_tip" />
 
         <TextView
-            android:id="@+id/tv_deliver_remark_tip"
+            android:id="@+id/tv_remark_tip"
             style="@style/order_detail_tv_l"
             android:layout_below="@id/tv_deliver_time_tip"
             android:text="@string/remark_tip" />
 
         <TextView
-            android:id="@+id/tv_deliver_remark"
+            android:id="@+id/tv_remark"
             style="@style/order_detail_tv_r"
             android:layout_below="@id/tv_deliver_time_tip"
-            android:layout_toRightOf="@id/tv_deliver_remark_tip" />
+            android:layout_toRightOf="@id/tv_remark_tip" />
     </RelativeLayout>
 
     <View
@@ -138,6 +138,7 @@
     <RelativeLayout style="@style/order_list_pay">
 
         <TextView
+            android:id="@+id/tv_wepay_method"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/order_up_pay"

@@ -29,6 +29,8 @@ public class OrderListAdapter extends MyBaseAdapter {
     private String rmb;
     private String orderNumTip;
     private String goodsNumTip;
+    private String orderUpPay;
+    private String orderOffPay;
 
     private List<OrderItem> mDatas;
     private Fragment fragment;
@@ -46,6 +48,8 @@ public class OrderListAdapter extends MyBaseAdapter {
         rmb = cxt.getString(R.string.rmb);
         orderNumTip = cxt.getString(R.string.order_number_tip);
         goodsNumTip = cxt.getString(R.string.order_goods_num_tip);
+        orderUpPay = cxt.getString(R.string.order_up_pay);
+        orderOffPay = cxt.getString(R.string.order_off_pay);
         this.fragment = fragment;
     }
 
@@ -58,6 +62,12 @@ public class OrderListAdapter extends MyBaseAdapter {
         vh.tv_order_number.setText(orderNumTip + bean.getSerial_number());
         vh.tv_order_time.setText(bean.getOrder_time());
         vh.tv_order_amount.setText(rmb + bean.getOrder_amount());
+        // 0，1为线上付款；2为线下付款
+        if (bean.getWepay_method() == 2) {
+            vh.tv_wepay_method.setText(orderOffPay);
+        } else {
+            vh.tv_wepay_method.setText(orderUpPay);
+        }
         vh.llayout_goods.removeAllViews();
         // 设置订单商品数据
         if (bean.getDetails() != null && bean.getDetails().size() > 0) {
@@ -128,6 +138,7 @@ public class OrderListAdapter extends MyBaseAdapter {
         TextView tv_order_number;
         TextView tv_order_time;
         TextView tv_order_amount;
+        TextView tv_wepay_method;
         LinearLayout llayout_goods;
         FrameLayout flayout_bottom;
         TextView tv_order_finish;
@@ -139,6 +150,7 @@ public class OrderListAdapter extends MyBaseAdapter {
             tv_order_number = bind(v, R.id.tv_order_number);
             tv_order_time = bind(v, R.id.tv_order_time);
             tv_order_amount = bind(v, R.id.tv_order_amount);
+            tv_wepay_method = bind(v, R.id.tv_wepay_method);
             llayout_goods = bind(v, R.id.llayout_goods);
 
             llayout_goods.setOnClickListener(new View.OnClickListener() {

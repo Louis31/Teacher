@@ -104,13 +104,13 @@ public class OrderModelImpl implements IOrderModel {
     // 是否有配送员
     @Override
     public void isHasDeliver(final Map<String, Object> params, @NonNull final OrderListCallback callback) {
-        XUtils.Get(UrlConstant.User.getDeliverList(), params, new XUtilsCallback<ResultData>(callback) {
+        XUtils.Get(UrlConstant.Deliver.isShopHasDeliver(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
-                    if (!result.getRetmsg().isJsonNull()) {
+                if (result.isSuccess()) {
+                    /*if (!result.getRetmsg().isJsonNull()) {
                         List<Deliver> list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), Deliver.class);
                         for (Deliver bean : list) {
                             if (TypeConstant.Deliver.CONTINUE == bean.getDiliveryman_status()) {
@@ -118,7 +118,7 @@ public class OrderModelImpl implements IOrderModel {
                                 return;
                             }
                         }
-                    }
+                    }*/
                     callback.checkHasDeliver(false, -1, -1);
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
