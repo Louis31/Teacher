@@ -100,6 +100,7 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
 
     @Override
     public void addDeliverSuccess(Deliver deliver) {
+        mView.showLoadingDialog(false);
         mView.updateListView(deliver);
     }
 

@@ -55,7 +55,7 @@ public class OrderListAdapter extends MyBaseAdapter {
 
         ItemViewHolder vh = (ItemViewHolder) holder;
         // 设置订单数据
-        vh.tv_order_number.setText(orderNumTip + bean.getOrder_id());
+        vh.tv_order_number.setText(orderNumTip + bean.getSerial_number());
         vh.tv_order_time.setText(bean.getOrder_time());
         vh.tv_order_amount.setText(rmb + bean.getOrder_amount());
         vh.llayout_goods.removeAllViews();

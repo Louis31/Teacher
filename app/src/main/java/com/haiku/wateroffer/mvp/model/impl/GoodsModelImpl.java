@@ -36,9 +36,8 @@ public class GoodsModelImpl implements IGoodsModel {
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.getRetcode() == BaseConstant.SUCCESS) {
                     List<Goods> list = new ArrayList<>();
-                    JsonArray jArry = result.getRetmsg().getAsJsonArray();
-                    if (!GsonUtils.isJsonArrayEmpty(jArry)) {
-                        list = GsonUtils.gsonToList(jArry.toString(), Goods.class);
+                    if (!result.getRetmsg().isJsonNull()) {
+                        list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), Goods.class);
                     }
                     callback.getListDataSuccess(list);
                 } else {

@@ -30,13 +30,13 @@ public class ImageUtils {
 
     // 加载图片
     public static void showImage(Fragment fragment, String url, ImageView iv) {
-        Glide.with(fragment).load(url).placeholder(LOADING_IMG)
+        Glide.with(fragment).load(getUrl(url)).placeholder(LOADING_IMG)
                 .error(ERROR_IMG).into(iv);
     }
 
     // 加载图片
     public static void showImage(Activity activity, String url, ImageView iv) {
-        Glide.with(activity).load(url).placeholder(LOADING_IMG)
+        Glide.with(activity).load(getUrl(url)).placeholder(LOADING_IMG)
                 .error(ERROR_IMG).into(iv);
     }
 
@@ -50,6 +50,13 @@ public class ImageUtils {
                 iv.setImageDrawable(circularBitmapDrawable);
             }
         });
+    }
+
+    private static String getUrl(String url) {
+        if (!url.startsWith("http://")) {
+            return "http://" + url;
+        }
+        return url;
     }
 
 

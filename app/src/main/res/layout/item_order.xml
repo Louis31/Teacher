@@ -64,7 +64,7 @@
         <TextView
             android:id="@+id/tv_order_cancel"
             style="@style/order_list_bottom_btn"
-            android:text="@string/order_cancel"
+            android:text="@string/order_cancel_send"
             android:visibility="gone" />
 
         <TextView

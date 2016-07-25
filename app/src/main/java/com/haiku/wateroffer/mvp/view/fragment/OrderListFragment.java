@@ -178,11 +178,26 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
         mDatas.remove(mItemPos);
         mAdapter.notifyItemRemoved(mItemPos);
         Intent intent = new Intent(ActionConstant.REFRESH_ORDER_LIST);
+        // 当前为全部订单页面
         if (mType.equals(TypeConstant.Order.ALL)) {
-            // 当前为全部订单页面
-            intent.putExtra("type", mDatas.get(mItemPos).getStatus());
+            String status = mDatas.get(mItemPos).getStatus();
+            // 当前为配送中，取消配送后通知更新待发货
+            if (status.equals(TypeConstant.Order.DELIVERING)) {
+                intent.putExtra("type", TypeConstant.Order.PAYED);
+            }
+            // 当前为待发货，派送后通知更新配送中
+            else if (status.equals(TypeConstant.Order.PAYED)) {
+                intent.putExtra("type", TypeConstant.Order.DELIVERING);
+            }
         } else {
-            intent.putExtra("type", mType);
+            // 当前为配送中，取消配送后通知更新待发货
+            if (mType.equals(TypeConstant.Order.DELIVERING)) {
+                intent.putExtra("type", TypeConstant.Order.PAYED);
+            }
+            // 当前为待发货，派送后通知更新配送中
+            else if (mType.equals(TypeConstant.Order.PAYED)) {
+                intent.putExtra("type", TypeConstant.Order.DELIVERING);
+            }
         }
         // 发送广播
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);

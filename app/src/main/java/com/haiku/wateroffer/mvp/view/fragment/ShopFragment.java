@@ -18,9 +18,7 @@ import android.widget.TextView;
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.data.FileUtils;
-import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.ui.ActivityUtils;
-import com.haiku.wateroffer.common.util.ui.DialogUtils;
 import com.haiku.wateroffer.common.util.ui.ImageUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.BaseConstant;
@@ -38,11 +36,8 @@ import com.haiku.wateroffer.mvp.view.activity.ShopAddressActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopNameActivity;
 import com.haiku.wateroffer.mvp.view.dialog.ActionSheetDialog;
 import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
-import com.haiku.wateroffer.mvp.view.widget.CircleImageView;
 
 import java.io.File;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * 我的小店Fragment

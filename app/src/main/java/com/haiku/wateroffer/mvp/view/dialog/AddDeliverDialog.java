@@ -53,6 +53,14 @@ public class AddDeliverDialog {
         dialog.show();
     }
 
+    public void dismiss(){
+        dialog.dismiss();
+    }
+
+    public boolean isShowing(){
+        return dialog.isShowing();
+    }
+
     public AddDeliverDialog setClickListener(View.OnClickListener clickListener) {
         btn_confirm.setOnClickListener(clickListener);
         return this;

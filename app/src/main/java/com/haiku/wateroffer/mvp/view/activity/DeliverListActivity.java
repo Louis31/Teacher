@@ -47,6 +47,8 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     private int colorBlack;
     private int mCurrentPos;
 
+    private AddDeliverDialog mAddDeliverDialog;
+
     private List<Deliver> mDatas;
     private DeliverListAdapter mListAdapter;// 配送员列表Adapter
     private DeliverListAdapter mEditAdapter;// 编辑列表Adapter
@@ -177,6 +179,9 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     // 更新列表界面
     @Override
     public void updateListView(Deliver bean) {
+        if (mAddDeliverDialog != null && mAddDeliverDialog.isShowing()) {
+            mAddDeliverDialog.dismiss();
+        }
         if (bean != null) {
             mDatas.add(bean);
             mListAdapter.notifyItemInserted(mDatas.size() - 1);
@@ -201,11 +206,11 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     }
 
     private void showAddDeliverView() {
-        final AddDeliverDialog dialog = new AddDeliverDialog(mContext).builder();
-        dialog.setClickListener(new View.OnClickListener() {
+        mAddDeliverDialog = new AddDeliverDialog(mContext).builder();
+        mAddDeliverDialog.setClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phone = dialog.getInputText();
+                String phone = mAddDeliverDialog.getInputText();
                 if (!ValidatorUtils.isMobile(phone)) {
                     ToastUtils.getInstant().showToast(R.string.msg_phone_invalid);
                 } else {

@@ -3,6 +3,7 @@ package com.haiku.wateroffer.mvp.model.impl;
 import android.support.annotation.NonNull;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.haiku.wateroffer.App;
 import com.haiku.wateroffer.bean.Bill;
@@ -22,6 +23,7 @@ import com.haiku.wateroffer.mvp.model.IUserModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * User Model实现类
@@ -77,9 +79,14 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.getRetcode() == BaseConstant.SUCCESS) {
                     List<Bill> list = new ArrayList<Bill>();
-                    JsonArray jArry = result.getRetmsg().getAsJsonArray();
-                    if (!GsonUtils.isJsonArrayEmpty(jArry)) {
-                        list = GsonUtils.gsonToList(jArry.toString(), Bill.class);
+                    if (!result.getRetmsg().isJsonNull()) {
+                        JsonObject jobj = result.getRetmsg().getAsJsonObject();
+                        Set<Map.Entry<String, JsonElement>> set = jobj.entrySet();
+                        for (Map.Entry<String, JsonElement> entry : set) {
+                            JsonElement je = entry.getValue();
+                            Bill bill = GsonUtils.gsonToBean(je.toString(), Bill.class);
+                            list.add(bill);
+                        }
                     }
                     callback.getBillSuccess(list);
                 } else {
@@ -117,9 +124,8 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.getRetcode() == BaseConstant.SUCCESS) {
                     List<Deliver> list = new ArrayList<Deliver>();
-                    JsonArray jArry = result.getRetmsg().getAsJsonArray();
-                    if (!GsonUtils.isJsonArrayEmpty(jArry)) {
-                        list = GsonUtils.gsonToList(jArry.toString(), Deliver.class);
+                    if (!result.getRetmsg().isJsonNull()) {
+                        list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), Deliver.class);
                     }
                     callback.getDeliverListSuccess(list);
                 } else {

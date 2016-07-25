@@ -20,6 +20,8 @@ import com.haiku.wateroffer.mvp.contract.MyBillContract;
 import com.haiku.wateroffer.mvp.persenter.MyBillPresenter;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.view.adapter.BillListAdapter;
+import com.haiku.wateroffer.mvp.view.divider.BroadDividerItem;
+import com.haiku.wateroffer.mvp.view.divider.DividerItem;
 import com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout;
 import com.haiku.wateroffer.mvp.view.widget.Titlebar;
 
@@ -157,6 +159,7 @@ public class MyBillActivity extends BaseActivity implements MyBillContract.View 
         });
 
         mRefreshLayout.setPageSize(1000);
+        mRefreshLayout.addItemDecoration(new DividerItem(mContext));
         mRefreshLayout.setAdapter(mAdapter);
         mRefreshLayout.setLinearLayout();
         mRefreshLayout.setPullRefreshEnable(false);
