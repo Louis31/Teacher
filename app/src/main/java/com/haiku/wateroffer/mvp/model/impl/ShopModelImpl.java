@@ -1,0 +1,74 @@
+package com.haiku.wateroffer.mvp.model.impl;
+
+import android.support.annotation.NonNull;
+
+import com.haiku.wateroffer.App;
+import com.haiku.wateroffer.bean.ResultData;
+import com.haiku.wateroffer.common.util.data.LogUtils;
+import com.haiku.wateroffer.common.util.net.IRequestCallback;
+import com.haiku.wateroffer.common.util.net.XUtils;
+import com.haiku.wateroffer.common.util.net.XUtilsCallback;
+import com.haiku.wateroffer.constant.UrlConstant;
+import com.haiku.wateroffer.mvp.model.IShopModel;
+
+import java.util.Map;
+
+/**
+ * User Model实现类
+ * Created by hyming on 2016/7/6.
+ */
+public class ShopModelImpl extends BaseModelImpl implements IShopModel {
+    private final String TAG = "ShopModelImpl";
+
+    // 获取店铺信息
+    @Override
+    public void getShopInfo(Map<String, Object> params, @NonNull final ShopCallback callback) {
+        XUtils.Get(UrlConstant.Shop.shopInfoUrl(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.isSuccess()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
+
+    // 修改店铺名称
+    @Override
+    public void changeShopName(Map<String, Object> params, @NonNull final IRequestCallback callback) {
+        XUtils.Post(UrlConstant.Shop.changeShopNameUrl(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.isSuccess()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
+
+    // 获取店铺QQ
+    @Override
+    public void getShopQQ(Map<String, Object> params) {
+
+    }
+
+    // 修改店铺QQ
+    @Override
+    public void changeShopQQ(Map<String, Object> params) {
+
+    }
+
+    // 修改店铺联系电话
+    @Override
+    public void changeShopPhone(Map<String, Object> params) {
+
+    }
+}

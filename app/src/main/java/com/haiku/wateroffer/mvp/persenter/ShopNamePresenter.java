@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.mvp.contract.ShopNameContract;
-import com.haiku.wateroffer.mvp.model.IUserModel;
+import com.haiku.wateroffer.mvp.model.IShopModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,14 +14,17 @@ import java.util.Map;
  * Created by hyming on 2016/7/13.
  */
 public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCallback {
+    private final int REQUEST_ADD = 1;
+    private final int REQUEST_CHANGE = 2;
+    private int requesType;
 
     @NonNull
-    private final IUserModel mUserModel;
+    private final IShopModel mShopModel;
     @NonNull
     private final ShopNameContract.View mView;
 
-    public ShopNamePresenter(@NonNull IUserModel userModel, @NonNull ShopNameContract.View view) {
-        this.mUserModel = userModel;
+    public ShopNamePresenter(@NonNull IShopModel shopModel, @NonNull ShopNameContract.View view) {
+        this.mShopModel = shopModel;
         this.mView = view;
         mView.setPresenter(this);
     }
@@ -31,11 +34,22 @@ public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCa
      */
     @Override
     public void addShopName(int uid, String shopName) {
+        requesType = REQUEST_ADD;
         mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("shopname", shopName);
-        mUserModel.addShopName(params, this);
+        // mShopModel.addShopName(params, this);
+    }
+
+    @Override
+    public void changeShopName(int uid, String shopName) {
+        requesType = REQUEST_CHANGE;
+        mView.showLoadingDialog(true);
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", uid);
+        params.put("shopname", shopName);
+        mShopModel.changeShopName(params, this);
     }
 
     /**
@@ -43,7 +57,11 @@ public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCa
      */
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
-        mUserModel.addShopName(params, this);
+        if (requesType == REQUEST_ADD) {
+            // mShopModel.changeShopName(params, this);
+        } else if (requesType == REQUEST_CHANGE) {
+            mShopModel.changeShopName(params, this);
+        }
     }
 
     // 成功回调

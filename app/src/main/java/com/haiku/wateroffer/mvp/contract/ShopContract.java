@@ -13,7 +13,7 @@ public interface ShopContract {
         void showLoadingDialog(boolean isShow);
 
         // 设置店铺logo
-        void setLogo(String logo);
+        //void setLogo(String logo);
 
         // 显示信息
         void showMessage(String msg);
@@ -21,6 +21,8 @@ public interface ShopContract {
 
     interface Presenter extends BasePresenter {
         // 修改店铺logo
-        void changeShopLogo(int uid, String data);
+        //void changeShopLogo(int uid, String data);
+        // 获取店铺信息
+        void getShopInfo(int uid);
     }
 }

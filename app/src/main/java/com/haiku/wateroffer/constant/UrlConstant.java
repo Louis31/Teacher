@@ -18,6 +18,7 @@ public class UrlConstant {
     private final static String PATH_ORDER = "/order";
     private final static String PATH_GOODS = "/product";
     private final static String PATH_DELIVER = "/product";
+    private final static String PATH_SHOP = "/shops";
 
     // 用户相关path
     private static String getUserPath() {
@@ -37,6 +38,11 @@ public class UrlConstant {
     // 配送相关Path
     private static String getDeliverPath() {
         return HOST + PATH_DELIVER;
+    }
+
+    // 店铺相关
+    private static String getShopPath() {
+        return HOST + PATH_SHOP;
     }
 
     /**
@@ -169,6 +175,21 @@ public class UrlConstant {
         // 获取配送员订单列表
         public static String getOrderList() {
             return getDeliverPath() + "/get_order" + getToken();
+        }
+    }
+
+    /**
+     * 店铺相关
+     */
+    public static class Shop {
+        // 获取店铺信息
+        public static String shopInfoUrl() {
+            return getOrderPath() + "/get_shop_info" + getToken();
+        }
+
+        // 修改店铺名称
+        public static String changeShopNameUrl() {
+            return getShopPath() + "/changeShopName" + getToken();
         }
     }
 }

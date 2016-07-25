@@ -2,6 +2,7 @@ package com.haiku.wateroffer.bean;
 
 import com.google.gson.JsonElement;
 import com.haiku.wateroffer.common.util.data.JsonResponseParser;
+import com.haiku.wateroffer.constant.BaseConstant;
 
 import org.xutils.http.annotation.HttpResponse;
 
@@ -30,6 +31,10 @@ public class ResultData implements Serializable {
 
     public void setRetmsg(JsonElement retmsg) {
         this.retmsg = retmsg;
+    }
+
+    public boolean isSuccess() {
+        return retcode == BaseConstant.SUCCESS;
     }
 
     @Override

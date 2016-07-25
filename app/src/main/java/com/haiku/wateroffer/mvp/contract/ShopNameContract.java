@@ -22,5 +22,8 @@ public interface ShopNameContract {
     interface Presenter extends BasePresenter {
         // 添加店铺名称
         void addShopName(int uid, String shopName);
+
+        // 修改店铺名称
+        void changeShopName(int uid, String shopName);
     }
 }

@@ -18,7 +18,7 @@ import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.contract.ShopNameContract;
-import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
+import com.haiku.wateroffer.mvp.model.impl.ShopModelImpl;
 import com.haiku.wateroffer.mvp.persenter.ShopNamePresenter;
 import com.haiku.wateroffer.mvp.view.widget.Titlebar;
 
@@ -33,6 +33,7 @@ import org.xutils.view.annotation.ViewInject;
 @ContentView(R.layout.act_shop_name)
 public class ShopNameActivity extends BaseActivity implements ShopNameContract.View {
 
+    private int uid;
     private boolean isUpdate;
     private String mShopName;
     private ShopNameContract.Presenter mPresenter;
@@ -53,7 +54,6 @@ public class ShopNameActivity extends BaseActivity implements ShopNameContract.V
         if (TextUtils.isEmpty(shopName)) {
             ToastUtils.getInstant().showToast(R.string.msg_shop_name_empty);
         } else {
-            int uid = UserManager.getInstance().getUser().getUid();
             mPresenter.addShopName(uid, shopName);
         }
     }
@@ -63,13 +63,13 @@ public class ShopNameActivity extends BaseActivity implements ShopNameContract.V
         super.onCreate(savedInstanceState);
         initDatas();
         initViews();
-        new ShopNamePresenter(new UserModelImpl(), this);
+        new ShopNamePresenter(new ShopModelImpl(), this);
     }
 
     private void initDatas() {
         isUpdate = getIntent().getBooleanExtra("isUpdate", false);
+        uid = UserManager.getInstance().getUser().getUid();
     }
-
 
     private void initViews() {
         mTitlebar.initDatas(R.string.shop_name, true);
@@ -90,9 +90,8 @@ public class ShopNameActivity extends BaseActivity implements ShopNameContract.V
                         ToastUtils.getInstant().showToast(R.string.msg_shop_name_empty);
                     } else {
                         // 保存修改
-                        int uid = UserManager.getInstance().getUser().getUid();
                         mShopName = shopName;
-                        mPresenter.addShopName(uid, shopName);
+                        mPresenter.changeShopName(uid, shopName);
                     }
                 }
             });

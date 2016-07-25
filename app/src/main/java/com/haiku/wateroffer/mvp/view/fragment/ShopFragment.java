@@ -24,6 +24,7 @@ import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.base.LazyFragment;
 import com.haiku.wateroffer.mvp.contract.ShopContract;
+import com.haiku.wateroffer.mvp.model.impl.ShopModelImpl;
 import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
 import com.haiku.wateroffer.mvp.persenter.ShopPresenter;
 import com.haiku.wateroffer.mvp.view.activity.ContributionActivity;
@@ -45,6 +46,8 @@ import java.io.File;
  */
 public class ShopFragment extends LazyFragment implements View.OnClickListener, ShopContract.View {
     private Context mContext;
+    private int uid;
+
     private String mImagePath;
     private Uri mImageUri;
 
@@ -76,7 +79,8 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             rootView = inflater.inflate(R.layout.fragment_shop, container, false);
             initDatas();
             initViews();
-            new ShopPresenter(new UserModelImpl(), this);
+            new ShopPresenter(new ShopModelImpl(), this);
+            mPresenter.getShopInfo(uid);
         }
         //因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
         ViewGroup parent = (ViewGroup) rootView.getParent();
@@ -93,7 +97,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
 
     // 初始化数据
     private void initDatas() {
-
+        uid = UserManager.getInstance().getUser().getUid();
     }
 
     // 初始化界面
@@ -272,7 +276,8 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             mImagePath = "";
             // 上传图片
             int uid = UserManager.getInstance().getUser().getUid();
-            mPresenter.changeShopLogo(uid, base64);
+            // TODO
+            //mPresenter.changeShopLogo(uid, base64);
         }
     }
 
@@ -288,10 +293,10 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         }
     }
 
-    @Override
+ /*   @Override
     public void setLogo(String logo) {
         ImageUtils.showCircleImage(getContext(), logo, iv_shop_logo);
-    }
+    }*/
 
     @Override
     public void showMessage(String msg) {
