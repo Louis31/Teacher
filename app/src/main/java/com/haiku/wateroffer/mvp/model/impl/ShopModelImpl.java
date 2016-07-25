@@ -8,6 +8,7 @@ import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.common.util.net.XUtils;
 import com.haiku.wateroffer.common.util.net.XUtilsCallback;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.constant.UrlConstant;
 import com.haiku.wateroffer.mvp.model.IShopModel;
 
@@ -19,6 +20,23 @@ import java.util.Map;
  */
 public class ShopModelImpl extends BaseModelImpl implements IShopModel {
     private final String TAG = "ShopModelImpl";
+
+    // 获取验证码
+    @Override
+    public void getVerifyCode(Map<String, Object> params, @NonNull final IPhoneCallback callback) {
+        XUtils.Get(UrlConstant.smsCodeUrl(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                    callback.getVerifyCodeSuccess(result.getRetmsg().getAsString());
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
 
     // 获取店铺信息
     @Override
@@ -68,7 +86,18 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
 
     // 修改店铺联系电话
     @Override
-    public void changeShopPhone(Map<String, Object> params) {
-
+    public void changeShopPhone(Map<String, Object> params, @NonNull final IPhoneCallback callback) {
+        XUtils.Post(UrlConstant.Shop.changeShopPhoneUrl(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.isSuccess()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
     }
 }

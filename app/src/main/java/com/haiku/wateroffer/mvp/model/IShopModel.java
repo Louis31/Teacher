@@ -15,11 +15,19 @@ public interface IShopModel {
     interface ShopCallback extends IRequestCallback {
     }
 
+    // 联系电话回调
+    interface IPhoneCallback extends IRequestCallback {
+        void getVerifyCodeSuccess(String verifyCode);
+    }
+
+    // 获取验证码
+    void getVerifyCode(Map<String, Object> params, @NonNull IPhoneCallback callback);
+
     // 获取店铺信息
     void getShopInfo(Map<String, Object> params, @NonNull ShopCallback callback);
 
     // 修改店铺名称
-    void changeShopName(Map<String, Object> params, IRequestCallback callback);
+    void changeShopName(Map<String, Object> params, @NonNull IRequestCallback callback);
 
     // 获取店铺QQ
     void getShopQQ(Map<String, Object> params);
@@ -28,5 +36,5 @@ public interface IShopModel {
     void changeShopQQ(Map<String, Object> params);
 
     // 修改店铺联系电话
-    void changeShopPhone(Map<String, Object> params);
+    void changeShopPhone(Map<String, Object> param, @NonNull IPhoneCallback callback);
 }

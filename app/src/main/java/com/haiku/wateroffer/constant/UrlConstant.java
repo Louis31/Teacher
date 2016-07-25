@@ -182,14 +182,19 @@ public class UrlConstant {
      * 店铺相关
      */
     public static class Shop {
-        // 获取店铺信息
+        // 获取店铺信息，Get
         public static String shopInfoUrl() {
             return getOrderPath() + "/get_shop_info" + getToken();
         }
 
-        // 修改店铺名称
+        // 修改店铺名称，Post
         public static String changeShopNameUrl() {
             return getShopPath() + "/changeShopName" + getToken();
+        }
+
+        // 修改店铺联系电话，Post
+        public static String changeShopPhoneUrl() {
+            return getShopPath() + "/changeShopPhone" + getToken();
         }
     }
 }

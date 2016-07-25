@@ -25,7 +25,7 @@ public interface PhoneChangeContract {
 
     interface Presenter extends BasePresenter {
         // 登录操作
-        void changePhone(int uid, String phone, String valicode);
+        void changePhone(int uid, String old_phone, String phone, String code);
 
         // 获取短信验证操作
         void getVerifyCode(String phone);

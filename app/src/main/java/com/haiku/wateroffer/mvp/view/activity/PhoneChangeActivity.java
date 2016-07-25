@@ -17,7 +17,7 @@ import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.contract.PhoneChangeContract;
-import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
+import com.haiku.wateroffer.mvp.model.impl.ShopModelImpl;
 import com.haiku.wateroffer.mvp.persenter.PhoneChangePresenter;
 import com.haiku.wateroffer.mvp.view.widget.Titlebar;
 
@@ -55,7 +55,7 @@ public class PhoneChangeActivity extends BaseActivity implements PhoneChangeCont
     // 获取短信验证码
     @Event(R.id.tv_verify_code)
     private void verifyCodeClick(View v) {
-        String phone = et_phone_old.getText().toString().trim();
+        String phone = et_phone_new.getText().toString().trim();
         // 判断手机号码格式是否正确
         if (!ValidatorUtils.isMobile(phone)) {
             ToastUtils.getInstant().showToast(R.string.msg_phone_invalid);
@@ -71,7 +71,7 @@ public class PhoneChangeActivity extends BaseActivity implements PhoneChangeCont
         super.onCreate(savedInstanceState);
         initViews();
         // 创建Presenter
-        new PhoneChangePresenter(new UserModelImpl(), this);
+        new PhoneChangePresenter(new ShopModelImpl(), this);
     }
 
     @Override
@@ -92,15 +92,16 @@ public class PhoneChangeActivity extends BaseActivity implements PhoneChangeCont
             public void onRightTextClick() {
                 // 保存修改
                 // 判断输入的数据是否正确
+                String old_phone = et_phone_old.getText().toString().trim();
                 String phone = et_phone_new.getText().toString().trim();
                 String valicode = et_verify_code.getText().toString().trim();// 判断手机号码格式是否正确
-                if (!ValidatorUtils.isMobile(phone)) {
+                if (!ValidatorUtils.isMobile(old_phone) || !ValidatorUtils.isMobile(phone)) {
                     ToastUtils.getInstant().showToast(R.string.msg_phone_invalid);
                 } else if (TextUtils.isEmpty(valicode)) {
                     ToastUtils.getInstant().showToast(R.string.msg_verifycode_invalid);
                 } else {
                     int uid = UserManager.getInstance().getUser().getUid();
-                    mPresenter.changePhone(uid, phone, valicode);
+                    mPresenter.changePhone(uid, old_phone, phone, valicode);
                 }
             }
         });
