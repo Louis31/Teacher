@@ -2,7 +2,6 @@ package com.haiku.wateroffer.mvp.model.impl;
 
 import android.support.annotation.NonNull;
 
-import com.google.gson.JsonArray;
 import com.haiku.wateroffer.App;
 import com.haiku.wateroffer.bean.Deliver;
 import com.haiku.wateroffer.bean.OrderItem;
@@ -39,7 +38,7 @@ public class OrderModelImpl implements IOrderModel {
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.getRetcode() == BaseConstant.SUCCESS) {
                     List<OrderItem> list = new ArrayList<>();
-                    if(!result.getRetmsg().isJsonNull()){
+                    if (!result.getRetmsg().isJsonNull()) {
                         list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), OrderItem.class);
                     }
                     callback.getListDataSuccess(list);
@@ -111,9 +110,8 @@ public class OrderModelImpl implements IOrderModel {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.getRetcode() == BaseConstant.SUCCESS) {
-                    JsonArray jArry = result.getRetmsg().getAsJsonArray();
-                    if (!GsonUtils.isJsonArrayEmpty(jArry)) {
-                        List<Deliver> list = GsonUtils.gsonToList(jArry.toString(), Deliver.class);
+                    if (!result.getRetmsg().isJsonNull()) {
+                        List<Deliver> list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), Deliver.class);
                         for (Deliver bean : list) {
                             if (TypeConstant.Deliver.CONTINUE == bean.getDiliveryman_status()) {
                                 callback.checkHasDeliver(true, (Integer) params.get("order_id"), (Integer) params.get("uid"));
@@ -122,6 +120,27 @@ public class OrderModelImpl implements IOrderModel {
                         }
                     }
                     callback.checkHasDeliver(false, -1, -1);
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
+
+    // 获取配送员订单列表
+    @Override
+    public void getDeliverOrder(Map<String, Object> params, @NonNull final OrderListCallback callback) {
+        XUtils.Get(UrlConstant.Deliver.getOrderList(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                    List<OrderItem> list = new ArrayList<>();
+                    if (!result.getRetmsg().isJsonNull()) {
+                        list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), OrderItem.class);
+                    }
+                    callback.getListDataSuccess(list);
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
                 }

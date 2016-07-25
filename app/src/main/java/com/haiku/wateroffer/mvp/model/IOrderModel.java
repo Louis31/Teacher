@@ -41,4 +41,7 @@ public interface IOrderModel {
 
     // 是否有配送员
     void isHasDeliver(Map<String, Object> params, @NonNull OrderListCallback callback);
+
+    // 获取配送员订单列表
+    void getDeliverOrder(Map<String, Object> params, @NonNull OrderListCallback callback);
 }
