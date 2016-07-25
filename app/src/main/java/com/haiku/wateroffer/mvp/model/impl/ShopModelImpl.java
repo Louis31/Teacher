@@ -125,4 +125,27 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
             }
         });
     }
+
+    // 修改店铺logoo
+    @Override
+    public void changeShopLogo(Map<String, Object> params, @NonNull final ShopCallback callback) {
+        XUtils.Post(UrlConstant.Shop.changeShopLogo(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                    // ResultData{retcode=0, retmsg={"logoUrl":"http://sendwater.api.youdians.com/uploads/8/05f03c7b0f90889dc8a9ba8b158ecbf7."}}
+                    String logoUrl = "";
+                    if (!result.getRetmsg().isJsonNull()) {
+                        JsonObject jObj = result.getRetmsg().getAsJsonObject();
+                        logoUrl = jObj.get("logoUrl").getAsString();
+                    }
+                    callback.uploadLogoSuccess(logoUrl);
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
 }

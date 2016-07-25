@@ -206,5 +206,10 @@ public class UrlConstant {
         public static String changeShopQQUrl() {
             return getShopPath() + "/changeShopQQ" + getToken();
         }
+
+        // 修改店铺logo，Post
+        public static String changeShopLogo() {
+            return getUserPath() + "/modifyShopLogo" + getToken();
+        }
     }
 }

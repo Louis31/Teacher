@@ -13,6 +13,7 @@ import java.util.Map;
 public interface IShopModel {
     // 店铺相关回调
     interface ShopCallback extends IRequestCallback {
+        void uploadLogoSuccess(String logo);
     }
 
     // 联系电话回调
@@ -41,4 +42,7 @@ public interface IShopModel {
 
     // 修改店铺联系电话
     void changeShopPhone(Map<String, Object> param, @NonNull IPhoneCallback callback);
+
+    // 修改店铺logo
+    void changeShopLogo(Map<String, Object> params, @NonNull ShopCallback callback);
 }

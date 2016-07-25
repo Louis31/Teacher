@@ -283,8 +283,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             mImagePath = "";
             // 上传图片
             int uid = UserManager.getInstance().getUser().getUid();
-            // TODO
-            //mPresenter.changeShopLogo(uid, base64);
+            mPresenter.changeShopLogo(uid, base64);
         }
     }
 
@@ -300,10 +299,10 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         }
     }
 
- /*   @Override
+    @Override
     public void setLogo(String logo) {
         ImageUtils.showCircleImage(getContext(), logo, iv_shop_logo);
-    }*/
+    }
 
     @Override
     public void showMessage(String msg) {

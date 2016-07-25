@@ -2,7 +2,9 @@ package com.haiku.wateroffer.mvp.persenter;
 
 import android.support.annotation.NonNull;
 
+import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.mvp.contract.ShopContract;
+import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IShopModel;
 
 import java.util.HashMap;
@@ -13,9 +15,9 @@ import java.util.Map;
  * Created by hyming on 2016/7/19.
  */
 public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCallback {
-
-    //  @NonNull
-    // private final IUserModel mUserModel;
+    private final int REQUEST_INFO = 1;
+    private final int REQUEST_LOGO = 2;
+    private int requesType;
     @NonNull
     private final IShopModel mShopModel;
     @NonNull
@@ -33,25 +35,46 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
     // 获取店铺信息
     @Override
     public void getShopInfo(int uid) {
+        requesType = REQUEST_INFO;
         Map<String, Object> params = new HashMap<>();
         params.put("id", uid);
-        mShopModel.getShopInfo(params, this);
+        if (UserManager.isTokenEmpty()) {
+            ((IBaseModel) mShopModel).getAccessToken(params, this);
+        } else {
+            mShopModel.getShopInfo(params, this);
+        }
     }
 
-    /* @Override
+    @Override
     public void changeShopLogo(int uid, String data) {
+        requesType = REQUEST_LOGO;
         mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("data", data);
-        mUserModel.changeShopLogo(params, this);
-    }*/
+        if (UserManager.isTokenEmpty()) {
+            ((IBaseModel) mShopModel).getAccessToken(params, this);
+        } else {
+            mShopModel.changeShopLogo(params, this);
+        }
+    }
 
     /**
      * Callback 接口方法
      */
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
+        if (requesType == REQUEST_INFO) {
+            mShopModel.getShopInfo(params, this);
+        } else if (requesType == REQUEST_LOGO) {
+            mShopModel.changeShopLogo(params, this);
+        }
+    }
+
+    @Override
+    public void uploadLogoSuccess(String logo) {
+        mView.showLoadingDialog(false);
+        mView.setLogo(logo);
     }
 
     // 成功回调
