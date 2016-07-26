@@ -72,9 +72,8 @@ public class ShopNameActivity extends BaseActivity implements ShopNameContract.V
     }
 
     private void initViews() {
-        mTitlebar.initDatas(R.string.shop_name, true);
         if (isUpdate) {
-            btn_next.setVisibility(View.GONE);
+            mTitlebar.initDatas(R.string.shop_name, true);
             et_shop_name.setText(getIntent().getStringExtra("shop_name"));
             mTitlebar.showRightTextView(getString(R.string.save));
             mTitlebar.setListener(new TitlebarListenerAdapter() {
@@ -96,12 +95,8 @@ public class ShopNameActivity extends BaseActivity implements ShopNameContract.V
                 }
             });
         } else {
-            mTitlebar.setListener(new TitlebarListenerAdapter() {
-                @Override
-                public void onReturnIconClick() {
-                    finish();
-                }
-            });
+            mTitlebar.initDatas(R.string.shop_name, false);
+            btn_next.setVisibility(View.VISIBLE);
         }
     }
 
@@ -134,6 +129,7 @@ public class ShopNameActivity extends BaseActivity implements ShopNameContract.V
         } else {
             // 显示添加店铺地址页面
             startActivity(new Intent(mContext, ShopAddressActivity.class));
+            finish();
         }
     }
 

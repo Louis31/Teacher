@@ -251,7 +251,7 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
 
             @Override
             public void onRightTextClick() {
-                super.onRightTextClick();
+                checkValidate();
             }
         });
 

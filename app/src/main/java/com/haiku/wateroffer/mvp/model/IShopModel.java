@@ -36,6 +36,9 @@ public interface IShopModel {
     // 获取店铺信息
     void getShopInfo(Map<String, Object> params, @NonNull ShopCallback callback);
 
+    // 添加店铺名称
+    void addShopName(Map<String, Object> params, @NonNull IRequestCallback callback);
+
     // 修改店铺名称
     void changeShopName(Map<String, Object> params, @NonNull IRequestCallback callback);
 

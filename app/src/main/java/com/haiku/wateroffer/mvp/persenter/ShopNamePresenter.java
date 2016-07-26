@@ -41,7 +41,11 @@ public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCa
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("shopname", shopName);
-        // mShopModel.addShopName(params, this);
+        if (UserManager.isTokenEmpty()) {
+            ((IBaseModel) mShopModel).getAccessToken(params, this);
+        } else {
+            mShopModel.addShopName(params, this);
+        }
     }
 
     @Override
@@ -52,7 +56,6 @@ public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCa
         params.put("id", uid);
         params.put("shopname", shopName);
         if (UserManager.isTokenEmpty()) {
-            // 获取token
             ((IBaseModel) mShopModel).getAccessToken(params, this);
         } else {
             mShopModel.changeShopName(params, this);
@@ -65,7 +68,7 @@ public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCa
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
         if (requesType == REQUEST_ADD) {
-            // mShopModel.changeShopName(params, this);
+            mShopModel.addShopName(params, this);
         } else if (requesType == REQUEST_CHANGE) {
             mShopModel.changeShopName(params, this);
         }

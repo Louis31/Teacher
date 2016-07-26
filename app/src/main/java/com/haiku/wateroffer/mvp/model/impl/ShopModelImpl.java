@@ -11,6 +11,7 @@ import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.common.util.net.XUtils;
 import com.haiku.wateroffer.common.util.net.XUtilsCallback;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.constant.UrlConstant;
 import com.haiku.wateroffer.mvp.model.IShopModel;
 
@@ -51,6 +52,23 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
                 if (result.isSuccess()) {
                     ShopInfo bean = GsonUtils.gsonToBean(result.getRetmsg().getAsJsonObject().toString(), ShopInfo.class);
                     callback.getShopInfoSuccess(bean);
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
+
+    // 添加店铺名称
+    @Override
+    public void addShopName(Map<String, Object> params, @NonNull final IRequestCallback callback) {
+        XUtils.Post(UrlConstant.User.addShopNameUrl(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.isSuccess()) {
+                    callback.onSuccess();
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
                 }

@@ -93,6 +93,7 @@
     <orderEntry type="library" exported="" name="design-23.4.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.4.0" level="project" />
     <orderEntry type="library" exported="" name="AMap_Search_V3.3.0_20160616" level="project" />
+    <orderEntry type="library" exported="" name="AMap_2DMap_V2.9.0_20160525" level="project" />
     <orderEntry type="library" exported="" name="gson-2.6.2" level="project" />
     <orderEntry type="library" exported="" name="xutils-3.3.32" level="project" />
     <orderEntry type="library" exported="" name="materialish-progress-1.0" level="project" />

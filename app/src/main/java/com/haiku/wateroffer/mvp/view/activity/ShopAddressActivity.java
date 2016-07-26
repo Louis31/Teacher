@@ -1,5 +1,6 @@
 package com.haiku.wateroffer.mvp.view.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,14 +9,17 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.bean.GeoPoint;
+import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
@@ -29,20 +33,19 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * 店铺地址Activity
  * Created by hyming on 2016/7/13.
  */
 @ContentView(R.layout.act_shop_address)
 public class ShopAddressActivity extends BaseActivity implements ShopAddrContract.View {
+    private final int REQUEST_ADDR = 1;
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
     //声明mLocationOption对象
     public AMapLocationClientOption mLocationOption = null;
 
+    private GeoPoint mPoiItem;
     private boolean isUpdate;
     private ShopAddrContract.Presenter mPresenter;
     private ProgressDialog mDialog;
@@ -50,15 +53,31 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
     @ViewInject(R.id.titlebar)
     private Titlebar mTitlebar;
 
+    @ViewInject(R.id.et_address)
+    private EditText et_address;
+
     @ViewInject(R.id.et_address_detail)
     private EditText et_address_detail;
 
-    @ViewInject(R.id.et_address)
-    private TextView et_address;
+    @ViewInject(R.id.progressBar)
+    private ProgressBar progressBar;
+
+    @ViewInject(R.id.btn_open_shop)
+    private Button btn_open_shop;
 
     @Event(R.id.iv_location)
     private void onLocationClick(View v) {
-        startActivity(new Intent(mContext, AddressActivity.class));
+        if (mPoiItem != null) {
+            mPoiItem.setAddress(et_address.getText().toString());
+        }
+        Intent intent = new Intent(mContext, AddressActivity.class);
+        intent.putExtra("point", mPoiItem);
+        startActivity(intent);
+    }
+
+    @Event(R.id.btn_open_shop)
+    private void openShopClick(View v) {
+        addShopAddress();
     }
 
     @Override
@@ -119,8 +138,8 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
     }
 
     private void initViews() {
-        mTitlebar.initDatas(R.string.shop_address, true);
         if (isUpdate) {
+            mTitlebar.initDatas(R.string.shop_address, true);
             mTitlebar.showRightTextView(getString(R.string.save));
             mTitlebar.setListener(new TitlebarListenerAdapter() {
                 @Override
@@ -130,23 +149,12 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
 
                 @Override
                 public void onRightTextClick() {
-                    String area = et_address.getText().toString();
-                    String detail = et_address_detail.getText().toString().trim();
-
-                    if (TextUtils.isEmpty(area) || TextUtils.isEmpty(detail)) {
-                        ToastUtils.getInstant().showToast(R.string.msg_addr_invalid);
-                    } else {
-
-                    }
+                    addShopAddress();
                 }
             });
         } else {
-            mTitlebar.setListener(new TitlebarListenerAdapter() {
-                @Override
-                public void onReturnIconClick() {
-                    finish();
-                }
-            });
+            mTitlebar.initDatas(R.string.shop_address, false);
+            btn_open_shop.setVisibility(View.VISIBLE);
         }
     }
 
@@ -174,7 +182,8 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
             // 更新成功,返回页面
             finish();
         } else {
-            // TODO 添加店铺地址成功
+            startActivity(new Intent(mContext, MainActivity.class));
+            finish();
         }
     }
 
@@ -201,13 +210,14 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
             if (aMapLocation != null) {
                 if (aMapLocation.getErrorCode() == 0) {
                     //定位成功回调信息，设置相关消息
-                    aMapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
-                    aMapLocation.getLatitude();//获取纬度
-                    aMapLocation.getLongitude();//获取经度
-                    aMapLocation.getAccuracy();//获取精度信息
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date date = new Date(aMapLocation.getTime());
-                    df.format(date);//定位时间
+                    double longitude = aMapLocation.getLongitude();
+                    double latitude = aMapLocation.getLatitude();
+                    mPoiItem = new GeoPoint();
+                    mPoiItem.setAddress(aMapLocation.getAddress());
+                    mPoiItem.setCity(aMapLocation.getCity());
+                    mPoiItem.setLat(latitude);
+                    mPoiItem.setLon(longitude);
+                    progressBar.setVisibility(View.GONE);
                     et_address.setText(aMapLocation.getAddress());//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
                 } else {
                     //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
@@ -218,4 +228,24 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
             }
         }
     };
+
+    private void addShopAddress() {
+        String area = et_address.getText().toString();
+        String detail = et_address_detail.getText().toString().trim();
+
+        if (TextUtils.isEmpty(area) || TextUtils.isEmpty(detail)) {
+            ToastUtils.getInstant().showToast(R.string.msg_addr_invalid);
+        } else {
+            int uid = UserManager.getInstance().getUser().getUid();
+            mPresenter.addShopAddress(uid, area, detail);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ADDR && resultCode == Activity.RESULT_OK) {
+            String addr = data.getStringExtra("address");
+            et_address.setText(addr);
+        }
+    }
 }
