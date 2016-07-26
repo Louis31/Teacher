@@ -2,9 +2,11 @@ package com.haiku.wateroffer.common.util.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -18,6 +20,7 @@ import com.haiku.wateroffer.R;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * 图片工具类
@@ -37,6 +40,12 @@ public class ImageUtils {
     // 加载图片
     public static void showImage(Activity activity, String url, ImageView iv) {
         Glide.with(activity).load(getUrl(url)).placeholder(LOADING_IMG)
+                .error(ERROR_IMG).into(iv);
+    }
+
+    // 加载图片
+    public static void showImage(Context cxt, String url, ImageView iv) {
+        Glide.with(cxt).load(getUrl(url)).placeholder(LOADING_IMG)
                 .error(ERROR_IMG).into(iv);
     }
 
@@ -74,7 +83,7 @@ public class ImageUtils {
         ByteArrayOutputStream out = null;
         try {
             out = new ByteArrayOutputStream();
-            //30 是压缩率，表示压缩70%; 如果不压缩是100，表示压缩率为0
+            //70 是压缩率，表示压缩30%; 如果不压缩是100，表示压缩率为0
             bitmap.compress(Bitmap.CompressFormat.JPEG, 70, out);
 
             out.flush();
@@ -103,5 +112,125 @@ public class ImageUtils {
             return null;
         }
         return bitmap;
+    }
+
+    /**
+     * 根据Uri获取图片路径
+     *
+     * @param cxt
+     * @param contentUri
+     * @return
+     */
+    public static String getRealPathFromURI(Context cxt, Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = cxt.getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            ;
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
+    }
+
+    /**
+     * 根据图片路径获取bitmap
+     *
+     * @param filePath
+     * @param reqWidth
+     * @param reqHeight
+     * @return
+     */
+    public static Bitmap readBitmap(String filePath, int reqWidth, int reqHeight) {
+        try {
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(filePath, options);
+
+            // Calculate inSampleSize
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+            // Decode bitmap with inSampleSize set
+            options.inJustDecodeBounds = false;
+
+            Bitmap bm = BitmapFactory.decodeFile(filePath, options);
+            return bm;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * 计算图片缩放
+     *
+     * @param options
+     * @param reqWidth
+     * @param reqHeight
+     * @return
+     */
+    private static int calculateInSampleSize(BitmapFactory.Options options,
+                                             int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            // Calculate ratios of height and width to requested height and
+            // width
+            final int heightRatio = Math.round((float) height
+                    / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+            // Choose the smallest ratio as inSampleSize value, this will
+            // guarantee
+            // a final image with both dimensions larger than or equal to the
+            // requested height and width.
+            inSampleSize = heightRatio < widthRatio ? widthRatio : heightRatio;
+        }
+        return inSampleSize;
+    }
+
+    /**
+     * 将图片内容解析成字节数组
+     *
+     * @param inStream
+     * @return byte[]
+     * @throws Exception
+     */
+    public static byte[] readStream(InputStream inStream) throws Exception {
+        byte[] buffer = new byte[1024];
+        int len = -1;
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        while ((len = inStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, len);
+        }
+        byte[] data = outStream.toByteArray();
+        outStream.close();
+        inStream.close();
+        return data;
+
+    }
+
+    /**
+     * 把Bitmap转Byte
+     */
+    public static byte[] bitmap2Bytes(Bitmap bitmap) {
+        if (bitmap == null) {
+            //bitmap not found!!
+            return null;
+        }
+        ByteArrayOutputStream out = null;
+        try {
+            out = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            return out.toByteArray();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

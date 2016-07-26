@@ -11,6 +11,10 @@
 
     <dimen name="divider_height_default">0.6dp</dimen>
     <dimen name="divider_height_broad">12dp</dimen>
+
+    <dimen name="goods_add_image_size">50dp</dimen>
+    <dimen name="goods_add_image_margin_right">12dp</dimen>
+    <dimen name="goods_add_image_margin_bottom">6dp</dimen>
     <!-- text size -->
     <dimen name="tsize_title">18sp</dimen>
     <dimen name="tsize_big">16sp</dimen>

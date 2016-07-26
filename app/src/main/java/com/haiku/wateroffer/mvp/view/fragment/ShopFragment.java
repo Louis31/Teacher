@@ -173,9 +173,14 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                 break;
             // 跳转到店铺地址界面
             case R.id.llayout_address:
-                Intent iShopAddr = new Intent(mContext, ShopAddressActivity.class);
-                iShopAddr.putExtra("isUpdate", true);
-                startActivity(iShopAddr);
+                if (mShopInfo != null) {
+                    Intent iShopAddr = new Intent(mContext, ShopAddressActivity.class);
+                    iShopAddr.putExtra("isUpdate", true);
+                    iShopAddr.putExtra("area", mShopInfo.getMerchant_shoparea());
+                    iShopAddr.putExtra("area_detail", mShopInfo.getMerchant_shopfloorDetail());
+                    startActivity(iShopAddr);
+                }
+
                 break;
             // 跳转编辑联系电话界面
             case R.id.llayout_phone:

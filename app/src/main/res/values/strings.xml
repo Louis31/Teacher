@@ -123,7 +123,7 @@
     <string name="goods_classify">分类</string>
     <string name="goods_overrange">超出部分每件</string>
 
-    <string name="goods_add">增加商品</string>
+    <string name="goods_add">添加商品</string>
     <string name="goods_edit">编辑商品</string>
 
     <string name="hint_goods_name">请输入商品名称</string>

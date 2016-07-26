@@ -95,7 +95,7 @@ public class IOSAlertDialog {
 
     public IOSAlertDialog setInput(int type) {
         showInput = true;
-        et_input.setRawInputType(type);
+        et_input.setInputType(type);
         return this;
     }
 

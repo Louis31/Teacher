@@ -3,6 +3,7 @@ package com.haiku.wateroffer.mvp.model;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.Goods;
+import com.haiku.wateroffer.bean.GoodsCategory;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 
 import java.util.List;
@@ -19,6 +20,12 @@ public interface IGoodsModel {
         void getListDataSuccess(List<Goods> list);
     }
 
+    interface IGoodsEditCallback extends IRequestCallback {
+        void uploadImageSuccess(String url);
+
+        void getCategorySuccess(List<GoodsCategory> list);
+    }
+
     // 获取商品列表
     void getGoodsList(Map<String, Object> params, @NonNull GoodsListCallback callback);
 
@@ -30,4 +37,16 @@ public interface IGoodsModel {
 
     // 上架商品
     void upShelfGoods(Map<String, Object> params, @NonNull IRequestCallback callback);
+
+    // 上传商品图片
+    void uploadGoodsImage(Map<String, Object> params, @NonNull IGoodsEditCallback callback);
+
+    // 获取商品分类
+    void getGoodsCategory(Map<String, Object> params, @NonNull IGoodsEditCallback callback);
+
+    // 添加商品
+    void addGoods(Map<String, Object> params, @NonNull IGoodsEditCallback callback);
+
+    // 更新商品
+    void modifyGoods(Map<String, Object> params, @NonNull IGoodsEditCallback callback);
 }
