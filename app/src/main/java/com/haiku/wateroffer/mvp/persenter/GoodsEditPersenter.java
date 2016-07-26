@@ -8,7 +8,6 @@ import com.haiku.wateroffer.mvp.contract.GoodsEditContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IGoodsModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,11 +138,14 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
 
     @Override
     public void getCategorySuccess(List<GoodsCategory> list) {
-        List<String> category = new ArrayList<>();
-        for (GoodsCategory bean : list) {
-            category.add(bean.getCat_name());
+        Integer[] ids = new Integer[list.size()];
+        String[] names = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            GoodsCategory bean = list.get(i);
+            ids[i] = bean.getCat_id();
+            names[i] = bean.getCat_name();
         }
-        mView.setCategoryList(category);
+        mView.setCategoryList(ids, names);
     }
 
     // 成功回调

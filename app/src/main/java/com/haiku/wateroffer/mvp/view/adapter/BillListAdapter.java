@@ -37,7 +37,7 @@ public class BillListAdapter extends MyBaseAdapter {
         Bill bean = mDatas.get(position);
         ItemViewHolder vh = (ItemViewHolder) holder;
         vh.tv_order_number.setText(orderNum + bean.getSerial_number());
-        vh.tv_order_deliver.setText(bean.getShopname());
+        vh.tv_order_deliver.setText(bean.getDiliverman());
         vh.tv_order_price.setText(rmb + bean.getOrder_amount());
 
         // 0，1为线上付款；2为线下付款

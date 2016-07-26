@@ -12,6 +12,7 @@ public class Bill implements Serializable {
     private int wepay_method;// 付款方式（0，1为线上付款；2为线下付款）
     private String shopname;// 店铺名称
     private String serial_number;// 订单号
+    private String diliverman;
 
     // 账单概述
     private int billsNum;// 订单数
@@ -72,5 +73,13 @@ public class Bill implements Serializable {
 
     public void setOffLineAmmount(String offLineAmmount) {
         this.offLineAmmount = offLineAmmount;
+    }
+
+    public String getDiliverman() {
+        return diliverman;
+    }
+
+    public void setDiliverman(String diliverman) {
+        this.diliverman = diliverman;
     }
 }

@@ -87,13 +87,7 @@ public class LoginPresenter implements LoginContract.Presenter, IUserModel.GetVe
     @Override
     public void onSuccess() {
         mView.showLoadingDialog(false);
-        // 判断是否为新用户
-        boolean isNewUser = false;
-        if (isNewUser) {
-
-        } else {
-            mView.showMainActivity();
-        }
+        mView.showSuccessView();
     }
 
     // 错误返回

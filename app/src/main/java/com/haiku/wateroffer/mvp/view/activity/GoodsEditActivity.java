@@ -56,7 +56,9 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
     private boolean isUpdate;// 当前是否为编辑界面
     private String mImagePath;
     private List<String> mImageUrlList;
-    private List<String> mCategoryList;
+    //private List<String> mCategoryList;
+    private Integer[] categoryIds = new Integer[]{};
+    private String[] categoryNames = new String[]{};
     private GoodsEditContract.Presenter mPresenter;
 
     private AlertDialog mChoseDateDialog;
@@ -160,10 +162,17 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
                             public void onClick(View v) {
                                 // 获取到输入数据
                                 String value = dialog.getInputValue();
-                                tv_limit_count.setText(value + "次");
+                                if (!TextUtils.isEmpty(value))
+                                    tv_limit_count.setText(value + "件");
+                                closeKeybord();
                             }
                         })
-                .setNegativeButton(getString(R.string.cancel), null);
+                .setNegativeButton(getString(R.string.cancel), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        closeKeybord();
+                    }
+                });
         dialog.show();
     }
 
@@ -180,10 +189,17 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
                             public void onClick(View v) {
                                 // 获取到输入数据
                                 String value = dialog.getInputValue();
-                                tv_overrange.setText(value + "元");
+                                if (!TextUtils.isEmpty(value))
+                                    tv_overrange.setText(value + "元");
+                                closeKeybord();
                             }
                         })
-                .setNegativeButton(getString(R.string.cancel), null);
+                .setNegativeButton(getString(R.string.cancel), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        closeKeybord();
+                    }
+                });
         dialog.show();
     }
 
@@ -195,15 +211,16 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
             builder.setTitle("选择分类");
             final ChoiceOnClickListener choiceListener =
                     new ChoiceOnClickListener();
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_single_choice, mCategoryList);
-            builder.setSingleChoiceItems(adapter, 0, choiceListener);
+            // ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_single_choice, mCategoryList);
+            builder.setSingleChoiceItems(categoryNames, 0, choiceListener);
 
             DialogInterface.OnClickListener btnListener =
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
                             int choiceWhich = choiceListener.getWhich();
-                            tv_category.setText(mCategoryList.get(choiceWhich));
+                            tv_category.setTag(categoryIds[choiceWhich]);
+                            tv_category.setText(categoryNames[choiceWhich]);
                         }
                     };
             builder.setPositiveButton("确定", btnListener);
@@ -231,7 +248,7 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
     private void initDatas() {
         isUpdate = getIntent().getBooleanExtra("isUpdate", false);
         mImageUrlList = new ArrayList<String>();
-        mCategoryList = new ArrayList<String>();
+        //mCategoryList = new ArrayList<String>();
     }
 
     private void initViews() {
@@ -296,15 +313,17 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
                 }
             }
             LogUtils.showLogE("image url", product_images);
-            String category = tv_category.getText().toString();
+            String category = tv_category.getTag()+"";
             String buyingcycle = tv_date_limit.getText().toString();
             String personalamountStr = tv_limit_count.getText().toString();
             int personalamount = 0;
             if (!TextUtils.isEmpty(personalamountStr)) {
+                personalamountStr = personalamountStr.replace("件", "");
                 personalamount = Integer.valueOf(personalamountStr);
             }
 
             String beyondprice = tv_overrange.getText().toString();
+            beyondprice = beyondprice.replace("元", "");
             if (isUpdate) {
                 mPresenter.modifyGoods(uid, name, product_images, Integer.valueOf(price), Integer.valueOf(stock), describe, category, buyingcycle, personalamount, beyondprice);
             } else {
@@ -353,8 +372,9 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
     }
 
     @Override
-    public void setCategoryList(List<String> list) {
-        mCategoryList = list;
+    public void setCategoryList(Integer[] ids, String[] names) {
+        categoryIds = ids;
+        categoryNames = names;
     }
 
     @Override

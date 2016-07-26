@@ -2,6 +2,7 @@ package com.haiku.wateroffer.mvp.model.impl;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.JsonObject;
 import com.haiku.wateroffer.App;
 import com.haiku.wateroffer.bean.Deliver;
 import com.haiku.wateroffer.bean.OrderItem;
@@ -110,15 +111,12 @@ public class OrderModelImpl implements IOrderModel {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.isSuccess()) {
-                    /*if (!result.getRetmsg().isJsonNull()) {
-                        List<Deliver> list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), Deliver.class);
-                        for (Deliver bean : list) {
-                            if (TypeConstant.Deliver.CONTINUE == bean.getDiliveryman_status()) {
-                                callback.checkHasDeliver(true, (Integer) params.get("order_id"), (Integer) params.get("uid"));
-                                return;
-                            }
-                        }
-                    }*/
+                    JsonObject jobj = result.getRetmsg().getAsJsonObject();
+                    String judge = jobj.get("judge").getAsString();
+                    if(judge.equals("yes")){
+                        callback.checkHasDeliver(true, (Integer) params.get("order_id"), (Integer) params.get("uid"));
+                        return;
+                    }
                     callback.checkHasDeliver(false, -1, -1);
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));

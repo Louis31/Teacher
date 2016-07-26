@@ -77,16 +77,17 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                if (result.isSuccess()) {
                     List<Bill> list = new ArrayList<Bill>();
                     if (!result.getRetmsg().isJsonNull()) {
-                        JsonObject jobj = result.getRetmsg().getAsJsonObject();
+                       /* JsonObject jobj = result.getRetmsg().getAsJsonObject();
                         Set<Map.Entry<String, JsonElement>> set = jobj.entrySet();
                         for (Map.Entry<String, JsonElement> entry : set) {
                             JsonElement je = entry.getValue();
                             Bill bill = GsonUtils.gsonToBean(je.toString(), Bill.class);
                             list.add(bill);
-                        }
+                        }*/
+                        list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), Bill.class);
                     }
                     callback.getBillSuccess(list);
                 } else {
@@ -104,7 +105,7 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                if (result.isSuccess()) {
                     Bill bean = GsonUtils.gsonToBean(result.getRetmsg().getAsJsonObject().toString(), Bill.class);
                     callback.searchBillSuccess(bean);
                 } else {
@@ -122,7 +123,7 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                if (result.isSuccess()) {
                     List<Deliver> list = new ArrayList<Deliver>();
                     if (!result.getRetmsg().isJsonNull()) {
                         list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), Deliver.class);

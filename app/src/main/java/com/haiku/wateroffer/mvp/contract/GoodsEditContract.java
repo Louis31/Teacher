@@ -18,7 +18,7 @@ public interface GoodsEditContract {
 
         void setImageView(String url);
 
-        void setCategoryList(List<String> list);
+        void setCategoryList(Integer[] ids, String[] names);
 
         // 成功回调
         void showSuccessView();
@@ -37,7 +37,7 @@ public interface GoodsEditContract {
                       int product_personalamount, String product_beyondprice);
 
         void modifyGoods(int uid, String product_name, String product_images, int product_price,
-                      int product_store, String product_description, String product_category, String product_buyingcycle,
-                      int product_personalamount, String product_beyondprice);
+                         int product_store, String product_description, String product_category, String product_buyingcycle,
+                         int product_personalamount, String product_beyondprice);
     }
 }

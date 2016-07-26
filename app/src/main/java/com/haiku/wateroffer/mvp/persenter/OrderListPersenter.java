@@ -87,7 +87,6 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
         params.put("order_id", order_id);
 
         if (UserManager.isTokenEmpty()) {
-            // 获取token
             ((IBaseModel) mOrderModel).getAccessToken(params, this);
         } else {
             mOrderModel.isHasDeliver(params, this);
@@ -101,7 +100,6 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
         params.put("id", id);
         params.put("uid", uid);
         if (UserManager.isTokenEmpty()) {
-            // 获取token
             ((IBaseModel) mOrderModel).getAccessToken(params, this);
         } else {
             mOrderModel.sendOrder(params, this);

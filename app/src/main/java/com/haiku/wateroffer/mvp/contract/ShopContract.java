@@ -15,6 +15,8 @@ public interface ShopContract {
 
         void setShopInfo(ShopInfo bean);
 
+        void setShopStatus(String status);
+
         // 设置店铺logo
         void setLogo(String logo);
 
@@ -28,5 +30,11 @@ public interface ShopContract {
 
         // 获取店铺信息
         void getShopInfo(int uid);
+
+        // 获取营业状态
+        void getShopOpenStatus(int uid);
+
+        // 修改配送距离
+        void changeShopRange(int uid, String range);
     }
 }

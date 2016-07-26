@@ -145,6 +145,8 @@
     <string name="seller_contribute">商家贡献值</string>
     <string name="shop_qq">店铺QQ</string>
     <string name="hint_shop_qq">请输入店铺QQ</string>
+    <string name="shop_status_open">营业中</string>
+    <string name="shop_status_close">打烊</string>
 
     <string name="contribution">贡献值</string>
     <string name="current_contribution">当前贡献值</string>

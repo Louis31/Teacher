@@ -245,5 +245,15 @@ public class UrlConstant {
         public static String changeShopLogo() {
             return getUserPath() + "/modifyShopLogo" + getToken();
         }
+
+        // 修改店铺配送距离，Post
+        public static String changeShopRange(){
+            return getShopPath() + "/changeShopRange" + getToken();
+        }
+
+        // 获取营业状态，Get
+        public static String getShopOpenStatus(){
+            return getShopPath() + "/getShopOpenStatus" + getToken();
+        }
     }
 }

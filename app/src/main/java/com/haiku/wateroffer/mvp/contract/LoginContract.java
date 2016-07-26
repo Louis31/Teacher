@@ -10,8 +10,7 @@ import com.haiku.wateroffer.mvp.base.BaseView;
 public interface LoginContract {
 
     interface View extends BaseView<Presenter> {
-        // 显示主页
-        void showMainActivity();
+        void showSuccessView();
 
         // 显示/隐藏加载对话框
         void showLoadingDialog(boolean isShow);

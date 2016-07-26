@@ -39,6 +39,8 @@ import com.haiku.wateroffer.mvp.view.activity.ShopQQActivity;
 import com.haiku.wateroffer.mvp.view.dialog.ActionSheetDialog;
 import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 
 /**
@@ -60,6 +62,8 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
 
     private TextView tv_shop_name;// 店铺名称
     private ImageView iv_shop_logo;// 店铺logo
+    private TextView tv_shop_status;
+    private ImageView iv_shop_status;
 
     private View llayout_address;// 店铺地址
     private View llayout_phone;// 店铺电话
@@ -84,6 +88,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             initViews();
             new ShopPresenter(new ShopModelImpl(), this);
             mPresenter.getShopInfo(uid);
+            mPresenter.getShopOpenStatus(uid);
         }
         //因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
         ViewGroup parent = (ViewGroup) rootView.getParent();
@@ -107,6 +112,8 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
     private void initViews() {
         tv_shop_name = findView(rootView, R.id.tv_shop_name);
         iv_shop_logo = findView(rootView, R.id.iv_shop_logo);
+        tv_shop_status = findView(rootView, R.id.tv_shop_status);
+        iv_shop_status = findView(rootView, R.id.iv_shop_status);
         llayout_address = findView(rootView, R.id.llayout_address);
         llayout_phone = findView(rootView, R.id.llayout_phone);
         llayout_deliver_list = findView(rootView, R.id.llayout_deliver_list);
@@ -339,6 +346,19 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             mShopInfo.setMerchant_logo(logo);
         }
         ImageUtils.showCircleImage(getContext(), logo, iv_shop_logo);
+    }
+
+    @Override
+    public void setShopStatus(String status) {
+        if (status.equals("0")) {
+            // 营业中
+            tv_shop_status.setText(getString(R.string.shop_status_open));
+            iv_shop_status.setImageResource(R.drawable.switch_on);
+        } else if (status.equals("1")) {
+            // 打烊
+            tv_shop_status.setText(getString(R.string.shop_status_close));
+            iv_shop_status.setImageResource(R.drawable.switch_off);
+        }
     }
 
     @Override

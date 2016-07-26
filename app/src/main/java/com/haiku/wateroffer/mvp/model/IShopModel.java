@@ -19,6 +19,8 @@ public interface IShopModel {
 
         // 上传logo成功
         void uploadLogoSuccess(String logo);
+
+        void getOpenStatusSuccess(String status);
     }
 
     // 联系电话回调
@@ -53,4 +55,10 @@ public interface IShopModel {
 
     // 修改店铺logo
     void changeShopLogo(Map<String, Object> params, @NonNull ShopCallback callback);
+
+    // 修改配送距离
+    void changeShopRange(Map<String, Object> params, @NonNull ShopCallback callback);
+
+    // 获取营业状态
+    void getShopOpenStatus(Map<String, Object> params, @NonNull ShopCallback callback);
 }

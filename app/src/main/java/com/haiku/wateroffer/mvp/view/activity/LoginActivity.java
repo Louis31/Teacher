@@ -9,14 +9,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.data.ValidatorUtils;
 import com.haiku.wateroffer.common.util.ui.DialogUtils;
 import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
-import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
-import com.haiku.wateroffer.mvp.contract.LoginContract;
-import com.haiku.wateroffer.mvp.persenter.LoginPresenter;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
+import com.haiku.wateroffer.mvp.contract.LoginContract;
+import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
+import com.haiku.wateroffer.mvp.persenter.LoginPresenter;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -87,8 +88,13 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     // 显示主页
     @Override
-    public void showMainActivity() {
-        startActivity(new Intent(mContext, MainActivity.class));
+    public void showSuccessView() {
+        // 判断是否为新用户
+        if (UserManager.getInstance().getUser().isNew()) {
+            startActivity(new Intent(mContext, ShopNameActivity.class));
+        } else {
+            startActivity(new Intent(mContext, MainActivity.class));
+        }
         finish();
     }
 

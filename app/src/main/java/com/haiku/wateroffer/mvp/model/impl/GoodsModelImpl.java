@@ -121,8 +121,6 @@ public class GoodsModelImpl implements IGoodsModel {
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.isSuccess()) {
                     String imgUrl = result.getRetmsg().getAsString();
-                    LogUtils.showLogE(TAG, imgUrl);
-                    imgUrl = imgUrl.replaceAll("\"", "");
                     callback.uploadImageSuccess(imgUrl);
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));

@@ -11,7 +11,6 @@ import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.common.util.net.XUtils;
 import com.haiku.wateroffer.common.util.net.XUtilsCallback;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.constant.UrlConstant;
 import com.haiku.wateroffer.mvp.model.IShopModel;
 
@@ -162,6 +161,42 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
                         logoUrl = jObj.get("logoUrl").getAsString();
                     }
                     callback.uploadLogoSuccess(logoUrl);
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
+
+    // 修改配送距离
+    @Override
+    public void changeShopRange(Map<String, Object> params, @NonNull final ShopCallback callback) {
+        XUtils.Post(UrlConstant.Shop.changeShopRange(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.isSuccess()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
+
+    // 获取营业状态
+    @Override
+    public void getShopOpenStatus(Map<String, Object> params, @NonNull final ShopCallback callback) {
+        XUtils.Get(UrlConstant.Shop.getShopOpenStatus(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.isSuccess()) {
+                    JsonObject jobj = result.getRetmsg().getAsJsonObject();
+                    //返回结果：{"retcode":0,"retmsg":{"openStatus":营业状态（0是营业中，1是打烊）}}
+                    callback.getOpenStatusSuccess(jobj.get("openStatus").getAsString());
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
                 }
