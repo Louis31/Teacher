@@ -45,6 +45,7 @@
     <string name="msg_stock_invalid">库存输入错误</string>
     <string name="msg_goods_invalid">填写完整信息后方可上架</string>
     <string name="msg_addr_invalid">地址不能为空</string>
+    <string name="msg_up_shelf_invalid">请先修改库存后方可上架</string>
     <!-- dialog -->
     <string name="dlg_loging">正在登录...</string>
     <string name="dlg_submiting">正在提交...</string>

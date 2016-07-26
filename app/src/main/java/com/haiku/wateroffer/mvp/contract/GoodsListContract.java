@@ -34,5 +34,8 @@ public interface GoodsListContract {
 
         // 下架商品
         void offShelfGoods(int uid, int product_id);
+
+        // 上架商品
+        void upShelfGoods(int uid, int product_id);
     }
 }

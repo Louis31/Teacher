@@ -21,6 +21,7 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
     private final int REQUEST_LIST = 1;
     private final int REQUEST_DELETE = 2;// 删除
     private final int REQUEST_OFF_SHELF = 3;// 下架
+    private final int REQUEST_UP_SHELF = 4;// 上架
     private int requesType;
 
     @NonNull
@@ -47,7 +48,6 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         params.put("pageno", pageno);
 
         if (UserManager.isTokenEmpty()) {
-            // 获取token
             ((IBaseModel) mGoodsModel).getAccessToken(params, this);
         } else {
             mGoodsModel.getGoodsList(params, this);
@@ -64,7 +64,6 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         params.put("product_id", product_id);
 
         if (UserManager.isTokenEmpty()) {
-            // 获取token
             ((IBaseModel) mGoodsModel).getAccessToken(params, this);
         } else {
             mGoodsModel.deleteGoods(params, this);
@@ -88,6 +87,22 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         }
     }
 
+    // 上架商品
+    @Override
+    public void upShelfGoods(int uid, int product_id) {
+        mView.showLoadingDialog(true);
+        requesType = REQUEST_UP_SHELF;
+        Map<String, Object> params = new HashMap<>();
+        params.put("uid", uid);
+        params.put("product_id", product_id);
+
+        if (UserManager.isTokenEmpty()) {
+            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
+        } else {
+            mGoodsModel.upShelfGoods(params, this);
+        }
+    }
+
     /**
      * Callback 接口方法
      */
@@ -105,6 +120,8 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
             mGoodsModel.deleteGoods(params, this);
         } else if (requesType == REQUEST_OFF_SHELF) {
             mGoodsModel.offShelfGoods(params, this);
+        } else if (requesType == REQUEST_UP_SHELF) {
+            mGoodsModel.upShelfGoods(params, this);
         }
     }
 
@@ -118,6 +135,9 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         } else if (requesType == REQUEST_OFF_SHELF) {
             // 下架成功
             mView.refreshListView(TypeConstant.GoodsOpera.OFF_SHELF);
+        } else if (requesType == REQUEST_UP_SHELF) {
+            // 上架成功
+            mView.refreshListView(TypeConstant.GoodsOpera.UP_SHELF);
         }
     }
 

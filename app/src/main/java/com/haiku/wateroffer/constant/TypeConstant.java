@@ -31,7 +31,8 @@ public class TypeConstant {
 
     public static class GoodsOpera {
         public final static int DELETE_GOODS = 0;// 删除商品
-        public final static int OFF_SHELF = 0;// 下架商品
+        public final static int OFF_SHELF = 1;// 下架商品
+        public final static int UP_SHELF = 2;// 上架商品
     }
 
     public static class Deliver {

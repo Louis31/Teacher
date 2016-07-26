@@ -26,5 +26,8 @@ public interface IGoodsModel {
     void deleteGoods(Map<String, Object> params, @NonNull GoodsListCallback callback);
 
     // 下架商品
-    void offShelfGoods(Map<String, Object> params, @NonNull GoodsListCallback callback);
+    void offShelfGoods(Map<String, Object> params, @NonNull IRequestCallback callback);
+
+    // 上架商品
+    void upShelfGoods(Map<String, Object> params, @NonNull IRequestCallback callback);
 }

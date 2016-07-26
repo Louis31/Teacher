@@ -2,16 +2,15 @@ package com.haiku.wateroffer.mvp.model.impl;
 
 import android.support.annotation.NonNull;
 
-import com.google.gson.JsonArray;
 import com.haiku.wateroffer.App;
 import com.haiku.wateroffer.bean.Goods;
 import com.haiku.wateroffer.bean.ResultData;
 import com.haiku.wateroffer.common.util.data.GsonUtils;
 import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.data.ParamUtils;
+import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.common.util.net.XUtils;
 import com.haiku.wateroffer.common.util.net.XUtilsCallback;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.constant.UrlConstant;
 import com.haiku.wateroffer.mvp.model.IGoodsModel;
 
@@ -34,7 +33,7 @@ public class GoodsModelImpl implements IGoodsModel {
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                if (result.isSuccess()) {
                     List<Goods> list = new ArrayList<>();
                     if (!result.getRetmsg().isJsonNull()) {
                         list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), Goods.class);
@@ -55,7 +54,7 @@ public class GoodsModelImpl implements IGoodsModel {
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                if (result.isSuccess()) {
                     callback.onSuccess();
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
@@ -66,13 +65,30 @@ public class GoodsModelImpl implements IGoodsModel {
 
     // 下架商品
     @Override
-    public void offShelfGoods(Map<String, Object> params, @NonNull final GoodsListCallback callback) {
+    public void offShelfGoods(Map<String, Object> params, @NonNull final IRequestCallback callback) {
         XUtils.Get(UrlConstant.Goods.offShelfUrl(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                if (result.isSuccess()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
+
+    // 上架商品
+    @Override
+    public void upShelfGoods(Map<String, Object> params, @NonNull final IRequestCallback callback) {
+        XUtils.Get(UrlConstant.Goods.upShelfUrl(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.isSuccess()) {
                     callback.onSuccess();
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));

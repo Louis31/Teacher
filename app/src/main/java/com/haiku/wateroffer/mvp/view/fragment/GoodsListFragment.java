@@ -19,6 +19,7 @@ import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.ActionConstant;
 import com.haiku.wateroffer.constant.BaseConstant;
+import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.base.LazyFragment;
 import com.haiku.wateroffer.mvp.contract.GoodsListContract;
 import com.haiku.wateroffer.mvp.model.impl.GoodsModelImpl;
@@ -174,20 +175,24 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     // 刷新页面
     @Override
     public void refreshListView(int type) {
-        /*if (type == TypeConstant.GoodsOpera.DELETE_GOODS) {
-            // 删除成功
-        } else if (type == TypeConstant.GoodsOpera.OFF_SHELF) {
-            // 下架成功
-            mDatas.remove(mItemPos);
-            mAdapter.notifyItemRemoved(mItemPos);
-        }*/
-
         mDatas.remove(mItemPos);
         mAdapter.notifyItemRemoved(mItemPos);
-        // 发送广播
-        Intent intent = new Intent(ActionConstant.REFRESH_GOODS_LIST);
-        intent.putExtra("type", mType);
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+        // 上/下架成功
+        if (type == TypeConstant.GoodsOpera.OFF_SHELF ||
+                type == TypeConstant.GoodsOpera.UP_SHELF) {
+
+            // 发送广播
+            Intent intent = new Intent(ActionConstant.REFRESH_GOODS_LIST);
+            // 当前为出售中
+            if (mType == TypeConstant.Goods.ON_SALE) {
+                // 点击下架按钮，将此商品移入已下架商品列表中
+                intent.putExtra("type", TypeConstant.Goods.OFF_SHELF);
+            } else {
+                // 点击上架按钮,将此商品移入出售中商品列表
+                intent.putExtra("type", TypeConstant.Goods.ON_SALE);
+            }
+            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+        }
     }
 
     @Override
@@ -231,6 +236,12 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     @Override
     public void onGoodsUpShelfClick(int pos) {
         mItemPos = pos;
+        // 若判断此商品的库存为0，弹出提示框：请先修改库存后方可上架，2S后消失
+        if (mDatas.get(pos).getProduct_instocks() == 0) {
+            ToastUtils.getInstant().showToast(getString(R.string.msg_up_shelf_invalid));
+        } else {
+            mPresenter.upShelfGoods(uid, mDatas.get(pos).getProduct_id());
+        }
     }
 
     // 下架商品

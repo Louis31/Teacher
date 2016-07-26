@@ -162,9 +162,14 @@ public class UrlConstant {
             return getGoodsPath() + "/deleteProduct" + getToken();
         }
 
-        // 下架商品
+        // 下架商品，Get
         public static String offShelfUrl() {
             return getGoodsPath() + "/saleOff" + getToken();
+        }
+
+        // 上架商品，Get
+        public static String upShelfUrl() {
+            return getGoodsPath() + "/saleOn" + getToken();
         }
     }
 
