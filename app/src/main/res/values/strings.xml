@@ -30,6 +30,8 @@
     <string name="wechat_payment">微信支付</string>
     <string name="alipay_payment">支付宝支付</string>
 
+    <string name="deposit_tip">为了规范市场秩序就，保证为顾客提供物美价廉的商品。现规定新商家必须缴纳100元的保证金后添加的商品才会在买家端显示</string>
+
     <!-- 标题相关 -->
     <string name="title_order">我的订单</string>
     <string name="title_goods">商品管理</string>

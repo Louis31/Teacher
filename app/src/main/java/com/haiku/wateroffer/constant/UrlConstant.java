@@ -14,6 +14,9 @@ public class UrlConstant {
     // 可用的appSecret：eUGhdvpDDpC16iUXqfMsc3ntl , 0wtcDflIXFLHx4VJ3G32cuFGg , ghrF59N53zchmGO2KsWlWuokC
     private final static String APP_SECRET = "eUGhdvpDDpC16iUXqfMsc3ntl";
 
+    // 支付宝回调地址
+    public static final String ALIPAY_URL = HOST + "/payment/alipay_notify/";
+
     private final static String PATH_USER = "/user";
     private final static String PATH_ORDER = "/order";
     private final static String PATH_GOODS = "/product";

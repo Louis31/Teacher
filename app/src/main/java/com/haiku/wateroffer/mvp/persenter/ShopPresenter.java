@@ -69,7 +69,7 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
         mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
         params.put("id", uid);
-        params.put("qq", range);
+        params.put("range", range);
         if (UserManager.isTokenEmpty()) {
             ((IBaseModel) mShopModel).getAccessToken(params, this);
         } else {
