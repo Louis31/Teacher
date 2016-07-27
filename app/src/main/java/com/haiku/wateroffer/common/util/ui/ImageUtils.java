@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.widget.ImageView;
 
@@ -62,7 +63,7 @@ public class ImageUtils {
     }
 
     private static String getUrl(String url) {
-        if (!url.startsWith("http://")) {
+        if (!TextUtils.isEmpty(url) && !url.startsWith("http://")) {
             return "http://" + url;
         }
         return url;
