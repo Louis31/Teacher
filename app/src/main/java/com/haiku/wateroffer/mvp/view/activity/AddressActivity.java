@@ -23,6 +23,7 @@ import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.GeoPoint;
 import com.haiku.wateroffer.common.listener.MyItemClickListener;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
+import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.view.adapter.SearchAddressAdapter;
 import com.haiku.wateroffer.mvp.view.divider.DividerItem;
@@ -50,7 +51,6 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
 
     private PoiSearch.Query query;// Poi查询条件类
     private PoiSearch poiSearch;// POI搜索
-    private PoiResult poiResult; // poi返回的结果
 
     private List<PoiItem> mPoiItemList;
     private SearchAddressAdapter mAdapter;
@@ -115,7 +115,7 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
             @Override
             public void onItemClick(int pos) {
                 PoiItem bean = mPoiItemList.get(pos);
-                String addr = bean.getSnippet() + bean.getTitle();
+                String addr = bean.getProvinceName() + bean.getCityName() + bean.getAdName() + bean.getSnippet() + bean.getTitle();
                 Intent intent = new Intent();
                 intent.putExtra("address", addr);
                 setResult(Activity.RESULT_OK, intent);
@@ -140,30 +140,6 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
         mRefreshLayout.setPullRefreshEnable(false);
         mRefreshLayout.setLoadMoreEnable(false);
     }
-
-  /*  private void initLocation() {
-        if (aMap == null) {
-            aMap = mMapView.getMap();
-            markerOption = new MarkerOptions();
-            if (mLatLng != null) {
-                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, zoomLevel));
-                markerOption.position(mLatLng);
-                aMap.addMarker(markerOption);
-            }
-            aMap.setOnMapClickListener(this);// 对amap添加单击地图事件监听器
-        }
-    }
-
-
-    //对单击地图事件回调
-    @Override
-    public void onMapClick(LatLng latLng) {
-        mLatLng = latLng;
-        markerOption.position(latLng);
-        aMap.clear();
-        aMap.addMarker(markerOption);
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
-    }*/
 
     private void initLocation() {
         aMap = mMapView.getMap();
@@ -198,6 +174,7 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
     //对单击地图事件回调
     @Override
     public void onMapClick(LatLng latLng) {
+        LogUtils.showLogE("AAA","onMapClick");
         markerOption.position(latLng);
         mPoiItem.setLat(latLng.latitude);
         mPoiItem.setLon(latLng.longitude);
@@ -220,6 +197,7 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
     //对移动地图结束事件回调
     @Override
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
+        LogUtils.showLogE("AAA","onCameraChangeFinish");
         if (isInit) {
             markerOption.position(cameraPosition.target);
             mPoiItem.setLat(cameraPosition.target.latitude);
@@ -239,6 +217,7 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
     //逆地理编码回调接口
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+        LogUtils.showLogE("AAA","onRegeocodeSearched");
         //解析result获取逆地理编码结果
         String address = regeocodeResult.getRegeocodeAddress().getFormatAddress() + regeocodeResult.getRegeocodeAddress().getBuilding();
         mPoiItem.setAddress(address);
@@ -252,13 +231,12 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
 
     @Override
     public void onPoiSearched(PoiResult result, int rCode) {
-        if (rCode == 0) {
+        if (rCode == 1000) {
             if (result != null && result.getQuery() != null) {// 搜索poi的结果
                 if (result.getQuery().equals(query)) {// 是否是同一条
                     mPoiItemList.clear();
-                    poiResult = result;
                     // 取得搜索到的poiitems有多少页
-                    ArrayList<PoiItem> poiItems = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+                    List<PoiItem> poiItems = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
                     mPoiItemList.addAll(poiItems);
                     mRefreshLayout.loadingCompleted(true);
                 }

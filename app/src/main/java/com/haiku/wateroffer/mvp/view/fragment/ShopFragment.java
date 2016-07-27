@@ -29,6 +29,7 @@ import com.haiku.wateroffer.mvp.model.impl.ShopModelImpl;
 import com.haiku.wateroffer.mvp.persenter.ShopPresenter;
 import com.haiku.wateroffer.mvp.view.activity.ContributionActivity;
 import com.haiku.wateroffer.mvp.view.activity.DeliverListActivity;
+import com.haiku.wateroffer.mvp.view.activity.DeliverRangeActivity;
 import com.haiku.wateroffer.mvp.view.activity.DepositActivity;
 import com.haiku.wateroffer.mvp.view.activity.LoginActivity;
 import com.haiku.wateroffer.mvp.view.activity.MyBillActivity;
@@ -38,8 +39,6 @@ import com.haiku.wateroffer.mvp.view.activity.ShopNameActivity;
 import com.haiku.wateroffer.mvp.view.activity.ShopQQActivity;
 import com.haiku.wateroffer.mvp.view.dialog.ActionSheetDialog;
 import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 
@@ -67,6 +66,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
 
     private View llayout_address;// 店铺地址
     private View llayout_phone;// 店铺电话
+    private View llayout_deliver_range;// 配送范围
     private View llayout_deliver_list;//　配送列表
     private View llayout_my_bill;// 我的订单
     private View llayout_deposit;// 保证金
@@ -116,6 +116,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         iv_shop_status = findView(rootView, R.id.iv_shop_status);
         llayout_address = findView(rootView, R.id.llayout_address);
         llayout_phone = findView(rootView, R.id.llayout_phone);
+        llayout_deliver_range = findView(rootView, R.id.llayout_deliver_range);
         llayout_deliver_list = findView(rootView, R.id.llayout_deliver_list);
         llayout_my_bill = findView(rootView, R.id.llayout_my_bill);
         llayout_deposit = findView(rootView, R.id.llayout_deposit);
@@ -127,6 +128,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         tv_shop_name.setOnClickListener(this);
         llayout_address.setOnClickListener(this);
         llayout_phone.setOnClickListener(this);
+        llayout_deliver_range.setOnClickListener(this);
         llayout_deliver_list.setOnClickListener(this);
         llayout_my_bill.setOnClickListener(this);
         llayout_deposit.setOnClickListener(this);
@@ -185,7 +187,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                     iShopAddr.putExtra("isUpdate", true);
                     iShopAddr.putExtra("area", mShopInfo.getMerchant_shoparea());
                     iShopAddr.putExtra("area_detail", mShopInfo.getMerchant_shopfloorDetail());
-                    startActivity(iShopAddr);
+                    startActivityForResult(iShopAddr, BaseConstant.REQUEST_EDIT_SHOP_ADDR);
                 }
 
                 break;
@@ -196,6 +198,9 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                     iPhone.putExtra("phone", mShopInfo.getMerchant_phone());
                     startActivityForResult(iPhone, BaseConstant.REQUEST_EDIT_SHOP_PHONE);
                 }
+                break;
+            case R.id.llayout_deliver_range:
+                startActivity(new Intent(mContext, DeliverRangeActivity.class));
                 break;
             // 配送列表
             case R.id.llayout_deliver_list:
@@ -289,12 +294,19 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             tv_shop_name.setText(shopName);
         }
         // 修改店铺电话
-        if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_PHONE && resultCode == Activity.RESULT_OK) {
+        else if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_PHONE && resultCode == Activity.RESULT_OK) {
             mShopInfo.setMerchant_phone(data.getStringExtra("phone"));
         }
         // 修改店铺qq
-        if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_QQ && resultCode == Activity.RESULT_OK) {
+        else if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_QQ && resultCode == Activity.RESULT_OK) {
             mShopInfo.setMerchant_qq(data.getStringExtra("qq"));
+        }
+        // 修改店铺地址
+        else if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_ADDR && resultCode == Activity.RESULT_OK) {
+            String area = data.getStringExtra("area");
+            String area_detail = data.getStringExtra("area_detail");
+            mShopInfo.setMerchant_shoparea(area);
+            mShopInfo.setMerchant_shopfloorDetail(area_detail);
         }
         // 手机拍照
         else if (requestCode == BaseConstant.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
@@ -337,7 +349,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
     public void setShopInfo(ShopInfo bean) {
         mShopInfo = bean;
         tv_shop_name.setText(bean.getMerchant_shopname());
-        ImageUtils.showImage(this, bean.getMerchant_logo(), iv_shop_logo);
+        ImageUtils.showCircleImage(getContext(), bean.getMerchant_logo(), iv_shop_logo);
     }
 
     @Override

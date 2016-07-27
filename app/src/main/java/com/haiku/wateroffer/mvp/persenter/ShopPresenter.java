@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.ShopInfo;
 import com.haiku.wateroffer.common.UserManager;
-import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.mvp.contract.ShopContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IShopModel;
@@ -19,8 +18,7 @@ import java.util.Map;
 public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCallback {
     private final int REQUEST_INFO = 1;
     private final int REQUEST_LOGO = 2;
-    private final int REQUEST_RANGE = 3;
-    private final int REQUEST_STATUS = 4;
+    private final int REQUEST_STATUS = 3;
     private int requesType;
     @NonNull
     private final IShopModel mShopModel;
@@ -64,20 +62,6 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
     }
 
     @Override
-    public void changeShopRange(int uid, String range) {
-        requesType = REQUEST_RANGE;
-        mView.showLoadingDialog(true);
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", uid);
-        params.put("range", range);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mShopModel).getAccessToken(params, this);
-        } else {
-            mShopModel.changeShopRange(params, this);
-        }
-    }
-
-    @Override
     public void getShopOpenStatus(int uid) {
         requesType = REQUEST_STATUS;
         Map<String, Object> params = new HashMap<>();
@@ -98,8 +82,6 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
             mShopModel.getShopInfo(params, this);
         } else if (requesType == REQUEST_LOGO) {
             mShopModel.changeShopLogo(params, this);
-        } else if (requesType == REQUEST_RANGE) {
-            mShopModel.changeShopRange(params, this);
         } else if (requesType == REQUEST_STATUS) {
             mShopModel.getShopOpenStatus(params, this);
         }
@@ -124,8 +106,6 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
     // 成功回调
     @Override
     public void onSuccess() {
-        mView.showLoadingDialog(false);
-        mView.showMessage("修改成功");
     }
 
     @Override

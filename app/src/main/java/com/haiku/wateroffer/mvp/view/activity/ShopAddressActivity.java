@@ -72,7 +72,7 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
         }
         Intent intent = new Intent(mContext, AddressActivity.class);
         intent.putExtra("point", mPoiItem);
-        startActivity(intent);
+        startActivityForResult(intent,REQUEST_ADDR);
     }
 
     @Event(R.id.btn_open_shop)

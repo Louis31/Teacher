@@ -20,7 +20,8 @@
             <ImageView
                 android:id="@+id/iv_shop_logo"
                 android:layout_width="60dp"
-                android:layout_height="60dp" />
+                android:layout_height="60dp"
+                android:scaleType="centerCrop"/>
 
             <ImageView
                 android:id="@+id/iv_arrow_right"
@@ -158,14 +159,14 @@
             <ImageView
                 android:id="@+id/iv_shop_status"
                 android:layout_width="60dp"
-                android:layout_height="24dp"
+                android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
                 android:background="@drawable/switch_on" />
         </LinearLayout>
 
-        <View style="@style/shop_item_line" />o
+        <View style="@style/shop_item_line" />
 
         <TextView
             android:id="@+id/tv_logout"

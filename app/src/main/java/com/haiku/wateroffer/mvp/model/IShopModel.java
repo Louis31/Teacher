@@ -57,7 +57,7 @@ public interface IShopModel {
     void changeShopLogo(Map<String, Object> params, @NonNull ShopCallback callback);
 
     // 修改配送距离
-    void changeShopRange(Map<String, Object> params, @NonNull ShopCallback callback);
+    void changeShopRange(Map<String, Object> params, @NonNull IRequestCallback callback);
 
     // 获取营业状态
     void getShopOpenStatus(Map<String, Object> params, @NonNull ShopCallback callback);

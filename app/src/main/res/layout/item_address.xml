@@ -9,7 +9,7 @@
         android:id="@+id/iv_location"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:src="@drawable/ic_arrow_left" />
+        android:src="@drawable/ic_address" />
 
     <TextView
         android:id="@+id/tv_address_title"

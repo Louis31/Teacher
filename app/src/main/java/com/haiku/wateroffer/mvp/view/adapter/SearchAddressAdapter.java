@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.amap.api.services.core.PoiItem;
 import com.haiku.wateroffer.R;
-import com.haiku.wateroffer.bean.Bill;
 import com.haiku.wateroffer.common.listener.MyItemClickListener;
 
 import java.util.List;
@@ -55,13 +54,19 @@ public class SearchAddressAdapter extends MyBaseAdapter {
         TextView tv_address_title;
         TextView tv_address_content;
 
-        public ItemViewHolder(View v, MyItemClickListener listener) {
+        public ItemViewHolder(View v, final MyItemClickListener listener) {
             super(v);
             tv_address_title = bind(v, R.id.tv_address_title);
             tv_address_content = bind(v, R.id.tv_address_content);
-            if (listener != null) {
-                listener.onItemClick(getPosition());
-            }
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onItemClick(getPosition());
+                    }
+                }
+            });
         }
     }
 }

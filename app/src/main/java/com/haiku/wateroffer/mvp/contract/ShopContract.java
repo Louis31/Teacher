@@ -33,8 +33,5 @@ public interface ShopContract {
 
         // 获取营业状态
         void getShopOpenStatus(int uid);
-
-        // 修改配送距离
-        void changeShopRange(int uid, String range);
     }
 }

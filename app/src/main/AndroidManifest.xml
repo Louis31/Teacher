@@ -75,6 +75,7 @@
         <activity
             android:name=".mvp.view.activity.ShopQQActivity"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity android:name=".mvp.view.activity.DeliverRangeActivity" />
         <activity android:name=".mvp.view.activity.DeliverListActivity" />
         <activity android:name=".mvp.view.activity.DeliverSelectActivity" />
         <activity android:name=".mvp.view.activity.DeliverOrderActivity" />
@@ -82,6 +83,7 @@
         <activity android:name=".mvp.view.activity.DepositActivity" />
         <activity android:name=".mvp.view.activity.ContributionActivity" />
         <activity android:name=".mvp.view.activity.AddressActivity" />
+
         <!-- 高德定位 -->
         <service android:name="com.amap.api.location.APSService"></service>
         <meta-data

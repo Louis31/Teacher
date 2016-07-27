@@ -170,7 +170,7 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
 
     // 修改配送距离
     @Override
-    public void changeShopRange(Map<String, Object> params, @NonNull final ShopCallback callback) {
+    public void changeShopRange(Map<String, Object> params, @NonNull final IRequestCallback callback) {
         XUtils.Post(UrlConstant.Shop.changeShopRange(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
