@@ -312,7 +312,6 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
                     product_images += ",";
                 }
             }
-            LogUtils.showLogE("image url", product_images);
             String category = tv_category.getTag()+"";
             String buyingcycle = tv_date_limit.getText().toString();
             String personalamountStr = tv_limit_count.getText().toString();

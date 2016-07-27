@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.haiku.wateroffer.common.util.ui.ActivityUtils;
 import com.haiku.wateroffer.common.util.ui.ImageUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.BaseConstant;
+import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.base.LazyFragment;
 import com.haiku.wateroffer.mvp.contract.ShopContract;
 import com.haiku.wateroffer.mvp.model.impl.ShopModelImpl;
@@ -49,6 +51,7 @@ import java.io.File;
 public class ShopFragment extends LazyFragment implements View.OnClickListener, ShopContract.View {
     private Context mContext;
     private int uid;
+    private String mShopStatus;
 
     private ShopInfo mShopInfo;
     private String mImagePath;
@@ -72,6 +75,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
     private View llayout_deposit;// 保证金
     private View llayout_contribute;// 商家贡献值
     private View llayout_qq;// 店铺QQ
+    private View llayout_open_status;
     private View tv_logout;// 注销
 
     @Override
@@ -122,6 +126,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         llayout_deposit = findView(rootView, R.id.llayout_deposit);
         llayout_contribute = findView(rootView, R.id.llayout_contribute);
         llayout_qq = findView(rootView, R.id.llayout_qq);
+        llayout_open_status = findView(rootView, R.id.llayout_open_status);
         tv_logout = findView(rootView, R.id.tv_logout);
 
         iv_shop_logo.setOnClickListener(this);
@@ -134,6 +139,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         llayout_deposit.setOnClickListener(this);
         llayout_contribute.setOnClickListener(this);
         llayout_qq.setOnClickListener(this);
+        llayout_open_status.setOnClickListener(this);
         tv_logout.setOnClickListener(this);
 
         ImageUtils.showCircleImage(getContext(), R.drawable.ic_image_loading, iv_shop_logo);
@@ -224,6 +230,17 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                     Intent iQQ = new Intent(mContext, ShopQQActivity.class);
                     iQQ.putExtra("qq", mShopInfo.getMerchant_qq());
                     startActivityForResult(iQQ, BaseConstant.REQUEST_EDIT_SHOP_QQ);
+                }
+                break;
+            // 设置营业状态
+            case R.id.llayout_open_status:
+                if (TextUtils.isEmpty(mShopStatus)) {
+                    return;
+                }
+                if (TypeConstant.ShopStatus.OPEN.equals(mShopStatus)) {
+                    mPresenter.setShopOpenStatus(uid, TypeConstant.ShopStatus.CLOSE);
+                } else {
+                    mPresenter.setShopOpenStatus(uid, TypeConstant.ShopStatus.OPEN);
                 }
                 break;
             // 注销登录
@@ -362,11 +379,12 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
 
     @Override
     public void setShopStatus(String status) {
-        if (status.equals("0")) {
+        mShopStatus = status;
+        if (TypeConstant.ShopStatus.OPEN.equals(status)) {
             // 营业中
             tv_shop_status.setText(getString(R.string.shop_status_open));
             iv_shop_status.setImageResource(R.drawable.switch_on);
-        } else if (status.equals("1")) {
+        } else if (TypeConstant.ShopStatus.CLOSE.equals(status)) {
             // 打烊
             tv_shop_status.setText(getString(R.string.shop_status_close));
             iv_shop_status.setImageResource(R.drawable.switch_off);

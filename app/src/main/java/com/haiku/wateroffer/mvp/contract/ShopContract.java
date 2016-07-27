@@ -33,5 +33,8 @@ public interface ShopContract {
 
         // 获取营业状态
         void getShopOpenStatus(int uid);
+
+        // 设置营业状态
+        void setShopOpenStatus(int uid, String status);
     }
 }

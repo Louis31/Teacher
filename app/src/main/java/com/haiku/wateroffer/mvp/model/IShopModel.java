@@ -61,4 +61,7 @@ public interface IShopModel {
 
     // 获取营业状态
     void getShopOpenStatus(Map<String, Object> params, @NonNull ShopCallback callback);
+
+    // 设置营业状态
+    void setShopOpenStatus(Map<String, Object> params, @NonNull ShopCallback callback);
 }

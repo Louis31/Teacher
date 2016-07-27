@@ -147,6 +147,7 @@
         <View style="@style/line_h" />
 
         <LinearLayout
+            android:id="@+id/llayout_open_status"
             style="@style/shop_item_llayout"
             android:padding="0dp">
 

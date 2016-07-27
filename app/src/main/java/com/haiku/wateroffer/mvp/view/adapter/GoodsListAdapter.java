@@ -58,7 +58,7 @@ public class GoodsListAdapter extends MyBaseAdapter {
 
         vh.tv_goods_name.setText(bean.getProduct_name());
         vh.tv_goods_price.setText(rmb + bean.getSell_price());
-        vh.tv_goods_sale.setText(goodsSaleTip);
+        vh.tv_goods_sale.setText(goodsSaleTip + bean.getSales());
         vh.tv_goods_stock.setText(goodsStockTip + bean.getProduct_instocks());
         ImageUtils.showImage(fragment, bean.getProduct_image(), vh.iv_goods);
     }
@@ -92,10 +92,10 @@ public class GoodsListAdapter extends MyBaseAdapter {
             tv_up_shelf = bind(v, R.id.tv_up_shelf);
             tv_edit = bind(v, R.id.tv_edit);
 
-            if (mType == TypeConstant.Goods.SALE_NONE) {
-                tv_off_shelf.setVisibility(View.GONE);
-            } else {
+            if (mType == TypeConstant.Goods.ON_SALE) {
                 tv_up_shelf.setVisibility(View.GONE);
+            } else {
+                tv_off_shelf.setVisibility(View.GONE);
             }
 
             tv_delete.setOnClickListener(new View.OnClickListener() {

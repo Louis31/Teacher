@@ -40,4 +40,9 @@ public class TypeConstant {
         public final static int PAUSE = 1;// 暂停状态
         public final static int CONTINUE = 2;// 继续状态
     }
+
+    public static class ShopStatus {
+        public final static String OPEN = "0";// 营业中
+        public final static String CLOSE = "1";// 打烊
+    }
 }

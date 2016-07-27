@@ -18,7 +18,8 @@ import java.util.Map;
 public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCallback {
     private final int REQUEST_INFO = 1;
     private final int REQUEST_LOGO = 2;
-    private final int REQUEST_STATUS = 3;
+    private final int REQUEST_STATUS_GET = 3;
+    private final int REQUEST_STATUS_SET = 4;
     private int requesType;
     @NonNull
     private final IShopModel mShopModel;
@@ -63,13 +64,27 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
 
     @Override
     public void getShopOpenStatus(int uid) {
-        requesType = REQUEST_STATUS;
+        requesType = REQUEST_STATUS_GET;
         Map<String, Object> params = new HashMap<>();
         params.put("id", uid);
         if (UserManager.isTokenEmpty()) {
             ((IBaseModel) mShopModel).getAccessToken(params, this);
         } else {
             mShopModel.getShopOpenStatus(params, this);
+        }
+    }
+
+    @Override
+    public void setShopOpenStatus(int uid, String status) {
+        mView.showLoadingDialog(true);
+        requesType = REQUEST_STATUS_SET;
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", uid);
+        params.put("range", status);
+        if (UserManager.isTokenEmpty()) {
+            ((IBaseModel) mShopModel).getAccessToken(params, this);
+        } else {
+            mShopModel.setShopOpenStatus(params, this);
         }
     }
 
@@ -82,8 +97,10 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
             mShopModel.getShopInfo(params, this);
         } else if (requesType == REQUEST_LOGO) {
             mShopModel.changeShopLogo(params, this);
-        } else if (requesType == REQUEST_STATUS) {
+        } else if (requesType == REQUEST_STATUS_GET) {
             mShopModel.getShopOpenStatus(params, this);
+        } else if (requesType == REQUEST_STATUS_SET) {
+            mShopModel.setShopOpenStatus(params, this);
         }
     }
 
@@ -100,6 +117,7 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
 
     @Override
     public void getOpenStatusSuccess(String status) {
+        mView.showLoadingDialog(false);
         mView.setShopStatus(status);
     }
 

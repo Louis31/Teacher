@@ -258,5 +258,10 @@ public class UrlConstant {
         public static String getShopOpenStatus(){
             return getShopPath() + "/getShopOpenStatus" + getToken();
         }
+
+        // 设置营业状态，Post
+        public static String setShopOpenStatus(){
+            return getShopPath() + "/setShopOpenStatus" + getToken();
+        }
     }
 }

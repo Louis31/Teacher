@@ -15,6 +15,7 @@ public class Goods implements Serializable {
     private String product_unit;// 商品单位
     private String product_breif;// 商品简介
     private int product_instocks;// 库存
+    private String sales;// 销量
 
     public int getProduct_id() {
         return product_id;
@@ -78,5 +79,13 @@ public class Goods implements Serializable {
 
     public void setProduct_instocks(int product_instocks) {
         this.product_instocks = product_instocks;
+    }
+
+    public String getSales() {
+        return sales;
+    }
+
+    public void setSales(String sales) {
+        this.sales = sales;
     }
 }
