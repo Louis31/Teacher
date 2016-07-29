@@ -14,7 +14,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/order_number_tip"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/tsize_small" />
 
         <TextView
             android:id="@+id/tv_order_time"

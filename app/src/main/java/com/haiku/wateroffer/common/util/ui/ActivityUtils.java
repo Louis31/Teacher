@@ -35,7 +35,7 @@ public class ActivityUtils {
     }
 
     // 退出所有Activity
-    public static void exitClient(Context ctx) {
+    public static void exitClient() {
         for (int i = 0; i < mActivitys.size(); i++) {
             if (mActivitys.get(i) != null) {
                 mActivitys.get(i).finish();

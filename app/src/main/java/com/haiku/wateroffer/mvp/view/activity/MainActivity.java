@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost.OnTabChangeListener;
@@ -165,5 +166,28 @@ public class MainActivity extends FragmentActivity {
         TextView textView = (TextView) view.findViewById(R.id.text);
         textView.setTextColor(colorBlack);
         imageView.setImageResource(tabImages[index]);
+    }
+
+    /**
+     * 连续按两次返回键就退出
+     */
+    private long firstTime;
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0
+                && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+            if (System.currentTimeMillis() - firstTime < 2000) {
+                ActivityUtils.exitClient();
+            } else {
+                firstTime = System.currentTimeMillis();
+                ToastUtils.getInstant().showToast("再按一次退出");
+            }
+            return false;
+        } else {
+            return super.dispatchKeyEvent(event);
+        }
     }
 }
