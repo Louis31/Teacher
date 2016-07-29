@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.Deliver;
 import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.DeliverContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IUserModel;
@@ -124,5 +125,9 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
+        // token 失效
+        if (errorCode == BaseConstant.TOKEN_INVALID) {
+            UserManager.cleanToken();
+        }
     }
 }

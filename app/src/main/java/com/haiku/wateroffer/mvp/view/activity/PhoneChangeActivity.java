@@ -125,8 +125,7 @@ public class PhoneChangeActivity extends BaseActivity implements PhoneChangeCont
 
     // 设置verifyCode
     @Override
-    public void setVerifyCode(String verifyCode) {
-        et_verify_code.setText(verifyCode);
+    public void resetVerifyCodeView() {
         tv_verify_code.setTextColor(getResources().getColor(R.color.black));
         isGettingVerifyCode = false;
     }

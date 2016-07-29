@@ -104,7 +104,7 @@ public class OrderModelImpl implements IOrderModel {
 
     // 是否有配送员
     @Override
-    public void isHasDeliver(final Map<String, Object> params, @NonNull final OrderListCallback callback) {
+    public void isHasDeliver(final Map<String, Object> params, @NonNull final IOrderCallback callback) {
         XUtils.Get(UrlConstant.Deliver.isShopHasDeliver(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {

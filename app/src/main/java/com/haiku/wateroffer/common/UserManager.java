@@ -66,4 +66,10 @@ public class UserManager {
             return false;
         }
     }
+
+    public static void cleanToken() {
+        if (null != getInstance().getToken()) {
+            getInstance().getToken().setAccess_token("");
+        }
+    }
 }

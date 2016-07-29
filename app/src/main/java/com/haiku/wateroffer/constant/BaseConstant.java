@@ -4,6 +4,7 @@ package com.haiku.wateroffer.constant;
  * Created by hyming on 2016/7/12.
  */
 public class BaseConstant {
+    public final static int TOKEN_INVALID = 403;//token 失效
     // 请求的code
     public final static int REQUEST_TAKE_PHOTO = 1;// 相机照相
     public final static int REQUEST_PICK_PHOTO = 2;// 相册选取

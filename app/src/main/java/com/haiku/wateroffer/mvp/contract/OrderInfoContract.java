@@ -13,6 +13,15 @@ public interface OrderInfoContract {
         // 设置信息订单信息
         void setOrderInfo(OrderItem bean);
 
+        // 显示/隐藏加载对话框
+        void showLoadingDialog(boolean isShow);
+
+        // 跳转配送员列表
+        void showDeliverView();
+
+        // 更新当前界面
+        void refreshView(int type);
+
         // 显示消息
         void showMessage(String msg);
     }
@@ -22,9 +31,9 @@ public interface OrderInfoContract {
         void getOrderInfo(int uid, int order_id);
 
         // 取消订单
-        void cancelOrder();
+        void cancelOrder(int id, int uid);
 
         // 派单
-        void sendOrder();
+        void sendOrder(int id, int uid);
     }
 }

@@ -14,12 +14,6 @@ import java.util.Map;
  * Created by hyming on 2016/7/6.
  */
 public interface IUserModel {
-    // 获取验证码相关回调
-    interface GetVerifyCodeCallback extends IRequestCallback {
-        // 获取验证码成功
-        void getVerifyCodeSuccess(String verifyCode);
-    }
-
     // 我的账单回调
     interface MyBillCallback extends IRequestCallback {
         // 获取账单数据成功
@@ -41,16 +35,11 @@ public interface IUserModel {
         void addDeliverSuccess(Deliver deliver);
     }
 
-    // 我的店铺回调
-    interface MyShopCallback extends IRequestCallback {
-        void uploadLogoSuccess(String logo);
-    }
-
     // 登陆
     void login(Map<String, Object> params, @NonNull IRequestCallback callback);
 
     // 获取验证码
-    void getVerifyCode(Map<String, Object> params, @NonNull GetVerifyCodeCallback callback);
+    void getVerifyCode(Map<String, Object> params, @NonNull IRequestCallback callback);
 
     // 获取我的账单明细
     void getBillList(Map<String, Object> params, @NonNull MyBillCallback callback);
@@ -66,15 +55,6 @@ public interface IUserModel {
 
     // 添加配送员
     void addDeliver(Map<String, Object> params, @NonNull DeliverCallback callback);
-
-    // 修改店铺名称
-    void addShopName(Map<String, Object> params, @NonNull IRequestCallback callback);
-
-    // 修改店铺电话
-    void changePhone(Map<String, Object> params, @NonNull GetVerifyCodeCallback callback);
-
-    // 修改店铺logo
-    void changeShopLogo(Map<String, Object> params, @NonNull MyShopCallback callback);
 
     // 修改店铺地址
     void addShopAddress(Map<String, Object> params, @NonNull IRequestCallback callback);

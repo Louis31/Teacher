@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.haiku.wateroffer.bean.Goods;
 import com.haiku.wateroffer.bean.GoodsCategory;
 import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.GoodsEditContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IGoodsModel;
@@ -92,7 +93,7 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
     }
 
     @Override
-    public void modifyGoods(int uid,String product_id, String product_name, String product_images, String product_price, String product_store,
+    public void modifyGoods(int uid, String product_id, String product_name, String product_images, String product_price, String product_store,
                             String product_description, String product_category, String product_buyingcycle,
                             String product_personalamount, String product_beyondprice) {
         mView.showLoadingDialog(true);
@@ -191,6 +192,11 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
+        // token 失效
+        if (errorCode == BaseConstant.TOKEN_INVALID) {
+            UserManager.cleanToken();
+            return;
+        }
         if (requesType == REQUEST_INFO) {
             mView.finishView();
         }

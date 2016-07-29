@@ -1,5 +1,7 @@
 package com.haiku.wateroffer.mvp.view.activity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -18,11 +20,13 @@ import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.common.util.ui.ImageUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
+import com.haiku.wateroffer.constant.ActionConstant;
 import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.contract.OrderInfoContract;
 import com.haiku.wateroffer.mvp.model.impl.OrderModelImpl;
 import com.haiku.wateroffer.mvp.persenter.OrderInfoPersenter;
+import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
 import com.haiku.wateroffer.mvp.view.widget.Titlebar;
 
 import org.xutils.view.annotation.ContentView;
@@ -52,6 +56,8 @@ public class OrderInfoActivity extends BaseActivity implements OrderInfoContract
     private OrderItem mOrderItem;
 
     private OrderInfoContract.Presenter mPresenter;
+
+    private ProgressDialog mDialog;
 
     @ViewInject(R.id.titlebar)
     private Titlebar mTitlebar;
@@ -314,7 +320,7 @@ public class OrderInfoActivity extends BaseActivity implements OrderInfoContract
             tv_order_send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mPresenter.sendOrder();
+                    mPresenter.sendOrder(order_id, uid);
                 }
             });
         }
@@ -328,7 +334,14 @@ public class OrderInfoActivity extends BaseActivity implements OrderInfoContract
             tv_order_cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mPresenter.cancelOrder();
+                    new IOSAlertDialog(mContext).builder().setMsg(getString(R.string.dlg_order_cancel))
+                            .setCancelable(false)
+                            .setPositiveButton("是", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mPresenter.cancelOrder(order_id, uid);  // 取消配送
+                                }
+                            }).setNegativeButton("否", null).show();
                 }
             });
         }
@@ -348,5 +361,44 @@ public class OrderInfoActivity extends BaseActivity implements OrderInfoContract
                 tv.setText(status.getName());
             }
         }
+    }
+
+    @Override
+    public void showLoadingDialog(boolean isShow) {
+        if (isShow) {
+            mDialog = ProgressDialog.show(mContext, "", getString(R.string.dlg_submiting));
+            mDialog.setCancelable(false);
+        } else {
+            if (mDialog != null && mDialog.isShowing()) {
+                mDialog.dismiss();
+            }
+        }
+    }
+
+    @Override
+    public void showDeliverView() {
+        new IOSAlertDialog(mContext).builder().setMsg(getString(R.string.dlg_deliver_add))
+                .setCancelable(false)
+                .setPositiveButton("是", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO 跳转到配送列表页面
+                        startActivity(new Intent(mContext, DeliverListActivity.class));
+                    }
+                }).setNegativeButton("否", null).show();
+    }
+
+    @Override
+    public void refreshView(int type) {
+        Intent intent = new Intent(ActionConstant.REFRESH_ORDER_LIST);
+        if (type == TypeConstant.OrderOpera.SEND_ORDER) {
+            // 派单成功，通知更新配送中
+            intent.putExtra("type", TypeConstant.Order.DELIVERING);
+        } else if (type == TypeConstant.OrderOpera.CANCEL_DELIVER) {
+            // 取消配送成功，通知更新待发货
+            intent.putExtra("type", TypeConstant.Order.PAYED);
+        }
+        sendBroadcast(intent);
+        finish();
     }
 }

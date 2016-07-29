@@ -58,6 +58,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         } else if (!isGettingVerifyCode) {
             isGettingVerifyCode = true;
             tv_verify_code.setTextColor(getResources().getColor(R.color.red));
+            closeKeybord();
             mPresenter.getVerifyCode(phone);
         }
     }
@@ -65,18 +66,19 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     // 登录按钮点击事件
     @Event(R.id.btn_login)
     private void loginClick(View v) {
-        User user = new User();
+        /*User user = new User();
         UserManager.getInstance().setUser(user);
         // TODO 设置默认uid
         UserManager.getInstance().getUser().setUid(1431);
         UserManager.getInstance().getUser().setUsertype("old");
         AccessToken token = new AccessToken();
-        token.setAccess_token("1464a8746104692a57288f01c155f77bc8d663da");
+        token.setAccess_token("86f3a89a7f66d69f2bc078360c5b58d293d3d290");
 
         UserManager.getInstance().setToken(token);
         startActivity(new Intent(mContext, MainActivity.class));
         finish();
-        /*
+        */
+
         String phone = et_phone.getText().toString().trim();
         String valicode = et_verify_code.getText().toString().trim();// 判断手机号码格式是否正确
         if (!ValidatorUtils.isMobile(phone)) {
@@ -85,13 +87,13 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
             ToastUtils.getInstant().showToast(R.string.msg_verifycode_invalid);
         } else {
             mPresenter.login(phone, valicode);
-        }*/
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        et_phone.setText("13650721344");
+        //et_phone.setText("13650721344");
         // 创建Presenter
         new LoginPresenter(new UserModelImpl(), this);
     }
@@ -105,23 +107,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     public void showSuccessView() {
         // TODO 判断是否为新用户
-       /* if (UserManager.getInstance().getUser().isNew()) {
+        if (UserManager.getInstance().getUser().isNew()) {
             startActivity(new Intent(mContext, ShopNameActivity.class));
         } else {
             startActivity(new Intent(mContext, MainActivity.class));
-        }*/
-
-       /* User user = new User();
-        UserManager.getInstance().setUser(user);
-        // TODO 设置默认uid
-        UserManager.getInstance().getUser().setUid(1431);
-        UserManager.getInstance().getUser().setUsertype("old");
-        AccessToken token = new AccessToken();
-        token.setAccess_token("1464a8746104692a57288f01c155f77bc8d663da");
-
-        UserManager.getInstance().setToken(token);
-        startActivity(new Intent(mContext, MainActivity.class));
-        finish();*/
+        }
+        finish();
     }
 
     // 显示/隐藏加载对话框
@@ -138,8 +129,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
     @Override
-    public void setVerifyCode(String verifyCode) {
-        et_verify_code.setText(verifyCode);
+    public void resetVerifyCodeView() {
         tv_verify_code.setTextColor(getResources().getColor(R.color.black));
         isGettingVerifyCode = false;
     }

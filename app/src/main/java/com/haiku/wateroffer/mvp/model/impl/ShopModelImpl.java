@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.haiku.wateroffer.App;
 import com.haiku.wateroffer.bean.ResultData;
 import com.haiku.wateroffer.bean.ShopInfo;
+import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.data.GsonUtils;
 import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
@@ -25,7 +26,7 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
 
     // 获取验证码
     @Override
-    public void getVerifyCode(Map<String, Object> params, @NonNull final IPhoneCallback callback) {
+    public void getVerifyCode(Map<String, Object> params, @NonNull final IRequestCallback callback) {
         XUtils.Get(UrlConstant.smsCodeUrl(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
@@ -130,7 +131,7 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
 
     // 修改店铺联系电话
     @Override
-    public void changeShopPhone(Map<String, Object> params, @NonNull final IPhoneCallback callback) {
+    public void changeShopPhone(Map<String, Object> params, @NonNull final IRequestCallback callback) {
         XUtils.Post(UrlConstant.Shop.changeShopPhoneUrl(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
@@ -214,13 +215,14 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
                 if (result.isSuccess()) {
                     JsonObject jobj = result.getRetmsg().getAsJsonObject();
                     //返回结果：{"retcode":0,"retmsg":{"openStatus":营业状态（0是营业中，1是打烊）}}
-                    callback.getOpenStatusSuccess(jobj.get("openStatus").getAsString());
+                    callback.setOpenStatusSuccess(jobj.get("openStatus").getAsString());
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
                 }
             }
         });
     }
+
 
     @Override
     public void getShopMarginStatus(Map<String, Object> params, @NonNull final IRequestCallback callback) {
@@ -230,6 +232,13 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.isSuccess()) {
+                    JsonObject jobj = result.getRetmsg().getAsJsonObject();
+                    String status = jobj.get("status").getAsString();
+                    if (status.equals("yes")) {
+                        UserManager.getInstance().setIsPayDeposit(true);
+                    } else {
+                        UserManager.getInstance().setIsPayDeposit(false);
+                    }
                     callback.onSuccess();
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));

@@ -10,10 +10,12 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.alipay.sdk.app.PayTask;
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.WechatParams;
+import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.common.pay.PayResult;
 import com.haiku.wateroffer.common.pay.SignUtils;
@@ -59,6 +61,15 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
 
     @ViewInject(R.id.titlebar)
     private Titlebar mTitlebar;
+
+    @ViewInject(R.id.btn_wechat)
+    private Button btn_wechat;
+
+    @ViewInject(R.id.btn_alipay)
+    private Button btn_alipay;
+
+    @ViewInject(R.id.btn_play_finish)
+    private Button btn_play_finish;
 
 
     // 微信支付
@@ -136,6 +147,13 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
                 finish();
             }
         });
+
+        if (UserManager.getInstance().isPayDeposit()) {
+            btn_wechat.setVisibility(View.GONE);
+            btn_alipay.setVisibility(View.GONE);
+        } else {
+            btn_play_finish.setVisibility(View.GONE);
+        }
     }
 
     @Override

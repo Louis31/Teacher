@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.ShopNameContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IShopModel;
@@ -85,5 +86,9 @@ public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCa
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
+        // token 失效
+        if (errorCode == BaseConstant.TOKEN_INVALID) {
+            UserManager.cleanToken();
+        }
     }
 }

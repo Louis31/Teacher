@@ -3,6 +3,8 @@ package com.haiku.wateroffer.mvp.persenter;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.Bill;
+import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.model.IUserModel;
 import com.haiku.wateroffer.mvp.contract.MyBillContract;
 
@@ -77,5 +79,9 @@ public class MyBillPresenter implements MyBillContract.Presenter, IUserModel.MyB
     @Override
     public void onError(int errorCode, String errorMsg) {
         mView.showMessage(errorMsg);
+        // token 失效
+        if (errorCode == BaseConstant.TOKEN_INVALID) {
+            UserManager.cleanToken();
+        }
     }
 }

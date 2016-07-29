@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.contract.OrderListContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
@@ -158,5 +159,9 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
+        // token 失效
+        if (errorCode == BaseConstant.TOKEN_INVALID) {
+            UserManager.cleanToken();
+        }
     }
 }

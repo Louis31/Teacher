@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.ShopInfo;
 import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.ShopContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IShopModel;
@@ -18,9 +19,8 @@ import java.util.Map;
 public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCallback {
     private final int REQUEST_INFO = 1;
     private final int REQUEST_LOGO = 2;
-    //private final int REQUEST_STATUS_GET = 3;
     private final int REQUEST_STATUS_SET = 4;
-    private final int REQUEST_MARGIN = 5;
+    private final int REQUEST_DEPOSIT = 5;
     private int requesType;
     @NonNull
     private final IShopModel mShopModel;
@@ -63,18 +63,6 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
         }
     }
 
-   /* @Override
-    public void getShopOpenStatus(int uid) {
-        requesType = REQUEST_STATUS_GET;
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", uid);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mShopModel).getAccessToken(params, this);
-        } else {
-            mShopModel.getShopOpenStatus(params, this);
-        }
-    }*/
-
     @Override
     public void setShopOpenStatus(int uid, String status, String dlgStr) {
         mView.showLoadingDialog(true, dlgStr);
@@ -91,7 +79,7 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
 
     @Override
     public void getShopMarginStatus(int uid) {
-        requesType = REQUEST_MARGIN;
+        requesType = REQUEST_DEPOSIT;
         Map<String, Object> params = new HashMap<>();
         params.put("id", uid);
         if (UserManager.isTokenEmpty()) {
@@ -110,11 +98,9 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
             mShopModel.getShopInfo(params, this);
         } else if (requesType == REQUEST_LOGO) {
             mShopModel.changeShopLogo(params, this);
-        } /*else if (requesType == REQUEST_STATUS_GET) {
-            mShopModel.getShopOpenStatus(params, this);
-        }*/ else if (requesType == REQUEST_STATUS_SET) {
+        } else if (requesType == REQUEST_STATUS_SET) {
             mShopModel.setShopOpenStatus(params, this);
-        } else if (requesType == REQUEST_MARGIN) {
+        } else if (requesType == REQUEST_DEPOSIT) {
             mShopModel.getShopMarginStatus(params, this);
         }
     }
@@ -131,7 +117,7 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
     }
 
     @Override
-    public void getOpenStatusSuccess(String status) {
+    public void setOpenStatusSuccess(String status) {
         mView.showLoadingDialog(false, "");
         mView.setShopStatus(status);
     }
@@ -139,17 +125,16 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
     // 成功回调
     @Override
     public void onSuccess() {
-        if (requesType == REQUEST_MARGIN) {
-            UserManager.getInstance().setIsPayDeposit(true);
-        }
+
     }
 
     @Override
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false, "");
-        if (requesType == REQUEST_MARGIN && errorCode == 100) {
-            return;
-        }
         mView.showMessage(errorMsg);
+        // token 失效
+        if (errorCode == BaseConstant.TOKEN_INVALID) {
+            UserManager.cleanToken();
+        }
     }
 }

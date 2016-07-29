@@ -20,12 +20,7 @@ public interface IShopModel {
         // 上传logo成功
         void uploadLogoSuccess(String logo);
 
-        void getOpenStatusSuccess(String status);
-    }
-
-    // 联系电话回调
-    interface IPhoneCallback extends IRequestCallback {
-        void getVerifyCodeSuccess(String verifyCode);
+        void setOpenStatusSuccess(String status);
     }
 
     interface IShopQQCallback extends IRequestCallback {
@@ -33,7 +28,7 @@ public interface IShopModel {
     }
 
     // 获取验证码
-    void getVerifyCode(Map<String, Object> params, @NonNull IPhoneCallback callback);
+    void getVerifyCode(Map<String, Object> params, @NonNull IRequestCallback callback);
 
     // 获取店铺信息
     void getShopInfo(Map<String, Object> params, @NonNull ShopCallback callback);
@@ -51,7 +46,7 @@ public interface IShopModel {
     void changeShopQQ(Map<String, Object> params, @NonNull IRequestCallback callback);
 
     // 修改店铺联系电话
-    void changeShopPhone(Map<String, Object> param, @NonNull IPhoneCallback callback);
+    void changeShopPhone(Map<String, Object> param, @NonNull IRequestCallback callback);
 
     // 修改店铺logo
     void changeShopLogo(Map<String, Object> params, @NonNull ShopCallback callback);
@@ -59,12 +54,9 @@ public interface IShopModel {
     // 修改配送距离
     void changeShopRange(Map<String, Object> params, @NonNull IRequestCallback callback);
 
-    // 获取营业状态
-    //void getShopOpenStatus(Map<String, Object> params, @NonNull ShopCallback callback);
-
     // 设置营业状态
     void setShopOpenStatus(Map<String, Object> params, @NonNull ShopCallback callback);
 
-    // 获取店铺是否已缴纳保证金
-    void getShopMarginStatus(Map<String, Object> params, @NonNull IRequestCallback callback);
+    // 获取店铺保证金状态
+    void getShopMarginStatus(Map<String, Object> params, @NonNull final IRequestCallback callback);
 }

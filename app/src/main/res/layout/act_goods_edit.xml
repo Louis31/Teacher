@@ -141,8 +141,7 @@
 
                 <TextView
                     android:id="@+id/tv_date_limit"
-                    style="@style/goods_edit_rlayout_tv_r"
-                    android:text="每天" />
+                    style="@style/goods_edit_rlayout_tv_r" />
 
             </RelativeLayout>
 

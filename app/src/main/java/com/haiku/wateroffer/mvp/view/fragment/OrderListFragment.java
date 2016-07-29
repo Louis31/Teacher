@@ -237,7 +237,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
                 .setPositiveButton("是", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // 跳转到配送列表页面
+                        // TODO 跳转到配送列表页面
                         startActivity(new Intent(mContext, DeliverListActivity.class));
                     }
                 }).setNegativeButton("否", null).show();

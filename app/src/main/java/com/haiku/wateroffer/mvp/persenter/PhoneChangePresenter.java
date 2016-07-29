@@ -3,6 +3,8 @@ package com.haiku.wateroffer.mvp.persenter;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.common.util.net.IRequestCallback;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.PhoneChangeContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IShopModel;
@@ -14,7 +16,7 @@ import java.util.Map;
  * 修改联系电话Presenter
  * Created by hyming on 2016/7/19
  */
-public class PhoneChangePresenter implements PhoneChangeContract.Presenter, IShopModel.IPhoneCallback {
+public class PhoneChangePresenter implements PhoneChangeContract.Presenter, IRequestCallback {
 
     private final int REQUEST_CHANGE_PHONE = 1;
     private final int REQUEST_VERIFY_CODE = 2;
@@ -69,12 +71,6 @@ public class PhoneChangePresenter implements PhoneChangeContract.Presenter, ISho
     /**
      * Callback 接口方法
      */
-    // 获取验证码成功
-    @Override
-    public void getVerifyCodeSuccess(String verifyCode) {
-        mView.setVerifyCode(verifyCode);
-    }
-
     // 获取token成功
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
@@ -89,13 +85,24 @@ public class PhoneChangePresenter implements PhoneChangeContract.Presenter, ISho
     @Override
     public void onSuccess() {
         mView.showLoadingDialog(false);
-        mView.showShopView();
+        if (requesType == REQUEST_VERIFY_CODE) {
+            mView.resetVerifyCodeView();
+        } else {
+            mView.showShopView();
+        }
     }
 
     // 错误返回
     @Override
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
+        if (requesType == REQUEST_VERIFY_CODE) {
+            mView.resetVerifyCodeView();
+        }
         mView.showMessage(errorMsg);
+        // token 失效
+        if (errorCode == BaseConstant.TOKEN_INVALID) {
+            UserManager.cleanToken();
+        }
     }
 }

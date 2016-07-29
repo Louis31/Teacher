@@ -19,8 +19,7 @@ public interface PhoneChangeContract {
         // 显示信息
         void showMessage(String msg);
 
-        // 设置verifyCode
-        void setVerifyCode(String verifyCode);
+        void resetVerifyCodeView();
     }
 
     interface Presenter extends BasePresenter {

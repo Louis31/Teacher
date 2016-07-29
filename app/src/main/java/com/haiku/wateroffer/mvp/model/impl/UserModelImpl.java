@@ -2,9 +2,6 @@ package com.haiku.wateroffer.mvp.model.impl;
 
 import android.support.annotation.NonNull;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.haiku.wateroffer.App;
 import com.haiku.wateroffer.bean.Bill;
 import com.haiku.wateroffer.bean.Deliver;
@@ -23,7 +20,6 @@ import com.haiku.wateroffer.mvp.model.IUserModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * User Model实现类
@@ -43,7 +39,7 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
                 if (result.getRetcode() == BaseConstant.SUCCESS) {
                     UserManager.getInstance().setUser(GsonUtils.gsonToBean(result.getRetmsg().toString(), User.class));
                     // TODO 设置默认uid
-                    UserManager.getInstance().getUser().setUid(1431);
+                    //UserManager.getInstance().getUser().setUid(1431);
                     callback.onSuccess();
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
@@ -54,7 +50,7 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
 
     // 获取验证码
     @Override
-    public void getVerifyCode(Map<String, Object> params, @NonNull final GetVerifyCodeCallback callback) {
+    public void getVerifyCode(Map<String, Object> params, @NonNull final IRequestCallback callback) {
         XUtils.Get(UrlConstant.smsCodeUrl(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
@@ -170,62 +166,6 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
         });
     }
 
-    // 修改店铺名称
-    @Override
-    public void addShopName(Map<String, Object> params, @NonNull final IRequestCallback callback) {
-        XUtils.Post(UrlConstant.User.addShopNameUrl(), params, new XUtilsCallback<ResultData>(callback) {
-            @Override
-            public void onSuccess(ResultData result) {
-                super.onSuccess(result);
-                LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
-                    callback.onSuccess();
-                } else {
-                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
-                }
-            }
-        });
-    }
-
-    // 修改店铺电话
-    @Override
-    public void changePhone(Map<String, Object> params, @NonNull final GetVerifyCodeCallback callback) {
-        XUtils.Post(UrlConstant.User.changePhone(), params, new XUtilsCallback<ResultData>(callback) {
-            @Override
-            public void onSuccess(ResultData result) {
-                super.onSuccess(result);
-                LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
-                    callback.onSuccess();
-                } else {
-                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
-                }
-            }
-        });
-    }
-
-    // 修改店铺logo
-    public void changeShopLogo(Map<String, Object> params, @NonNull final MyShopCallback callback) {
-        XUtils.Post(UrlConstant.User.changeShopLogo(), params, new XUtilsCallback<ResultData>(callback) {
-            @Override
-            public void onSuccess(ResultData result) {
-                super.onSuccess(result);
-                LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
-                    // ResultData{retcode=0, retmsg={"logoUrl":"http://sendwater.api.youdians.com/uploads/8/05f03c7b0f90889dc8a9ba8b158ecbf7."}}
-                    JsonObject jObj = result.getRetmsg().getAsJsonObject();
-                    if (null != jObj) {
-                        callback.uploadLogoSuccess(jObj.get("logoUrl").getAsString());
-                    } else {
-                        callback.uploadLogoSuccess("");
-                    }
-                } else {
-                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
-                }
-            }
-        });
-    }
-
     // 修改店铺地址
     @Override
     public void addShopAddress(Map<String, Object> params, @NonNull final IRequestCallback callback) {
@@ -242,4 +182,5 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
             }
         });
     }
+
 }

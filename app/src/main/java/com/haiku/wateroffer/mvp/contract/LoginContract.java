@@ -15,11 +15,10 @@ public interface LoginContract {
         // 显示/隐藏加载对话框
         void showLoadingDialog(boolean isShow);
 
+        void resetVerifyCodeView();
+
         // 显示信息
         void showMessage(String msg);
-
-        // 设置verifyCode
-        void setVerifyCode(String verifyCode);
     }
 
     interface Presenter extends BasePresenter {

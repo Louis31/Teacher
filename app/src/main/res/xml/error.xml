@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <errors>
     <error code="402">参数错误</error>
-    <error code="403">AccessDenied</error>
+    <!--<error code="403">AccessDenied</error>-->
+    <error code="403">当前操作失败，请重新尝试</error>-->
 
     <error code="500">系统错误</error>
     <error code="501">Accesstoken非法</error>

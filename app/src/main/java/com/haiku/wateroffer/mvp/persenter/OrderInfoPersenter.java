@@ -4,9 +4,11 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.constant.BaseConstant;
+import com.haiku.wateroffer.constant.TypeConstant;
+import com.haiku.wateroffer.mvp.contract.OrderInfoContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IOrderModel;
-import com.haiku.wateroffer.mvp.contract.OrderInfoContract;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +21,7 @@ public class OrderInfoPersenter implements OrderInfoContract.Presenter, IOrderMo
     private final int REQUEST_INFO = 1;
     private final int REQUEST_CANCEL = 2;
     private final int REQUEST_SEND = 3;
+    private final int REQUEST_HAS_DELIVER = 4;
     private int requesType;
 
     @NonNull
@@ -38,12 +41,11 @@ public class OrderInfoPersenter implements OrderInfoContract.Presenter, IOrderMo
     // 获取订单详情
     @Override
     public void getOrderInfo(int uid, int order_id) {
+        requesType = REQUEST_INFO;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("order_id", order_id);
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_INFO;
-            // 获取token
             ((IBaseModel) mOrderModel).getAccessToken(params, this);
         } else {
             mOrderModel.getOrderInfo(params, this);
@@ -52,11 +54,13 @@ public class OrderInfoPersenter implements OrderInfoContract.Presenter, IOrderMo
 
     // 取消订单
     @Override
-    public void cancelOrder() {
+    public void cancelOrder(int id, int uid) {
+        requesType = REQUEST_CANCEL;
+        mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("uid", uid);
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_CANCEL;
-            // 获取token
             ((IBaseModel) mOrderModel).getAccessToken(params, this);
         } else {
             mOrderModel.cancelOrder(params, this);
@@ -65,11 +69,32 @@ public class OrderInfoPersenter implements OrderInfoContract.Presenter, IOrderMo
 
     // 派单
     @Override
-    public void sendOrder() {
+    public void sendOrder(int id, int uid) {
+        isHasDeliver(id, uid);
+    }
+
+    // 判断有没有已添加的配送员
+    private void isHasDeliver(int order_id, int uid) {
+        mView.showLoadingDialog(true);
+        requesType = REQUEST_HAS_DELIVER;
         Map<String, Object> params = new HashMap<>();
+        params.put("uid", uid);
+        params.put("order_id", order_id);
+
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_SEND;
-            // 获取token
+            ((IBaseModel) mOrderModel).getAccessToken(params, this);
+        } else {
+            mOrderModel.isHasDeliver(params, this);
+        }
+    }
+
+    // 派送订单
+    private void sendOrderOpera(int id, int uid) {
+        requesType = REQUEST_SEND;
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("uid", uid);
+        if (UserManager.isTokenEmpty()) {
             ((IBaseModel) mOrderModel).getAccessToken(params, this);
         } else {
             mOrderModel.sendOrder(params, this);
@@ -93,19 +118,43 @@ public class OrderInfoPersenter implements OrderInfoContract.Presenter, IOrderMo
             mOrderModel.cancelOrder(params, this);
         } else if (requesType == REQUEST_SEND) {
             mOrderModel.sendOrder(params, this);
+        } else if (requesType == REQUEST_HAS_DELIVER) {
+            mOrderModel.isHasDeliver(params, this);
+        }
+    }
+
+
+    @Override
+    public void checkHasDeliver(boolean isHas, int order_id, int uid) {
+        if (isHas) {
+            sendOrderOpera(order_id, uid);// 派送订单
+        } else {
+            mView.showLoadingDialog(false);
+            mView.showDeliverView(); // 跳转配送员列表
         }
     }
 
     // 成功回调
     @Override
     public void onSuccess() {
-
+        mView.showLoadingDialog(false);
+        if (requesType == REQUEST_CANCEL) {
+            // 取消配送成功
+            mView.refreshView(TypeConstant.OrderOpera.CANCEL_DELIVER);
+        } else if (requesType == REQUEST_SEND) {
+            // 派单成功
+            mView.refreshView(TypeConstant.OrderOpera.SEND_ORDER);
+        }
     }
-
 
     // 错误回调
     @Override
     public void onError(int errorCode, String errorMsg) {
+        mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
+        // token 失效
+        if (errorCode == BaseConstant.TOKEN_INVALID) {
+            UserManager.cleanToken();
+        }
     }
 }

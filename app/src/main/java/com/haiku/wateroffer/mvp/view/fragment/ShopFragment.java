@@ -90,7 +90,6 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             initViews();
             new ShopPresenter(new ShopModelImpl(), this);
             mPresenter.getShopInfo(uid);
-            // mPresenter.getShopOpenStatus(uid);
             mPresenter.getShopMarginStatus(uid);
         }
         //因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity

@@ -34,6 +34,7 @@ import java.util.List;
 @ContentView(R.layout.act_main)
 public class MainActivity extends FragmentActivity {
     private Context mContext;
+
     private String tabTexts[] = {"订单", "商品", "我的"};
     private int tabImages[] = {R.drawable.ic_order, R.drawable.ic_goods, R.drawable.ic_head};
     private int tabImagesRed[] = {R.drawable.ic_order_red, R.drawable.ic_goods_red, R.drawable.ic_head_red};

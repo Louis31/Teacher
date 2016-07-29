@@ -2,7 +2,9 @@ package com.haiku.wateroffer.mvp.persenter;
 
 import android.support.annotation.NonNull;
 
+import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.ShopAddrContract;
 import com.haiku.wateroffer.mvp.model.IUserModel;
 
@@ -58,5 +60,9 @@ public class ShopAddrPresenter implements ShopAddrContract.Presenter, IRequestCa
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
+        // token 失效
+        if (errorCode == BaseConstant.TOKEN_INVALID) {
+            UserManager.cleanToken();
+        }
     }
 }

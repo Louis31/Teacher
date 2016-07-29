@@ -54,7 +54,6 @@ import java.util.List;
  */
 @ContentView(R.layout.act_goods_edit)
 public class GoodsEditActivity extends BaseActivity implements GoodsEditContract.View {
-
     private String product_id;
     private boolean isUpdate;// 当前是否为编辑界面
     private String mImagePath;
@@ -229,7 +228,6 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
             builder.setTitle("选择分类");
             final ChoiceOnClickListener choiceListener =
                     new ChoiceOnClickListener();
-            // ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_single_choice, mCategoryList);
             builder.setSingleChoiceItems(categoryNames, 0, choiceListener);
 
             DialogInterface.OnClickListener btnListener =
@@ -271,7 +269,6 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
     private void initDatas() {
         isUpdate = getIntent().getBooleanExtra("isUpdate", false);
         mImageUrlList = new ArrayList<String>();
-        //mCategoryList = new ArrayList<String>();
     }
 
     private void initViews() {
@@ -338,7 +335,7 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
             String category = tv_category.getTag() + "";
             String buyingcycle = tv_date_limit.getTag() + "";
             if (TextUtils.isEmpty(buyingcycle) || buyingcycle.equals("null")) {
-                buyingcycle = "1";
+                buyingcycle = "";
             }
             String personalamountStr = tv_limit_count.getText().toString();
             personalamountStr = personalamountStr.replace("件", "");
@@ -438,10 +435,7 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
         tv_overrange.setText(bean.getProduct_beyondprice());
 
         String cycle = bean.getProduct_buyingcycle();
-        if (TextUtils.isEmpty(cycle)) {
-            tv_date_limit.setTag("1");
-            tv_date_limit.setText("每日");
-        } else {
+        if (!TextUtils.isEmpty(cycle) && !cycle.equals("null")) {
             tv_date_limit.setTag(cycle);
             if (cycle.equals("1")) {
                 tv_date_limit.setText("每日");
@@ -489,7 +483,6 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
             setResult(Activity.RESULT_OK, intent);
             finish();
         } else {
-            // TODO 添加商品成功，更新已下架列表
             Intent intent = new Intent(ActionConstant.REFRESH_GOODS_LIST);
             intent.putExtra("type", TypeConstant.Goods.ON_SALE);
             sendBroadcast(intent);

@@ -89,16 +89,6 @@ public class UrlConstant {
             return getUserPath() + "/addShopName" + getToken();
         }
 
-        // 修改商家电话，Post
-        public static String changePhone() {
-            return getUserPath() + "/changeLoginPhone" + getToken();
-        }
-
-        // 修改店铺logo，Post
-        public static String changeShopLogo() {
-            return getUserPath() + "/modifyShopLogo" + getToken();
-        }
-
         // 修改店铺地址，Post
         public static String addShopAddress() {
             return getUserPath() + "/addShopAddress" + getToken();
@@ -260,11 +250,6 @@ public class UrlConstant {
         public static String changeShopRange() {
             return getShopPath() + "/changeShopRange" + getToken();
         }
-
-        // 获取营业状态，Get
-       /* public static String getShopOpenStatus() {
-            return getShopPath() + "/getShopOpenStatus" + getToken();
-        }*/
 
         // 设置营业状态，Post
         public static String setShopOpenStatus() {

@@ -3,6 +3,8 @@ package com.haiku.wateroffer.mvp.persenter;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.common.util.net.IRequestCallback;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.LoginContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IUserModel;
@@ -14,7 +16,7 @@ import java.util.Map;
  * 登陆模块Presenter
  * Created by hyming on 2016/7/6.
  */
-public class LoginPresenter implements LoginContract.Presenter, IUserModel.GetVerifyCodeCallback {
+public class LoginPresenter implements LoginContract.Presenter, IRequestCallback {
 
     private final int REQUEST_LOGIN = 1;
     private final int REQUEST_VERIFY_CODE = 2;
@@ -37,13 +39,12 @@ public class LoginPresenter implements LoginContract.Presenter, IUserModel.GetVe
     // 登陆
     @Override
     public void login(String phone, String valicode) {
+        requesType = REQUEST_LOGIN;
         mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
         params.put("phone", phone);
         params.put("valicode", valicode);
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_LOGIN;
-            // 获取token
             ((IBaseModel) mUserModel).getAccessToken(params, this);
         } else {
             mUserModel.login(params, this);
@@ -53,11 +54,10 @@ public class LoginPresenter implements LoginContract.Presenter, IUserModel.GetVe
     // 获取验证码
     @Override
     public void getVerifyCode(String phone) {
+        requesType = REQUEST_VERIFY_CODE;
         Map<String, Object> params = new HashMap<>();
         params.put("phone", phone);
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_VERIFY_CODE;
-            // 获取token
             ((IBaseModel) mUserModel).getAccessToken(params, this);
         } else {
             mUserModel.getVerifyCode(params, this);
@@ -67,11 +67,6 @@ public class LoginPresenter implements LoginContract.Presenter, IUserModel.GetVe
     /**
      * Callback 接口方法
      */
-    // 获取验证码成功
-    @Override
-    public void getVerifyCodeSuccess(String verifyCode) {
-        mView.setVerifyCode(verifyCode);
-    }
 
     // 获取token成功
     @Override
@@ -87,13 +82,24 @@ public class LoginPresenter implements LoginContract.Presenter, IUserModel.GetVe
     @Override
     public void onSuccess() {
         mView.showLoadingDialog(false);
-        mView.showSuccessView();
+        if (requesType == REQUEST_VERIFY_CODE) {
+            mView.resetVerifyCodeView();
+        } else {
+            mView.showSuccessView();
+        }
     }
 
     // 错误返回
     @Override
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
+        if (requesType == REQUEST_VERIFY_CODE) {
+            mView.resetVerifyCodeView();
+        }
         mView.showMessage(errorMsg);
+        // token 失效
+        if (errorCode == BaseConstant.TOKEN_INVALID) {
+            UserManager.cleanToken();
+        }
     }
 }
