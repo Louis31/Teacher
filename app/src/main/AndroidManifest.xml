@@ -43,16 +43,16 @@
 
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity
-            android:name=".mvp.view.activity.LoginActivity"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden">
+        <activity android:name=".mvp.view.activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".mvp.view.activity.LoginActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name=".mvp.view.activity.MainActivity"
             android:launchMode="singleTask" />

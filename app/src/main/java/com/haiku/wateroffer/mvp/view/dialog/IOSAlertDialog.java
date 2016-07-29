@@ -16,6 +16,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
 
 
 public class IOSAlertDialog {
@@ -105,7 +106,7 @@ public class IOSAlertDialog {
     }
 
     public IOSAlertDialog setPositiveButton(String text,
-                                         final OnClickListener listener) {
+                                            final OnClickListener listener) {
         showPosBtn = true;
         if ("".equals(text)) {
             btn_pos.setText("确定");
@@ -124,7 +125,7 @@ public class IOSAlertDialog {
     }
 
     public IOSAlertDialog setNegativeButton(String text,
-                                         final OnClickListener listener) {
+                                            final OnClickListener listener) {
         showNegBtn = true;
         if ("".equals(text)) {
             btn_neg.setText("取消");
@@ -139,6 +140,11 @@ public class IOSAlertDialog {
                 dialog.dismiss();
             }
         });
+        return this;
+    }
+
+    public IOSAlertDialog setInputContent(String str) {
+        et_input.setText(str);
         return this;
     }
 
@@ -191,12 +197,16 @@ public class IOSAlertDialog {
         }
     }
 
-    public String getInputValue(){
+    public String getInputValue() {
         return et_input.getText().toString().trim();
     }
 
     public void show() {
         setLayout();
         dialog.show();
+    }
+
+    public void closeKeyBoard(Context cxt){
+        KeyBoardUtils.closeKeybord(et_input, cxt);
     }
 }

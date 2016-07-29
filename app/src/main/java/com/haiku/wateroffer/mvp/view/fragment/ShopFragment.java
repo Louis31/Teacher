@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +50,6 @@ import java.io.File;
 public class ShopFragment extends LazyFragment implements View.OnClickListener, ShopContract.View {
     private Context mContext;
     private int uid;
-    private String mShopStatus;
 
     private ShopInfo mShopInfo;
     private String mImagePath;
@@ -92,7 +90,8 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             initViews();
             new ShopPresenter(new ShopModelImpl(), this);
             mPresenter.getShopInfo(uid);
-            mPresenter.getShopOpenStatus(uid);
+            // mPresenter.getShopOpenStatus(uid);
+            mPresenter.getShopMarginStatus(uid);
         }
         //因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
         ViewGroup parent = (ViewGroup) rootView.getParent();
@@ -182,7 +181,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                 if (mShopInfo != null) {
                     Intent iShopName = new Intent(mContext, ShopNameActivity.class);
                     iShopName.putExtra("isUpdate", true);
-                    iShopName.putExtra("shop_name", mShopInfo.getMerchant_shopname());
+                    iShopName.putExtra("shop_name", mShopInfo.getShopName());
                     startActivityForResult(iShopName, BaseConstant.REQUEST_EDIT_SHOP_NAME);
                 }
                 break;
@@ -191,8 +190,8 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                 if (mShopInfo != null) {
                     Intent iShopAddr = new Intent(mContext, ShopAddressActivity.class);
                     iShopAddr.putExtra("isUpdate", true);
-                    iShopAddr.putExtra("area", mShopInfo.getMerchant_shoparea());
-                    iShopAddr.putExtra("area_detail", mShopInfo.getMerchant_shopfloorDetail());
+                    iShopAddr.putExtra("area", mShopInfo.getArea());
+                    iShopAddr.putExtra("area_detail", mShopInfo.getFloorDetail());
                     startActivityForResult(iShopAddr, BaseConstant.REQUEST_EDIT_SHOP_ADDR);
                 }
 
@@ -201,7 +200,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             case R.id.llayout_phone:
                 if (mShopInfo != null) {
                     Intent iPhone = new Intent(mContext, PhoneChangeActivity.class);
-                    iPhone.putExtra("phone", mShopInfo.getMerchant_phone());
+                    iPhone.putExtra("phone", mShopInfo.getPhone());
                     startActivityForResult(iPhone, BaseConstant.REQUEST_EDIT_SHOP_PHONE);
                 }
                 break;
@@ -228,19 +227,18 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             case R.id.llayout_qq:
                 if (mShopInfo != null) {
                     Intent iQQ = new Intent(mContext, ShopQQActivity.class);
-                    iQQ.putExtra("qq", mShopInfo.getMerchant_qq());
+                    iQQ.putExtra("qq", mShopInfo.getQq());
                     startActivityForResult(iQQ, BaseConstant.REQUEST_EDIT_SHOP_QQ);
                 }
                 break;
             // 设置营业状态
             case R.id.llayout_open_status:
-                if (TextUtils.isEmpty(mShopStatus)) {
-                    return;
-                }
-                if (TypeConstant.ShopStatus.OPEN.equals(mShopStatus)) {
-                    mPresenter.setShopOpenStatus(uid, TypeConstant.ShopStatus.CLOSE);
-                } else {
-                    mPresenter.setShopOpenStatus(uid, TypeConstant.ShopStatus.OPEN);
+                if (mShopInfo != null) {
+                    if (TypeConstant.ShopStatus.OPEN.equals(mShopInfo.getStatus())) {
+                        mPresenter.setShopOpenStatus(uid, TypeConstant.ShopStatus.CLOSE, getString(R.string.dlg_submiting));
+                    } else {
+                        mPresenter.setShopOpenStatus(uid, TypeConstant.ShopStatus.OPEN, getString(R.string.dlg_submiting));
+                    }
                 }
                 break;
             // 注销登录
@@ -307,23 +305,23 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         // 修改店铺名称
         if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_NAME && resultCode == Activity.RESULT_OK) {
             String shopName = data.getStringExtra("shop_name");
-            mShopInfo.setMerchant_shopname(shopName);
+            mShopInfo.setShopName(shopName);
             tv_shop_name.setText(shopName);
         }
         // 修改店铺电话
         else if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_PHONE && resultCode == Activity.RESULT_OK) {
-            mShopInfo.setMerchant_phone(data.getStringExtra("phone"));
+            mShopInfo.setPhone(data.getStringExtra("phone"));
         }
         // 修改店铺qq
         else if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_QQ && resultCode == Activity.RESULT_OK) {
-            mShopInfo.setMerchant_qq(data.getStringExtra("qq"));
+            mShopInfo.setQq(data.getStringExtra("qq"));
         }
         // 修改店铺地址
         else if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_ADDR && resultCode == Activity.RESULT_OK) {
             String area = data.getStringExtra("area");
             String area_detail = data.getStringExtra("area_detail");
-            mShopInfo.setMerchant_shoparea(area);
-            mShopInfo.setMerchant_shopfloorDetail(area_detail);
+            mShopInfo.setArea(area);
+            mShopInfo.setFloorDetail(area_detail);
         }
         // 手机拍照
         else if (requestCode == BaseConstant.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
@@ -346,14 +344,14 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             mImagePath = "";
             // 上传图片
             int uid = UserManager.getInstance().getUser().getUid();
-            mPresenter.changeShopLogo(uid, base64);
+            mPresenter.changeShopLogo(uid, base64, getString(R.string.dlg_upload_image));
         }
     }
 
     @Override
-    public void showLoadingDialog(boolean isShow) {
+    public void showLoadingDialog(boolean isShow, String dlgStr) {
         if (isShow) {
-            mDialog = ProgressDialog.show(mContext, "", getString(R.string.dlg_upload_image));
+            mDialog = ProgressDialog.show(mContext, "", dlgStr);
             mDialog.show();
         } else {
             if (mDialog != null && mDialog.isShowing()) {
@@ -365,21 +363,22 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
     @Override
     public void setShopInfo(ShopInfo bean) {
         mShopInfo = bean;
-        tv_shop_name.setText(bean.getMerchant_shopname());
-        ImageUtils.showCircleImage(getContext(), bean.getMerchant_logo(), iv_shop_logo);
+        tv_shop_name.setText(bean.getShopName());
+        ImageUtils.showCircleImage(getContext(), bean.getIcon(), iv_shop_logo);
+        setShopStatus(bean.getStatus());
     }
 
     @Override
     public void setLogo(String logo) {
         if (mShopInfo != null) {
-            mShopInfo.setMerchant_logo(logo);
+            mShopInfo.setIcon(logo);
         }
         ImageUtils.showCircleImage(getContext(), logo, iv_shop_logo);
     }
 
     @Override
     public void setShopStatus(String status) {
-        mShopStatus = status;
+        mShopInfo.setStatus(status);
         if (TypeConstant.ShopStatus.OPEN.equals(status)) {
             // 营业中
             tv_shop_status.setText(getString(R.string.shop_status_open));

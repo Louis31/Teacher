@@ -60,8 +60,11 @@ public interface IShopModel {
     void changeShopRange(Map<String, Object> params, @NonNull IRequestCallback callback);
 
     // 获取营业状态
-    void getShopOpenStatus(Map<String, Object> params, @NonNull ShopCallback callback);
+    //void getShopOpenStatus(Map<String, Object> params, @NonNull ShopCallback callback);
 
     // 设置营业状态
     void setShopOpenStatus(Map<String, Object> params, @NonNull ShopCallback callback);
+
+    // 获取店铺是否已缴纳保证金
+    void getShopMarginStatus(Map<String, Object> params, @NonNull IRequestCallback callback);
 }

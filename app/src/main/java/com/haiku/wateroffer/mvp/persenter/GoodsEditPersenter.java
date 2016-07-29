@@ -1,7 +1,9 @@
 package com.haiku.wateroffer.mvp.persenter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.haiku.wateroffer.bean.Goods;
 import com.haiku.wateroffer.bean.GoodsCategory;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.mvp.contract.GoodsEditContract;
@@ -21,6 +23,7 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
     private final int REQUEST_CATEGORY = 2;
     private final int REQUEST_ADD = 3;
     private final int REQUEST_MODIFY = 4;
+    private final int REQUEST_INFO = 5;
     private int requesType;
 
     @NonNull
@@ -64,8 +67,8 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
     }
 
     @Override
-    public void addGoods(int uid, String product_name, String product_images, int product_price, int product_store,
-                         String product_description, String product_category, String product_buyingcycle, int product_personalamount,
+    public void addGoods(int uid, String product_name, String product_images, String product_price, String product_store,
+                         String product_description, String product_category, String product_buyingcycle, String product_personalamount,
                          String product_beyondprice) {
         mView.showLoadingDialog(true);
         requesType = REQUEST_ADD;
@@ -89,13 +92,14 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
     }
 
     @Override
-    public void modifyGoods(int uid, String product_name, String product_images, int product_price, int product_store,
+    public void modifyGoods(int uid,String product_id, String product_name, String product_images, String product_price, String product_store,
                             String product_description, String product_category, String product_buyingcycle,
-                            int product_personalamount, String product_beyondprice) {
+                            String product_personalamount, String product_beyondprice) {
         mView.showLoadingDialog(true);
         requesType = REQUEST_MODIFY;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
+        params.put("product_id", product_id);
         params.put("product_name", product_name);
         params.put("product_images", product_images);
         params.put("product_price", product_price);
@@ -110,6 +114,19 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
             ((IBaseModel) mGoodsModel).getAccessToken(params, this);
         } else {
             mGoodsModel.modifyGoods(params, this);
+        }
+    }
+
+    @Override
+    public void getGoodsInfo(int product_id) {
+        mView.showLoadingDialog(true);
+        requesType = REQUEST_INFO;
+        Map<String, Object> params = new HashMap<>();
+        params.put("product_id", product_id);
+        if (UserManager.isTokenEmpty()) {
+            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
+        } else {
+            mGoodsModel.getGoodsInfo(params, this);
         }
     }
 
@@ -133,6 +150,8 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
             mGoodsModel.addGoods(params, this);
         } else if (requesType == REQUEST_MODIFY) {
             mGoodsModel.modifyGoods(params, this);
+        } else if (requesType == REQUEST_INFO) {
+            mGoodsModel.getGoodsInfo(params, this);
         }
     }
 
@@ -148,11 +167,23 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
         mView.setCategoryList(ids, names);
     }
 
+    @Override
+    public void getGoodsInfoSuccess(Goods bean) {
+        mView.showLoadingDialog(false);
+        mView.setGoodsInfo(bean);
+    }
+
+    @Override
+    public void updateInfoSuccess(Goods goods) {
+        mView.showLoadingDialog(false);
+        mView.showSuccessView(goods);
+    }
+
     // 成功回调
     @Override
     public void onSuccess() {
         mView.showLoadingDialog(false);
-        mView.showSuccessView();
+        mView.showSuccessView(null);
     }
 
     // 错误回调
@@ -160,5 +191,8 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
+        if (requesType == REQUEST_INFO) {
+            mView.finishView();
+        }
     }
 }

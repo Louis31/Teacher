@@ -20,8 +20,12 @@ public interface GoodsEditContract {
 
         void setCategoryList(Integer[] ids, String[] names);
 
+        void setGoodsInfo(Goods bean);
+
+        void finishView();
+
         // 成功回调
-        void showSuccessView();
+        void showSuccessView(Goods bean);
 
         // 显示信息
         void showMessage(String msg);
@@ -32,12 +36,15 @@ public interface GoodsEditContract {
 
         void getCategory(int parent_id, int ishome);
 
-        void addGoods(int uid, String product_name, String product_images, int product_price,
-                      int product_store, String product_description, String product_category, String product_buyingcycle,
-                      int product_personalamount, String product_beyondprice);
+        void addGoods(int uid, String product_name, String product_images, String product_price,
+                      String product_store, String product_description, String product_category, String product_buyingcycle,
+                      String product_personalamount, String product_beyondprice);
 
-        void modifyGoods(int uid, String product_name, String product_images, int product_price,
-                         int product_store, String product_description, String product_category, String product_buyingcycle,
-                         int product_personalamount, String product_beyondprice);
+        void modifyGoods(int uid, String product_id, String product_name, String product_images, String product_price,
+                         String product_store, String product_description, String product_category, String product_buyingcycle,
+                         String product_personalamount, String product_beyondprice);
+
+        // 获取商品信息
+        void getGoodsInfo(int product_id);
     }
 }

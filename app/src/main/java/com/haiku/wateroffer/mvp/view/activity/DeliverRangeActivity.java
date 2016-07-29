@@ -35,6 +35,8 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
     private ProgressDialog mDialog;
     private IShopModel mShopModel;
 
+    private int mChoiceWhich;
+
     @ViewInject(R.id.titlebar)
     private Titlebar mTitlebar;
 
@@ -48,13 +50,14 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
             builder.setTitle("配送范围");
             final ChoiceOnClickListener choiceListener =
                     new ChoiceOnClickListener();
-            builder.setSingleChoiceItems(R.array.deliver_range, 2, choiceListener);
+            builder.setSingleChoiceItems(R.array.deliver_range, UserManager.getInstance().getRange(), choiceListener);
 
             DialogInterface.OnClickListener btnListener =
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
                             int choiceWhich = choiceListener.getWhich();
+                            mChoiceWhich = choiceWhich;
                             String range =
                                     getResources().getStringArray(R.array.deliver_range)[choiceWhich];
                             tv_range.setText(range);
@@ -97,6 +100,8 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
                 }
             }
         });
+
+        tv_range.setText(getResources().getStringArray(R.array.deliver_range)[UserManager.getInstance().getRange()]);
     }
 
     private class ChoiceOnClickListener implements DialogInterface.OnClickListener {
@@ -131,6 +136,7 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
 
     @Override
     public void onSuccess() {
+        UserManager.getInstance().setRange(mChoiceWhich);
         showLoadingDialog(false);
         finish();
     }

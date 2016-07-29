@@ -32,4 +32,13 @@
         android:layout_marginRight="14dp"
         android:layout_marginTop="24dp"
         android:text="@string/alipay_payment" />
+
+    <Button
+        android:id="@+id/btn_play_finish"
+        style="@style/btn_common"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/shape_btn_deposit"
+        android:text="@string/deposit_success" />
 </LinearLayout>

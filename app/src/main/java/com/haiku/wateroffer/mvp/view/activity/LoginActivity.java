@@ -9,7 +9,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.bean.AccessToken;
+import com.haiku.wateroffer.bean.User;
 import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.common.util.data.GsonUtils;
 import com.haiku.wateroffer.common.util.data.ValidatorUtils;
 import com.haiku.wateroffer.common.util.ui.DialogUtils;
 import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
@@ -62,6 +65,18 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     // 登录按钮点击事件
     @Event(R.id.btn_login)
     private void loginClick(View v) {
+        User user = new User();
+        UserManager.getInstance().setUser(user);
+        // TODO 设置默认uid
+        UserManager.getInstance().getUser().setUid(1431);
+        UserManager.getInstance().getUser().setUsertype("old");
+        AccessToken token = new AccessToken();
+        token.setAccess_token("1464a8746104692a57288f01c155f77bc8d663da");
+
+        UserManager.getInstance().setToken(token);
+        startActivity(new Intent(mContext, MainActivity.class));
+        finish();
+        /*
         String phone = et_phone.getText().toString().trim();
         String valicode = et_verify_code.getText().toString().trim();// 判断手机号码格式是否正确
         if (!ValidatorUtils.isMobile(phone)) {
@@ -70,7 +85,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
             ToastUtils.getInstant().showToast(R.string.msg_verifycode_invalid);
         } else {
             mPresenter.login(phone, valicode);
-        }
+        }*/
     }
 
     @Override
@@ -89,13 +104,24 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     // 显示主页
     @Override
     public void showSuccessView() {
-        // 判断是否为新用户
-        if (UserManager.getInstance().getUser().isNew()) {
+        // TODO 判断是否为新用户
+       /* if (UserManager.getInstance().getUser().isNew()) {
             startActivity(new Intent(mContext, ShopNameActivity.class));
         } else {
             startActivity(new Intent(mContext, MainActivity.class));
-        }
-        finish();
+        }*/
+
+       /* User user = new User();
+        UserManager.getInstance().setUser(user);
+        // TODO 设置默认uid
+        UserManager.getInstance().getUser().setUid(1431);
+        UserManager.getInstance().getUser().setUsertype("old");
+        AccessToken token = new AccessToken();
+        token.setAccess_token("1464a8746104692a57288f01c155f77bc8d663da");
+
+        UserManager.getInstance().setToken(token);
+        startActivity(new Intent(mContext, MainActivity.class));
+        finish();*/
     }
 
     // 显示/隐藏加载对话框

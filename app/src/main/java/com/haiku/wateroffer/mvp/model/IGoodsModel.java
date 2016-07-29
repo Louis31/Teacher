@@ -24,6 +24,10 @@ public interface IGoodsModel {
         void uploadImageSuccess(String url);
 
         void getCategorySuccess(List<GoodsCategory> list);
+
+        void getGoodsInfoSuccess(Goods bean);
+
+        void updateInfoSuccess(Goods goods);
     }
 
     // 获取商品列表
@@ -49,4 +53,7 @@ public interface IGoodsModel {
 
     // 更新商品
     void modifyGoods(Map<String, Object> params, @NonNull IGoodsEditCallback callback);
+
+    // 获取商品数据
+    void getGoodsInfo(Map<String, Object> params, @NonNull IGoodsEditCallback callback);
 }

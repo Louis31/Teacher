@@ -11,7 +11,7 @@ import com.haiku.wateroffer.mvp.base.BaseView;
 public interface ShopContract {
     interface View extends BaseView<Presenter> {
         // 显示/隐藏加载对话框
-        void showLoadingDialog(boolean isShow);
+        void showLoadingDialog(boolean isShow,String str);
 
         void setShopInfo(ShopInfo bean);
 
@@ -26,15 +26,18 @@ public interface ShopContract {
 
     interface Presenter extends BasePresenter {
         // 修改店铺logo
-        void changeShopLogo(int uid, String data);
+        void changeShopLogo(int uid, String data,String dlgStr);
 
         // 获取店铺信息
         void getShopInfo(int uid);
 
         // 获取营业状态
-        void getShopOpenStatus(int uid);
+        //void getShopOpenStatus(int uid);
 
         // 设置营业状态
-        void setShopOpenStatus(int uid, String status);
+        void setShopOpenStatus(int uid, String status,String dlgStr);
+
+        // 获取店铺是否已缴纳保证金
+        void getShopMarginStatus(int uid);
     }
 }

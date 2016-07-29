@@ -71,6 +71,11 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
             mType = bundle.getString("type");
         }
         mContext = getContext();
+        // 注册广播接收者
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ActionConstant.REFRESH_ORDER_LIST);
+        broadcastManager.registerReceiver(mBroadcastReceiver, intentFilter);
     }
 
     @Override
@@ -94,11 +99,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // 注册广播接收者
-        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ActionConstant.REFRESH_ORDER_LIST);
-        broadcastManager.registerReceiver(mBroadcastReceiver, intentFilter);
+
     }
 
     BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -115,6 +116,12 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
         broadcastManager.unregisterReceiver(mBroadcastReceiver);
     }

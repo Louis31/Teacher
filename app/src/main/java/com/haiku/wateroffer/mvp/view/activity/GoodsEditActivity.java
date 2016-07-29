@@ -14,20 +14,22 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.bean.Goods;
+import com.haiku.wateroffer.bean.GoodsImage;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
-import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.ui.ImageUtils;
 import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
+import com.haiku.wateroffer.constant.ActionConstant;
 import com.haiku.wateroffer.constant.BaseConstant;
+import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.contract.GoodsEditContract;
 import com.haiku.wateroffer.mvp.model.impl.GoodsModelImpl;
@@ -53,8 +55,10 @@ import java.util.List;
 @ContentView(R.layout.act_goods_edit)
 public class GoodsEditActivity extends BaseActivity implements GoodsEditContract.View {
 
+    private String product_id;
     private boolean isUpdate;// 当前是否为编辑界面
     private String mImagePath;
+    private String mDialogStr;
     private List<String> mImageUrlList;
     //private List<String> mCategoryList;
     private Integer[] categoryIds = new Integer[]{};
@@ -63,6 +67,8 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
 
     private AlertDialog mChoseDateDialog;
     private AlertDialog mChoseCategoryDialog;
+    private IOSAlertDialog mOverDialog;
+    private IOSAlertDialog mLimitDialog;
     private ProgressDialog mDialog;
 
     @ViewInject(R.id.titlebar)
@@ -140,6 +146,7 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
                             int choiceWhich = choiceListener.getWhich();
                             String hobbyStr =
                                     getResources().getStringArray(R.array.date_cycle)[choiceWhich];
+                            tv_date_limit.setTag(choiceWhich + 1);
                             tv_date_limit.setText(hobbyStr);
                         }
                     };
@@ -152,55 +159,66 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
     // 限购点击
     @Event(R.id.rlayout_limit)
     private void limitClick(View v) {
-        final IOSAlertDialog dialog = new IOSAlertDialog(mContext).builder();
-        dialog.setTitle(getString(R.string.dlg_limit_title)).setMsg(getString(R.string.dlg_limit_tip))
-                .setInput(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL)
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.confirm),
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                // 获取到输入数据
-                                String value = dialog.getInputValue();
-                                if (!TextUtils.isEmpty(value))
-                                    tv_limit_count.setText(value + "件");
-                                closeKeybord();
-                            }
-                        })
-                .setNegativeButton(getString(R.string.cancel), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        closeKeybord();
-                    }
-                });
-        dialog.show();
+        if (mLimitDialog == null) {
+            String content = tv_limit_count.getText().toString().replace("件", "");
+            mLimitDialog = new IOSAlertDialog(mContext).builder();
+            mLimitDialog.setTitle(getString(R.string.dlg_limit_title)).setMsg(getString(R.string.dlg_limit_tip))
+                    .setInput(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL)
+                    .setInputContent(content)
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.confirm),
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    // 获取到输入数据
+                                    String value = mLimitDialog.getInputValue();
+                                    if (!TextUtils.isEmpty(value))
+                                        tv_limit_count.setText(value + "件");
+                                    mLimitDialog.closeKeyBoard(mContext);
+                                    closeKeybord();
+                                }
+                            })
+                    .setNegativeButton(getString(R.string.cancel), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            closeKeybord();
+                        }
+                    });
+        }
+        mLimitDialog.show();
     }
 
     // 超额点击
     @Event(R.id.rlayout_overrange)
     private void overrangeClick(View v) {
-        final IOSAlertDialog dialog = new IOSAlertDialog(mContext).builder();
-        dialog.setTitle(getString(R.string.dlg_overrange_title)).setMsg(getString(R.string.dlg_overrange_tip))
-                .setInput(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL)
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.confirm),
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                // 获取到输入数据
-                                String value = dialog.getInputValue();
-                                if (!TextUtils.isEmpty(value))
-                                    tv_overrange.setText(value + "元");
-                                closeKeybord();
-                            }
-                        })
-                .setNegativeButton(getString(R.string.cancel), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        closeKeybord();
-                    }
-                });
-        dialog.show();
+        if (mOverDialog == null) {
+            String content = tv_overrange.getText().toString().replace("元", "");
+            mOverDialog = new IOSAlertDialog(mContext).builder();
+            mOverDialog.setTitle(getString(R.string.dlg_overrange_title)).setMsg(getString(R.string.dlg_overrange_tip))
+                    .setInput(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL)
+                    .setInputContent(content)
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.confirm),
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    // 获取到输入数据
+                                    String value = mOverDialog.getInputValue();
+                                    if (!TextUtils.isEmpty(value))
+                                        tv_overrange.setText(value + "元");
+                                    mOverDialog.closeKeyBoard(mContext);
+                                    closeKeybord();
+                                }
+                            })
+                    .setNegativeButton(getString(R.string.cancel), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOverDialog.closeKeyBoard(mContext);
+                            closeKeybord();
+                        }
+                    });
+        }
+        mOverDialog.show();
     }
 
     // 分类点击
@@ -238,6 +256,11 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
 
         new GoodsEditPersenter(new GoodsModelImpl(), this);
         mPresenter.getCategory(0, 0);
+        if (isUpdate) {
+            int product_id = getIntent().getIntExtra("product_id", -1);
+            mDialogStr = getString(R.string.dlg_getting);
+            mPresenter.getGoodsInfo(product_id);
+        }
     }
 
     @Override
@@ -312,21 +335,22 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
                     product_images += ",";
                 }
             }
-            String category = tv_category.getTag()+"";
-            String buyingcycle = tv_date_limit.getText().toString();
-            String personalamountStr = tv_limit_count.getText().toString();
-            int personalamount = 0;
-            if (!TextUtils.isEmpty(personalamountStr)) {
-                personalamountStr = personalamountStr.replace("件", "");
-                personalamount = Integer.valueOf(personalamountStr);
+            String category = tv_category.getTag() + "";
+            String buyingcycle = tv_date_limit.getTag() + "";
+            if (TextUtils.isEmpty(buyingcycle) || buyingcycle.equals("null")) {
+                buyingcycle = "1";
             }
+            String personalamountStr = tv_limit_count.getText().toString();
+            personalamountStr = personalamountStr.replace("件", "");
 
             String beyondprice = tv_overrange.getText().toString();
             beyondprice = beyondprice.replace("元", "");
             if (isUpdate) {
-                mPresenter.modifyGoods(uid, name, product_images, Integer.valueOf(price), Integer.valueOf(stock), describe, category, buyingcycle, personalamount, beyondprice);
+                mDialogStr = getString(R.string.dlg_updating);
+                mPresenter.modifyGoods(uid, product_id, name, product_images, price, stock, describe, category, buyingcycle, personalamountStr, beyondprice);
             } else {
-                mPresenter.addGoods(uid, name, product_images, Integer.valueOf(price), Integer.valueOf(stock), describe, category, buyingcycle, personalamount, beyondprice);
+                mDialogStr = getString(R.string.dlg_submiting);
+                mPresenter.addGoods(uid, name, product_images, price, stock, describe, category, buyingcycle, personalamountStr, beyondprice);
             }
         }
     }
@@ -360,8 +384,8 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
 
     @Override
     public void showLoadingDialog(boolean isShow) {
-        if (isShow) {
-            mDialog = ProgressDialog.show(mContext, "", getString(R.string.dlg_submiting));
+        if (isShow) {// getString(R.string.dlg_submiting)
+            mDialog = ProgressDialog.show(mContext, "", mDialogStr);
             mDialog.setCancelable(false);
         } else {
             if (mDialog != null && mDialog.isShowing()) {
@@ -378,8 +402,11 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
 
     @Override
     public void setImageView(String url) {
-        mImageUrlList.add(url);
+        addImageView(url);
+    }
 
+    private void addImageView(String url) {
+        mImageUrlList.add(url);
         UploadImageView imageView = new UploadImageView(mContext);
         imageView.setTag(url);
         imageView.setImage(url);
@@ -400,16 +427,72 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
     }
 
     @Override
+    public void setGoodsInfo(Goods bean) {
+        product_id = bean.getProduct_id() + "";
+        et_goods_name.setText(bean.getProduct_name());
+        et_goods_price.setText(bean.getSell_price());
+        et_goods_stock.setText(bean.getProduct_instocks());
+        et_goods_describe.setText(bean.getProduct_breif());
+
+        tv_limit_count.setText(bean.getProduct_personalamount());
+        tv_overrange.setText(bean.getProduct_beyondprice());
+
+        String cycle = bean.getProduct_buyingcycle();
+        if (TextUtils.isEmpty(cycle)) {
+            tv_date_limit.setTag("1");
+            tv_date_limit.setText("每日");
+        } else {
+            tv_date_limit.setTag(cycle);
+            if (cycle.equals("1")) {
+                tv_date_limit.setText("每日");
+            } else if (cycle.equals("2")) {
+                tv_date_limit.setText("每周");
+            } else if (cycle.equals("3")) {
+                tv_date_limit.setText("每月");
+            }
+        }
+
+        // 设置图片
+        List<GoodsImage> images = bean.getImages();
+        if (images != null) {
+            for (GoodsImage img : images) {
+                addImageView(img.getImage_path());
+            }
+        }
+        // TODO 设置分类
+        String classifyStr = bean.getProduct_category();
+        if (!TextUtils.isEmpty(classifyStr) && !classifyStr.equals("null")) {
+            int classify = Integer.valueOf(classifyStr);
+            for (int i = 0; i < categoryIds.length; i++) {
+                if (categoryIds[i] == classify) {
+                    tv_category.setText(categoryNames[i]);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void finishView() {
+        finish();
+    }
+
+    @Override
     public void showMessage(String msg) {
         ToastUtils.getInstant().showToast(msg);
     }
 
-    // TODO 区分添加和更新商品
     @Override
-    public void showSuccessView() {
+    public void showSuccessView(Goods bean) {
         if (isUpdate) {
+            Intent intent = new Intent();
+            intent.putExtra("bean", bean);
+            setResult(Activity.RESULT_OK, intent);
             finish();
         } else {
+            // TODO 添加商品成功，更新已下架列表
+            Intent intent = new Intent(ActionConstant.REFRESH_GOODS_LIST);
+            intent.putExtra("type", TypeConstant.Goods.ON_SALE);
+            sendBroadcast(intent);
             finish();
         }
     }
@@ -441,6 +524,7 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
         if (requestCode == BaseConstant.REQUEST_TAKE_PHOTO) {
             if (resultCode == Activity.RESULT_OK) {
                 //Bitmap bmp = ImageUtils.readBitmap(mImagePath, 480, 480);
+                mDialogStr = getString(R.string.dlg_upload_image);
                 mPresenter.uploadImage(mImagePath);
             }
             //FileUtils.deleteFile(mImagePath);
@@ -452,6 +536,7 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
                 Uri uri = data.getData();
                 String imagePath = ImageUtils.getRealPathFromURI(mContext, uri);
                 //Bitmap bmp = ImageUtils.readBitmap(imagePath, 480, 480);
+                mDialogStr = getString(R.string.dlg_upload_image);
                 mPresenter.uploadImage(imagePath);
             }
         }

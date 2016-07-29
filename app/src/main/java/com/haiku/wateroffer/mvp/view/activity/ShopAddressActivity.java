@@ -72,7 +72,7 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
         }
         Intent intent = new Intent(mContext, AddressActivity.class);
         intent.putExtra("point", mPoiItem);
-        startActivityForResult(intent,REQUEST_ADDR);
+        startActivityForResult(intent, REQUEST_ADDR);
     }
 
     @Event(R.id.btn_open_shop)
@@ -131,14 +131,14 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
 
     private void initDatas() {
         isUpdate = getIntent().getBooleanExtra("isUpdate", false);
-        String area = getIntent().getStringExtra("area");
-        String area_detail = getIntent().getStringExtra("area_detail");
-        et_address.setText(area);
-        et_address_detail.setTag(area_detail);
     }
 
     private void initViews() {
         if (isUpdate) {
+            String area = getIntent().getStringExtra("area");
+            String area_detail = getIntent().getStringExtra("area_detail");
+            et_address.setText(area);
+            et_address_detail.setText(area_detail);
             mTitlebar.initDatas(R.string.shop_address, true);
             mTitlebar.showRightTextView(getString(R.string.save));
             mTitlebar.setListener(new TitlebarListenerAdapter() {
@@ -179,7 +179,11 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
     @Override
     public void showSuccessView() {
         if (isUpdate) {
-            // 更新成功,返回页面
+            // 更新成功,保存信息返回页面
+            Intent intent = new Intent();
+            intent.putExtra("area", et_address.getText().toString());
+            intent.putExtra("area_detail", et_address_detail.getText().toString());
+            setResult(Activity.RESULT_OK, intent);
             finish();
         } else {
             startActivity(new Intent(mContext, MainActivity.class));
@@ -218,7 +222,9 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
                     mPoiItem.setLat(latitude);
                     mPoiItem.setLon(longitude);
                     progressBar.setVisibility(View.GONE);
-                    et_address.setText(aMapLocation.getAddress());//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
+                    //地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
+                    if (TextUtils.isEmpty(et_address.getText().toString()))
+                        et_address.setText(aMapLocation.getAddress());
                 } else {
                     //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                     Log.e("AmapError", "location Error, ErrCode:"

@@ -174,7 +174,6 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
     //对单击地图事件回调
     @Override
     public void onMapClick(LatLng latLng) {
-        LogUtils.showLogE("AAA","onMapClick");
         markerOption.position(latLng);
         mPoiItem.setLat(latLng.latitude);
         mPoiItem.setLon(latLng.longitude);
@@ -197,7 +196,6 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
     //对移动地图结束事件回调
     @Override
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
-        LogUtils.showLogE("AAA","onCameraChangeFinish");
         if (isInit) {
             markerOption.position(cameraPosition.target);
             mPoiItem.setLat(cameraPosition.target.latitude);
@@ -217,11 +215,11 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
     //逆地理编码回调接口
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-        LogUtils.showLogE("AAA","onRegeocodeSearched");
         //解析result获取逆地理编码结果
         String address = regeocodeResult.getRegeocodeAddress().getFormatAddress() + regeocodeResult.getRegeocodeAddress().getBuilding();
         mPoiItem.setAddress(address);
         mRefreshLayout.refresh();
+        initSearch();
     }
 
     @Override

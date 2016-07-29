@@ -33,7 +33,7 @@ public class GoodsModelImpl implements IGoodsModel {
     // 获取商品列表
     @Override
     public void getGoodsList(Map<String, Object> params, @NonNull final GoodsListCallback callback) {
-        XUtils.Get(UrlConstant.Goods.listUrl(), ParamUtils.Goods.getListParams(params), new XUtilsCallback<ResultData>(callback) {
+        XUtils.Post(UrlConstant.Goods.listUrl(), ParamUtils.Goods.getListParams(params), new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
@@ -176,7 +176,23 @@ public class GoodsModelImpl implements IGoodsModel {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.isSuccess()) {
-                    callback.onSuccess();
+                    callback.updateInfoSuccess(GsonUtils.gsonToBean(result.getRetmsg().getAsJsonObject().toString(), Goods.class));
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getGoodsInfo(Map<String, Object> params, @NonNull final IGoodsEditCallback callback) {
+        XUtils.Get(UrlConstant.Goods.getGoodsInfo(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.isSuccess()) {
+                    callback.getGoodsInfoSuccess(GsonUtils.gsonToBean(result.getRetmsg().getAsJsonObject().toString(), Goods.class));
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
                 }

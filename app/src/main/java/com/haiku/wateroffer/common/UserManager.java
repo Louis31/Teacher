@@ -12,6 +12,8 @@ public class UserManager {
 
     private AccessToken token;
     private User user;
+    private boolean isPayDeposit;// 是否缴纳保证金
+    private int range;
 
     private UserManager() {
     }
@@ -37,6 +39,22 @@ public class UserManager {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isPayDeposit() {
+        return isPayDeposit;
+    }
+
+    public void setIsPayDeposit(boolean isPayDeposit) {
+        this.isPayDeposit = isPayDeposit;
+    }
+
+    public int getRange() {
+        return range;
+    }
+
+    public void setRange(int range) {
+        this.range = range;
     }
 
     // 判断token是否为空

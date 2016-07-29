@@ -160,7 +160,7 @@ public class UrlConstant {
      * 商品相关url
      */
     public static class Goods {
-        // 获取商品列表，Get
+        // 获取商品列表，Post
         public static String listUrl() {
             return getGoodsPath() + "/get_list" + getToken();
         }
@@ -185,18 +185,25 @@ public class UrlConstant {
             return getGoodsPath() + "/upload_image" + getToken();
         }
 
-        // 获取分类，Get
-        public static String getCategoryUrl() {
-            return getCategoryPath() + "/get_list" + getToken();
-        }
 
         // 添加商品，Post
         public static String addGoodsUrl() {
-            return getCategoryPath() + "/addProduct" + getToken();
+            return getGoodsPath() + "/addProduct" + getToken();
         }
+
         // 修改商品，Post
         public static String modifyGoodsUrl() {
-            return getCategoryPath() + "/modifyProduct" + getToken();
+            return getGoodsPath() + "/modifyProduct" + getToken();
+        }
+
+        // 新增根据商品ID返回商品信息
+        public static String getGoodsInfo(){
+            return getGoodsPath() + "/get_info" + getToken();
+        }
+
+        // 获取分类，Get
+        public static String getCategoryUrl() {
+            return getCategoryPath() + "/get_list" + getToken();
         }
     }
 
@@ -221,7 +228,7 @@ public class UrlConstant {
     public static class Shop {
         // 获取店铺信息，Get
         public static String shopInfoUrl() {
-            return getShopPath() + "/get_shop_info" + getToken();
+            return getShopPath() + "/get_shops_info" + getToken();
         }
 
         // 修改店铺名称，Post
@@ -250,18 +257,23 @@ public class UrlConstant {
         }
 
         // 修改店铺配送距离，Post
-        public static String changeShopRange(){
+        public static String changeShopRange() {
             return getShopPath() + "/changeShopRange" + getToken();
         }
 
         // 获取营业状态，Get
-        public static String getShopOpenStatus(){
+       /* public static String getShopOpenStatus() {
             return getShopPath() + "/getShopOpenStatus" + getToken();
-        }
+        }*/
 
         // 设置营业状态，Post
-        public static String setShopOpenStatus(){
+        public static String setShopOpenStatus() {
             return getShopPath() + "/setShopOpenStatus" + getToken();
+        }
+
+        // 获取店铺是否已缴纳保证金，Get
+        public static String getShopMarginStatus() {
+            return getShopPath() + "/getShopMarginStatus" + getToken();
         }
     }
 }

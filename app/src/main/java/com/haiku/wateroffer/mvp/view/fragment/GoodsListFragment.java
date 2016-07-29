@@ -1,5 +1,6 @@
 package com.haiku.wateroffer.mvp.view.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -39,7 +40,7 @@ import java.util.List;
  */
 public class GoodsListFragment extends LazyFragment implements GoodsListContract.View, MyRefreshLayout.OnRefreshLayoutListener, GoodsListListener {
     private final String TAG = "GoodsListFragment";
-
+    private final int REQUEST_UPDATE = 1;
     private Context mContext;
     private int uid;
     private int mItemPos;// 记录当前操作item的位置
@@ -69,6 +70,12 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
             mType = bundle.getInt("type");
         }
         mContext = getContext();
+        LogUtils.showLogE(TAG, "onCreate");
+        // 注册广播接收者
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ActionConstant.REFRESH_GOODS_LIST);
+        broadcastManager.registerReceiver(mBroadcastReceiver, intentFilter);
     }
 
     @Override
@@ -92,17 +99,21 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        LogUtils.showLogE(TAG, "onActivityCreated");
+      /*  LogUtils.showLogE(TAG, "onActivityCreated");
         // 注册广播接收者
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ActionConstant.REFRESH_GOODS_LIST);
-        broadcastManager.registerReceiver(mBroadcastReceiver, intentFilter);
+        broadcastManager.registerReceiver(mBroadcastReceiver, intentFilter);*/
     }
 
     BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             int type = intent.getIntExtra("type", -1);
+            LogUtils.showLogE(TAG, "BroadcastReceiver");
+            LogUtils.showLogE(TAG, "mType = " + mType + ", type " +type);
             if (mType == type) {
                 LogUtils.showLogE(TAG, "onReceive Success");
                 mRefreshLayout.refresh();// 刷新列表
@@ -113,6 +124,15 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        LogUtils.showLogE(TAG, "onDestroyView");
+       /* LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        broadcastManager.unregisterReceiver(mBroadcastReceiver);*/
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LogUtils.showLogE(TAG, "onDestroy");
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
         broadcastManager.unregisterReceiver(mBroadcastReceiver);
     }
@@ -187,10 +207,13 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
             if (mType == TypeConstant.Goods.ON_SALE) {
                 // 点击下架按钮，将此商品移入已下架商品列表中
                 intent.putExtra("type", TypeConstant.Goods.OFF_SHELF);
+                LogUtils.showLogE(TAG, "type = OFF_SHELF " + TypeConstant.Goods.OFF_SHELF);
             } else {
                 // 点击上架按钮,将此商品移入出售中商品列表
                 intent.putExtra("type", TypeConstant.Goods.ON_SALE);
+                LogUtils.showLogE(TAG, "type = ON_SALE " + TypeConstant.Goods.ON_SALE);
             }
+            LogUtils.showLogE(TAG, "mType = " + mType);
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
         }
     }
@@ -237,7 +260,7 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     public void onGoodsUpShelfClick(int pos) {
         mItemPos = pos;
         // 若判断此商品的库存为0，弹出提示框：请先修改库存后方可上架，2S后消失
-        if (mDatas.get(pos).getProduct_instocks() == 0) {
+        if (mDatas.get(pos).getProduct_instocks().equals("0")) {
             ToastUtils.getInstant().showToast(getString(R.string.msg_up_shelf_invalid));
         } else {
             mPresenter.upShelfGoods(uid, mDatas.get(pos).getProduct_id());
@@ -254,8 +277,29 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     // 编辑商品
     @Override
     public void onGoodsEditClick(int pos) {
+        mItemPos = pos;
         Intent intent = new Intent(mContext, GoodsEditActivity.class);
         intent.putExtra("isUpdate", true);
-        startActivity(intent);
+        intent.putExtra("product_id", mDatas.get(pos).getProduct_id());
+        startActivityForResult(intent, REQUEST_UPDATE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_UPDATE && resultCode == Activity.RESULT_OK) {
+            Goods goods = (Goods) data.getSerializableExtra("bean");
+
+            Goods oldGoods = mDatas.get(mItemPos);
+            oldGoods.setProduct_name(goods.getProduct_name());
+            oldGoods.setProduct_instocks(goods.getProduct_store());
+            oldGoods.setProduct_image(goods.getProduct_image());
+            oldGoods.setProduct_breif(goods.getProduct_description());
+            oldGoods.setProduct_category(goods.getProduct_category());
+            oldGoods.setProduct_buyingcycle(goods.getProduct_buyingcycle());
+            oldGoods.setProduct_beyondprice(goods.getProduct_beyondprice());
+            oldGoods.setProduct_personalamount(goods.getProduct_personalamount());
+
+            mAdapter.notifyItemChanged(mItemPos);
+        }
     }
 }

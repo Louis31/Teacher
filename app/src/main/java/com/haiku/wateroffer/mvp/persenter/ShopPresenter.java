@@ -18,8 +18,9 @@ import java.util.Map;
 public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCallback {
     private final int REQUEST_INFO = 1;
     private final int REQUEST_LOGO = 2;
-    private final int REQUEST_STATUS_GET = 3;
+    //private final int REQUEST_STATUS_GET = 3;
     private final int REQUEST_STATUS_SET = 4;
+    private final int REQUEST_MARGIN = 5;
     private int requesType;
     @NonNull
     private final IShopModel mShopModel;
@@ -49,9 +50,9 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
     }
 
     @Override
-    public void changeShopLogo(int uid, String data) {
+    public void changeShopLogo(int uid, String data, String dlgStr) {
         requesType = REQUEST_LOGO;
-        mView.showLoadingDialog(true);
+        mView.showLoadingDialog(true, dlgStr);
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("data", data);
@@ -62,7 +63,7 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
         }
     }
 
-    @Override
+   /* @Override
     public void getShopOpenStatus(int uid) {
         requesType = REQUEST_STATUS_GET;
         Map<String, Object> params = new HashMap<>();
@@ -72,19 +73,31 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
         } else {
             mShopModel.getShopOpenStatus(params, this);
         }
-    }
+    }*/
 
     @Override
-    public void setShopOpenStatus(int uid, String status) {
-        mView.showLoadingDialog(true);
+    public void setShopOpenStatus(int uid, String status, String dlgStr) {
+        mView.showLoadingDialog(true, dlgStr);
         requesType = REQUEST_STATUS_SET;
         Map<String, Object> params = new HashMap<>();
         params.put("id", uid);
-        params.put("range", status);
+        params.put("status", status);
         if (UserManager.isTokenEmpty()) {
             ((IBaseModel) mShopModel).getAccessToken(params, this);
         } else {
             mShopModel.setShopOpenStatus(params, this);
+        }
+    }
+
+    @Override
+    public void getShopMarginStatus(int uid) {
+        requesType = REQUEST_MARGIN;
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", uid);
+        if (UserManager.isTokenEmpty()) {
+            ((IBaseModel) mShopModel).getAccessToken(params, this);
+        } else {
+            mShopModel.getShopMarginStatus(params, this);
         }
     }
 
@@ -97,10 +110,12 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
             mShopModel.getShopInfo(params, this);
         } else if (requesType == REQUEST_LOGO) {
             mShopModel.changeShopLogo(params, this);
-        } else if (requesType == REQUEST_STATUS_GET) {
+        } /*else if (requesType == REQUEST_STATUS_GET) {
             mShopModel.getShopOpenStatus(params, this);
-        } else if (requesType == REQUEST_STATUS_SET) {
+        }*/ else if (requesType == REQUEST_STATUS_SET) {
             mShopModel.setShopOpenStatus(params, this);
+        } else if (requesType == REQUEST_MARGIN) {
+            mShopModel.getShopMarginStatus(params, this);
         }
     }
 
@@ -111,24 +126,30 @@ public class ShopPresenter implements ShopContract.Presenter, IShopModel.ShopCal
 
     @Override
     public void uploadLogoSuccess(String logo) {
-        mView.showLoadingDialog(false);
+        mView.showLoadingDialog(false, "");
         mView.setLogo(logo);
     }
 
     @Override
     public void getOpenStatusSuccess(String status) {
-        mView.showLoadingDialog(false);
+        mView.showLoadingDialog(false, "");
         mView.setShopStatus(status);
     }
 
     // 成功回调
     @Override
     public void onSuccess() {
+        if (requesType == REQUEST_MARGIN) {
+            UserManager.getInstance().setIsPayDeposit(true);
+        }
     }
 
     @Override
     public void onError(int errorCode, String errorMsg) {
-        mView.showLoadingDialog(false);
+        mView.showLoadingDialog(false, "");
+        if (requesType == REQUEST_MARGIN && errorCode == 100) {
+            return;
+        }
         mView.showMessage(errorMsg);
     }
 }

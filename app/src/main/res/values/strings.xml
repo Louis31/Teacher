@@ -31,7 +31,7 @@
     <string name="alipay_payment">支付宝支付</string>
 
     <string name="deposit_tip">为了规范市场秩序就，保证为顾客提供物美价廉的商品。现规定新商家必须缴纳100元的保证金后添加的商品才会在买家端显示</string>
-
+    <string name="deposit_success">你已成功缴纳保证金</string>
     <!-- 标题相关 -->
     <string name="title_order">我的订单</string>
     <string name="title_goods">商品管理</string>
@@ -53,6 +53,7 @@
     <string name="dlg_submiting">正在提交...</string>
     <string name="dlg_updating">正在更新...</string>
     <string name="dlg_upload_image">正在上传图片...</string>
+    <string name="dlg_getting">正在获取数据...</string>
     <string name="dlg_order_cancel">取消配送请先和对方电话沟通，\n是否取消配送？</string>
     <string name="dlg_deliver_add">您还没有添加配送员，\n是否添加？</string>
     <string name="dlg_deliver_delete">是否确定删除该配送员？</string>

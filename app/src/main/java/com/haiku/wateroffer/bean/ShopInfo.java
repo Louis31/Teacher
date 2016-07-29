@@ -7,67 +7,86 @@ import java.io.Serializable;
  * Created by hyming on 2016/7/25.
  */
 public class ShopInfo implements Serializable {
-    private String merchant_name;
-    private String merchant_phone;
-    private String merchant_shopname;
-    private String merchant_logo;
-    private String merchant_shoparea;
-    private String merchant_shopfloorDetail;
-    private String merchant_qq;
+    private int uid;
+    private String icon;
+    private String shopName;
+    private String area;// 街道
+    private String floorDetail;// 楼层
+    private String phone;
+    private String qq;
+    private String status;// 店铺营业状态（0：营业中，1：打烊）
+    private String userType;// 是否新用户（0：新用户，1：非新用户）
 
-    public String getMerchant_name() {
-        return merchant_name;
+
+    public int getUid() {
+        return uid;
     }
 
-    public void setMerchant_name(String merchant_name) {
-        this.merchant_name = merchant_name;
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
-    public String getMerchant_phone() {
-        return merchant_phone;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setMerchant_phone(String merchant_phone) {
-        this.merchant_phone = merchant_phone;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
-    public String getMerchant_shopname() {
-        return merchant_shopname;
+    public String getShopName() {
+        return shopName;
     }
 
-    public void setMerchant_shopname(String merchant_shopname) {
-        this.merchant_shopname = merchant_shopname;
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 
-    public String getMerchant_logo() {
-        return merchant_logo;
+    public String getArea() {
+        return area;
     }
 
-    public void setMerchant_logo(String merchant_logo) {
-        this.merchant_logo = merchant_logo;
+    public void setArea(String area) {
+        this.area = area;
     }
 
-    public String getMerchant_shoparea() {
-        return merchant_shoparea;
+    public String getFloorDetail() {
+        return floorDetail;
     }
 
-    public void setMerchant_shoparea(String merchant_shoparea) {
-        this.merchant_shoparea = merchant_shoparea;
+    public void setFloorDetail(String floorDetail) {
+        this.floorDetail = floorDetail;
     }
 
-    public String getMerchant_shopfloorDetail() {
-        return merchant_shopfloorDetail;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setMerchant_shopfloorDetail(String merchant_shopfloorDetail) {
-        this.merchant_shopfloorDetail = merchant_shopfloorDetail;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getMerchant_qq() {
-        return merchant_qq;
+    public String getQq() {
+        return qq;
     }
 
-    public void setMerchant_qq(String merchant_qq) {
-        this.merchant_qq = merchant_qq;
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }

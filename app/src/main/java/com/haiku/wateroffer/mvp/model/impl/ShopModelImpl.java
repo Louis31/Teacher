@@ -32,7 +32,7 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.isSuccess()) {
-                    callback.getVerifyCodeSuccess(result.getRetmsg().getAsString());
+                    callback.onSuccess();
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
                 }
@@ -186,9 +186,27 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
     }
 
     // 获取营业状态
-    @Override
+    /*@Override
     public void getShopOpenStatus(Map<String, Object> params, @NonNull final ShopCallback callback) {
         XUtils.Get(UrlConstant.Shop.getShopOpenStatus(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.isSuccess()) {
+                    JsonObject jobj = result.getRetmsg().getAsJsonObject();
+                    //返回结果：{"retcode":0,"retmsg":{"openStatus":营业状态（0是营业中，1是打烊）}}
+                    callback.getOpenStatusSuccess(jobj.get("openStatus").getAsString());
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }*/
+
+    @Override
+    public void setShopOpenStatus(Map<String, Object> params, @NonNull final ShopCallback callback) {
+        XUtils.Post(UrlConstant.Shop.setShopOpenStatus(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
@@ -205,16 +223,14 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
     }
 
     @Override
-    public void setShopOpenStatus(Map<String, Object> params, @NonNull final ShopCallback callback) {
-        XUtils.Post(UrlConstant.Shop.setShopOpenStatus(), params, new XUtilsCallback<ResultData>(callback) {
+    public void getShopMarginStatus(Map<String, Object> params, @NonNull final IRequestCallback callback) {
+        XUtils.Get(UrlConstant.Shop.getShopMarginStatus(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.isSuccess()) {
-                    JsonObject jobj = result.getRetmsg().getAsJsonObject();
-                    //返回结果：{"retcode":0,"retmsg":{"openStatus":营业状态（0是营业中，1是打烊）}}
-                    callback.getOpenStatusSuccess(jobj.get("openStatus").getAsString());
+                    callback.onSuccess();
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
                 }
