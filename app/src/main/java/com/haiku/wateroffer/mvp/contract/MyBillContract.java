@@ -27,6 +27,6 @@ public interface MyBillContract {
         void getListDatas(int uid);
 
         // 查询账单
-        void searchBill(int uid, String from, String to, String diliverymanName);
+        void searchBill(int uid, String from, String to, String diliveryman_id);
     }
 }

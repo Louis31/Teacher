@@ -175,7 +175,6 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     @Override
     public void showListView(List<OrderItem> list) {
         mDatas.addAll(list);
-        mAdapter.notifyDataSetChanged();
         mRefreshLayout.loadingCompleted(true);
     }
 

@@ -187,7 +187,6 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     @Override
     public void showListView(List<Goods> list) {
         mDatas.addAll(list);
-        mAdapter.notifyDataSetChanged();
         mRefreshLayout.loadingCompleted(true);
     }
 

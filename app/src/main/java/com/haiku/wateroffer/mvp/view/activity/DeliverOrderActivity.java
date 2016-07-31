@@ -97,7 +97,6 @@ public class DeliverOrderActivity extends BaseActivity implements DeliverOrderCo
     @Override
     public void showListView(List<OrderItem> list) {
         mDatas.addAll(list);
-        mAdapter.notifyDataSetChanged();
         mRefreshLayout.loadingCompleted(true);
     }
 

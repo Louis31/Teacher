@@ -15,7 +15,7 @@ public class Bill implements Serializable {
     private String diliverman;
 
     // 账单概述
-    private int billsNum;// 订单数
+    private String billsNum;// 订单数
     private String onLineAmount;// 线上付款金额
     private String offLineAmmount;// 线下付款金额
 
@@ -51,11 +51,11 @@ public class Bill implements Serializable {
         this.serial_number = serial_number;
     }
 
-    public int getBillsNum() {
+    public String getBillsNum() {
         return billsNum;
     }
 
-    public void setBillsNum(int billsNum) {
+    public void setBillsNum(String billsNum) {
         this.billsNum = billsNum;
     }
 

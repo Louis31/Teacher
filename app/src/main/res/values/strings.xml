@@ -54,6 +54,7 @@
     <string name="dlg_updating">正在更新...</string>
     <string name="dlg_upload_image">正在上传图片...</string>
     <string name="dlg_getting">正在获取数据...</string>
+    <string name="dlg_searching">正在查询...</string>
     <string name="dlg_order_cancel">取消配送请先和对方电话沟通，\n是否取消配送？</string>
     <string name="dlg_deliver_add">您还没有添加配送员，\n是否添加？</string>
     <string name="dlg_pay_deposit">缴纳保证金后添加的商品才在买家端显示，\n是否缴纳？</string>

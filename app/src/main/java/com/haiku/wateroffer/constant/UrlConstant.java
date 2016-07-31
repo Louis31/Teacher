@@ -79,6 +79,7 @@ public class UrlConstant {
      * 用户相关url
      */
     public static class User {
+        //  return HOST + "/merchant/identify" + getToken();
         // 登陆url，Post
         public static String loginUrl() {
             return getUserPath() + "/identify" + getToken();

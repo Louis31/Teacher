@@ -2,7 +2,7 @@
 <errors>
     <error code="402">参数错误</error>
     <!--<error code="403">AccessDenied</error>-->
-    <error code="403">当前操作失败，请重新尝试</error>-->
+    <error code="403">当前操作失败，请重新尝试</error>
 
     <error code="500">系统错误</error>
     <error code="501">Accesstoken非法</error>
@@ -59,5 +59,8 @@
     <error code="548">请输入完整的信息</error>
     <error code="549">当前手机号码错误</error>
 
-    <error code="500">请输入正确的验证码</error>
+    <error code="550">请输入正确的验证码</error>
+    <error code="551">配送距离必须为正整数</error>
+    <error code="552">商品库存必须大于0</error>
+    <error code="553">短信发送失败, 您的操作太频繁了</error>
 </errors>

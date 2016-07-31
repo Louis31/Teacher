@@ -39,7 +39,7 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
                 if (result.getRetcode() == BaseConstant.SUCCESS) {
                     UserManager.getInstance().setUser(GsonUtils.gsonToBean(result.getRetmsg().toString(), User.class));
                     // TODO 设置默认uid
-                    //UserManager.getInstance().getUser().setUid(1431);
+                    UserManager.getInstance().getUser().setUid(1431);
                     callback.onSuccess();
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));

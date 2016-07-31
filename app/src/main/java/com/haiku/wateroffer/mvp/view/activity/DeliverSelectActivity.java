@@ -10,9 +10,10 @@ import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.MyItemClickListener;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
+import com.haiku.wateroffer.constant.BaseConstant;
+import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.model.IUserModel;
 import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
-import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.view.adapter.DeliverSelectAdapter;
 import com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout;
 import com.haiku.wateroffer.mvp.view.widget.Titlebar;
@@ -81,7 +82,6 @@ public class DeliverSelectActivity extends BaseActivity implements IUserModel.De
     @Override
     public void getDeliverListSuccess(List<Deliver> list) {
         mDatas.addAll(list);
-        mAdapter.notifyDataSetChanged();
         mRefreshLayout.loadingCompleted(true);
     }
 
@@ -110,12 +110,18 @@ public class DeliverSelectActivity extends BaseActivity implements IUserModel.De
     public void onError(int errorCode, String errorMsg) {
         mRefreshLayout.loadingCompleted(false);
         ToastUtils.getInstant().showToast(errorMsg);
+        // token 失效
+        if (errorCode == BaseConstant.TOKEN_INVALID) {
+            UserManager.cleanToken();
+        }
     }
 
     @Override
     public void onItemClick(int pos) {
+        String deliver_id = mDatas.get(pos).getDiliveryman_id() + "";
         String deliver_name = mDatas.get(pos).getDiliveryman_name();
         Intent intent = new Intent();
+        intent.putExtra("deliver_id", deliver_id);
         intent.putExtra("deliver_name", deliver_name);
         setResult(Activity.RESULT_OK, intent);
         finish();

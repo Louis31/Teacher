@@ -1,6 +1,7 @@
 package com.haiku.wateroffer.mvp.view.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,12 +16,11 @@ import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.common.util.data.StringUtils;
 import com.haiku.wateroffer.common.util.ui.DialogUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
-import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
-import com.haiku.wateroffer.mvp.contract.MyBillContract;
-import com.haiku.wateroffer.mvp.persenter.MyBillPresenter;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
+import com.haiku.wateroffer.mvp.contract.MyBillContract;
+import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
+import com.haiku.wateroffer.mvp.persenter.MyBillPresenter;
 import com.haiku.wateroffer.mvp.view.adapter.BillListAdapter;
-import com.haiku.wateroffer.mvp.view.divider.BroadDividerItem;
 import com.haiku.wateroffer.mvp.view.divider.DividerItem;
 import com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout;
 import com.haiku.wateroffer.mvp.view.widget.Titlebar;
@@ -49,7 +49,6 @@ public class MyBillActivity extends BaseActivity implements MyBillContract.View 
 
     private List<Bill> mDatas;
     private BillListAdapter mAdapter;
-
     private MyBillContract.Presenter mPresenter;
 
     @ViewInject(R.id.titlebar)
@@ -119,7 +118,8 @@ public class MyBillActivity extends BaseActivity implements MyBillContract.View 
             ToastUtils.getInstant().showToast(R.string.msg_bill_search_invalid);
         } else {
             // 查询数据
-            mPresenter.searchBill(uid, start_time, end_time, deliver_name);
+            String deliver_id = (String) tv_deliver_name.getTag();
+            mPresenter.searchBill(uid, start_time, end_time, deliver_id);
         }
     }
 
@@ -191,7 +191,6 @@ public class MyBillActivity extends BaseActivity implements MyBillContract.View 
     @Override
     public void showListView(List<Bill> list) {
         mDatas.addAll(list);
-        mAdapter.notifyDataSetChanged();
         mRefreshLayout.loadingCompleted(true);
     }
 
@@ -216,7 +215,9 @@ public class MyBillActivity extends BaseActivity implements MyBillContract.View 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            String deliver_id = data.getStringExtra("deliver_id");
             String deliver_name = data.getStringExtra("deliver_name");
+            tv_deliver_name.setTag(deliver_id);
             tv_deliver_name.setText(deliver_name);
         }
     }

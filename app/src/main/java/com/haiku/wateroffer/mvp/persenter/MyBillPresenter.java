@@ -5,8 +5,9 @@ import android.support.annotation.NonNull;
 import com.haiku.wateroffer.bean.Bill;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.constant.BaseConstant;
-import com.haiku.wateroffer.mvp.model.IUserModel;
 import com.haiku.wateroffer.mvp.contract.MyBillContract;
+import com.haiku.wateroffer.mvp.model.IBaseModel;
+import com.haiku.wateroffer.mvp.model.IUserModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,10 @@ import java.util.Map;
  * Created by hyming on 2016/7/18.
  */
 public class MyBillPresenter implements MyBillContract.Presenter, IUserModel.MyBillCallback {
+
+    private final int RQTYPE_LIST = 1;
+    private final int RQTYPE_INFO = 2;
+    private int requestType;
 
     @NonNull
     private final IUserModel mUserModel;
@@ -34,19 +39,30 @@ public class MyBillPresenter implements MyBillContract.Presenter, IUserModel.MyB
      */
     @Override
     public void getListDatas(int uid) {
+        requestType = RQTYPE_LIST;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
-        mUserModel.getBillList(params, this);
+        if (UserManager.isTokenEmpty()) {
+            ((IBaseModel) mUserModel).getAccessToken(params, this);
+        } else {
+            mUserModel.getBillList(params, this);
+        }
     }
 
     // 查询账单
     @Override
-    public void searchBill(int uid, String from, String to, String diliverymanName) {
+    public void searchBill(int uid, String from, String to, String diliveryman_id) {
+        requestType = RQTYPE_INFO;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("from", from);
         params.put("to", to);
-        params.put("diliverymanName", diliverymanName);
+        params.put("diliveryman_id", diliveryman_id);
+        if (UserManager.isTokenEmpty()) {
+            ((IBaseModel) mUserModel).getAccessToken(params, this);
+        } else {
+            mUserModel.searchBill(params, this);
+        }
     }
 
     /**
@@ -66,7 +82,11 @@ public class MyBillPresenter implements MyBillContract.Presenter, IUserModel.MyB
 
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
-        mUserModel.getBillList(params, this);
+        if (requestType == RQTYPE_LIST) {
+            mUserModel.getBillList(params, this);
+        } else if (requestType == RQTYPE_INFO) {
+            mUserModel.searchBill(params, this);
+        }
     }
 
     // 成功回调
