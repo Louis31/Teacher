@@ -36,9 +36,14 @@ public class TypeConstant {
     }
 
     public static class Deliver {
-        public final static int DELETE = 0;// 未添加和删除状态
+        public final static String PAUSE = "pause";// 暂停状态
+        public final static String NORMAL = "normal";// 继续状态
+    }
+
+    public static class DeliverStatus {
+        public final static int DELETE = 0;// 删除状态
         public final static int PAUSE = 1;// 暂停状态
-        public final static int CONTINUE = 2;// 继续状态
+        public final static int NORMAL = 2;// 继续状态
     }
 
     public static class ShopStatus {

@@ -53,7 +53,7 @@ public class DeliverListAdapter extends MyBaseAdapter {
             if (TypeConstant.Deliver.PAUSE == bean.getDiliveryman_status()) {
                 // 暂停状态，可以点击继续
                 vh.tv_continue_pause.setText(continueStr);
-            } else if (TypeConstant.Deliver.CONTINUE == bean.getDiliveryman_status()) {
+            } else if (bean.getDiliveryman_status().equals(TypeConstant.Deliver.NORMAL)) {
                 // 继续状态，可以点击暂停
                 vh.tv_continue_pause.setText(pauseStr);
             }
@@ -64,7 +64,7 @@ public class DeliverListAdapter extends MyBaseAdapter {
                 // 暂停状态
                 vh.tv_paused.setVisibility(View.VISIBLE);
                 vh.tv_added.setVisibility(View.GONE);
-            } else if (TypeConstant.Deliver.CONTINUE == bean.getDiliveryman_status()) {
+            } else if (bean.getDiliveryman_status().equals(TypeConstant.Deliver.NORMAL)) {
                 // 继续状态
                 vh.tv_added.setVisibility(View.VISIBLE);
                 vh.tv_paused.setVisibility(View.GONE);

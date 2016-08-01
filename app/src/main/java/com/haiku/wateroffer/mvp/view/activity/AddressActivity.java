@@ -118,6 +118,9 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
                 String addr = bean.getProvinceName() + bean.getCityName() + bean.getAdName() + bean.getSnippet() + bean.getTitle();
                 Intent intent = new Intent();
                 intent.putExtra("address", addr);
+                LatLonPoint lp = bean.getLatLonPoint();
+                intent.putExtra("latitude", lp.getLatitude());
+                intent.putExtra("longitude", lp.getLongitude());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }
@@ -149,8 +152,6 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
             markerOption.position(latLng);
             aMap.addMarker(markerOption);
-        } else {
-            mPoiItem = new GeoPoint();
         }
         aMap.setOnMapClickListener(this);// 对amap添加单击地图事件监听器
     }

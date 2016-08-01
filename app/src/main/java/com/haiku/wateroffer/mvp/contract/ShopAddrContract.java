@@ -21,6 +21,7 @@ public interface ShopAddrContract {
 
     interface Presenter extends BasePresenter {
         // 添加店铺名称
-        void addShopAddress(int uid, String area, String floorDetail);
+        void addShopAddress(int uid, String area, String floorDetail, String lat, String lng);
+
     }
 }

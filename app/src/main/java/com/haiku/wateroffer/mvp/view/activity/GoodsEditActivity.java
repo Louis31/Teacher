@@ -8,8 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -481,12 +483,14 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
             Intent intent = new Intent();
             intent.putExtra("bean", bean);
             setResult(Activity.RESULT_OK, intent);
-            finish();
+            ToastUtils.getInstant().showToast("更新成功");
+            finishDelayed(BaseConstant.DELAYED_TIME);
         } else {
             Intent intent = new Intent(ActionConstant.REFRESH_GOODS_LIST);
             intent.putExtra("type", TypeConstant.Goods.ON_SALE);
-            sendBroadcast(intent);
-            finish();
+            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+            ToastUtils.getInstant().showToast("上架成功");
+            finishDelayed(BaseConstant.DELAYED_TIME);
         }
     }
 

@@ -10,6 +10,7 @@ import com.haiku.wateroffer.bean.User;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.data.GsonUtils;
 import com.haiku.wateroffer.common.util.data.LogUtils;
+import com.haiku.wateroffer.common.util.data.SharedPreferencesUtils;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.common.util.net.XUtils;
 import com.haiku.wateroffer.common.util.net.XUtilsCallback;
@@ -37,9 +38,9 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
                 if (result.getRetcode() == BaseConstant.SUCCESS) {
-                    UserManager.getInstance().setUser(GsonUtils.gsonToBean(result.getRetmsg().toString(), User.class));
-                    // TODO 设置默认uid
-                    UserManager.getInstance().getUser().setUid(1431);
+                    String jsonStr = result.getRetmsg().toString();
+                    SharedPreferencesUtils.save(SharedPreferencesUtils.USER, jsonStr);
+                    UserManager.getInstance().setUser(GsonUtils.gsonToBean(jsonStr, User.class));
                     callback.onSuccess();
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
@@ -183,4 +184,19 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
         });
     }
 
+    @Override
+    public void uploadLocation(Map<String, Object> params, @NonNull final IRequestCallback callback) {
+        XUtils.Post(UrlConstant.User.uploadLocation(), params, new XUtilsCallback<ResultData>(callback) {
+            @Override
+            public void onSuccess(ResultData result) {
+                super.onSuccess(result);
+                LogUtils.showLogE(TAG, result.toString());
+                if (result.isSuccess()) {
+                    callback.onSuccess();
+                } else {
+                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+                }
+            }
+        });
+    }
 }

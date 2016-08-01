@@ -12,6 +12,9 @@ public class ShopInfo implements Serializable {
     private String shopName;
     private String area;// 街道
     private String floorDetail;// 楼层
+    private String lat;// 经度
+    private String lng;// 纬度
+    private String range;// 配送距离
     private String phone;
     private String qq;
     private String status;// 店铺营业状态（0：营业中，1：打烊）
@@ -88,5 +91,29 @@ public class ShopInfo implements Serializable {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public String getRange() {
+        return range;
+    }
+
+    public void setRange(String range) {
+        this.range = range;
     }
 }

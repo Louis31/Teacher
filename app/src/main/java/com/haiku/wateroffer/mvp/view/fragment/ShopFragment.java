@@ -19,6 +19,7 @@ import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.ShopInfo;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.data.FileUtils;
+import com.haiku.wateroffer.common.util.data.SharedPreferencesUtils;
 import com.haiku.wateroffer.common.util.ui.ActivityUtils;
 import com.haiku.wateroffer.common.util.ui.ImageUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
@@ -187,11 +188,13 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             // 跳转到店铺地址界面
             case R.id.llayout_address:
                 if (mShopInfo != null) {
-                    Intent iShopAddr = new Intent(mContext, ShopAddressActivity.class);
-                    iShopAddr.putExtra("isUpdate", true);
-                    iShopAddr.putExtra("area", mShopInfo.getArea());
-                    iShopAddr.putExtra("area_detail", mShopInfo.getFloorDetail());
-                    startActivityForResult(iShopAddr, BaseConstant.REQUEST_EDIT_SHOP_ADDR);
+                    Intent intent = new Intent(mContext, ShopAddressActivity.class);
+                    intent.putExtra("isUpdate", true);
+                    intent.putExtra("area", mShopInfo.getArea());
+                    intent.putExtra("area_detail", mShopInfo.getFloorDetail());
+                    intent.putExtra("latitude", mShopInfo.getLat());
+                    intent.putExtra("longitude", mShopInfo.getLng());
+                    startActivityForResult(intent, BaseConstant.REQUEST_EDIT_SHOP_ADDR);
                 }
 
                 break;
@@ -203,8 +206,16 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                     startActivityForResult(iPhone, BaseConstant.REQUEST_EDIT_SHOP_PHONE);
                 }
                 break;
+            // 配送范围
             case R.id.llayout_deliver_range:
-                startActivity(new Intent(mContext, DeliverRangeActivity.class));
+                if (mShopInfo != null) {
+                    Intent intent = new Intent(mContext, DeliverRangeActivity.class);
+                    intent.putExtra("range", mShopInfo.getRange());
+                    intent.putExtra("latitude", mShopInfo.getLat());
+                    intent.putExtra("longitude", mShopInfo.getLng());
+                    startActivityForResult(intent, BaseConstant.REQUEST_EDIT_RANGE);
+                }
+
                 break;
             // 配送列表
             case R.id.llayout_deliver_list:
@@ -247,6 +258,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                         .setPositiveButton("确定", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                SharedPreferencesUtils.save(SharedPreferencesUtils.USER, "");
                                 ActivityUtils.cleanActivitys();
                                 startActivity(new Intent(mContext, LoginActivity.class));
                             }
@@ -321,6 +333,10 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             String area_detail = data.getStringExtra("area_detail");
             mShopInfo.setArea(area);
             mShopInfo.setFloorDetail(area_detail);
+        }
+        // 修改配送范围
+        else if (requestCode == BaseConstant.REQUEST_EDIT_RANGE && resultCode == Activity.RESULT_OK) {
+            mShopInfo.setRange(data.getStringExtra("range"));
         }
         // 手机拍照
         else if (requestCode == BaseConstant.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {

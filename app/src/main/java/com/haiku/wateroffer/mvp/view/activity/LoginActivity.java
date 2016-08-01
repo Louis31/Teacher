@@ -9,10 +9,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
-import com.haiku.wateroffer.bean.AccessToken;
 import com.haiku.wateroffer.bean.User;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.data.GsonUtils;
+import com.haiku.wateroffer.common.util.data.SharedPreferencesUtils;
 import com.haiku.wateroffer.common.util.data.ValidatorUtils;
 import com.haiku.wateroffer.common.util.ui.DialogUtils;
 import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
@@ -93,9 +93,14 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //et_phone.setText("13650721344");
         // 创建Presenter
         new LoginPresenter(new UserModelImpl(), this);
+        // 判断用户是否已经登陆过
+        String userStr = SharedPreferencesUtils.load(SharedPreferencesUtils.USER);
+        if (!TextUtils.isEmpty(userStr)) {
+            UserManager.getInstance().setUser(GsonUtils.gsonToBean(userStr, User.class));
+            showSuccessView();
+        }
     }
 
     @Override

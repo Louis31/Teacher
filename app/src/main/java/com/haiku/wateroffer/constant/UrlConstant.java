@@ -81,8 +81,11 @@ public class UrlConstant {
     public static class User {
         //  return HOST + "/merchant/identify" + getToken();
         // 登陆url，Post
-        public static String loginUrl() {
+       /* public static String loginUrl() {
             return getUserPath() + "/identify" + getToken();
+        }*/
+        public static String loginUrl() {
+            return HOST + "/merchant/identify" + getToken();
         }
 
         // 添加店铺名称，Post
@@ -102,7 +105,7 @@ public class UrlConstant {
 
         // 获取查询账单，Get
         public static String searchBill() {
-            return getUserPath() + "/requestBillDetail" + getToken();
+            return getUserPath() + "/getbillsInfo" + getToken();
         }
 
         // 获取配送员列表，Get
@@ -118,6 +121,11 @@ public class UrlConstant {
         // 添加配送员，Get
         public static String addDeliver() {
             return getUserPath() + "/addDiliveryman" + getToken();
+        }
+
+        // 上传用户位置，Post
+        public static String uploadLocation() {
+            return getUserPath() + "/upload_position" + getToken();
         }
 
     }
@@ -188,7 +196,7 @@ public class UrlConstant {
         }
 
         // 新增根据商品ID返回商品信息
-        public static String getGoodsInfo(){
+        public static String getGoodsInfo() {
             return getGoodsPath() + "/get_info" + getToken();
         }
 

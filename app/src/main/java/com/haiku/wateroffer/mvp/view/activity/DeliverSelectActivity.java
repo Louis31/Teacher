@@ -12,9 +12,11 @@ import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
+import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IUserModel;
 import com.haiku.wateroffer.mvp.model.impl.UserModelImpl;
 import com.haiku.wateroffer.mvp.view.adapter.DeliverSelectAdapter;
+import com.haiku.wateroffer.mvp.view.divider.DividerItem;
 import com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout;
 import com.haiku.wateroffer.mvp.view.widget.Titlebar;
 
@@ -52,7 +54,12 @@ public class DeliverSelectActivity extends BaseActivity implements IUserModel.De
         initViews();
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
-        mUserModel.getDeliverList(params, this);
+        if (UserManager.isTokenEmpty()) {
+            ((IBaseModel) mUserModel).getAccessToken(params, this);
+        } else {
+            mUserModel.getDeliverList(params, this);
+        }
+
     }
 
     private void initDatas() {
@@ -73,6 +80,7 @@ public class DeliverSelectActivity extends BaseActivity implements IUserModel.De
         });
 
         mRefreshLayout.setPageSize(1000);
+        mRefreshLayout.addItemDecoration(new DividerItem(mContext));
         mRefreshLayout.setAdapter(mAdapter);
         mRefreshLayout.setLinearLayout();
         mRefreshLayout.setPullRefreshEnable(false);

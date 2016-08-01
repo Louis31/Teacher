@@ -4,6 +4,7 @@ package com.haiku.wateroffer.constant;
  * Created by hyming on 2016/7/12.
  */
 public class BaseConstant {
+    public final static int DELAYED_TIME = 1500;
     public final static int TOKEN_INVALID = 403;//token 失效
     // 请求的code
     public final static int REQUEST_TAKE_PHOTO = 1;// 相机照相
@@ -14,6 +15,7 @@ public class BaseConstant {
     public final static int REQUEST_EDIT_SHOP_PHONE = 11;// 编辑联系电话
     public final static int REQUEST_EDIT_SHOP_QQ = 12;// 编辑店铺QQ
     public final static int REQUEST_EDIT_SHOP_ADDR = 13;// 编辑店铺地址
+    public final static int REQUEST_EDIT_RANGE = 14;// 编辑配送范围
     // 网络返回的错误代码常量
     public final static int SUCCESS = 0;// 返回成功
     public final static int SERVER_ERROR = 998;// 服务器错误

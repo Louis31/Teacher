@@ -6,6 +6,7 @@ import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.ShopAddrContract;
+import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IUserModel;
 
 import java.util.HashMap;
@@ -16,6 +17,12 @@ import java.util.Map;
  * Created by hyming on 2016/7/13.
  */
 public class ShopAddrPresenter implements ShopAddrContract.Presenter, IRequestCallback {
+
+    private final int RQTYPE_ADDR = 1;
+    private final int RQTYPE_LOCAT = 2;
+    private int requestType;
+    private Map<String, Object> mParams;
+
 
     @NonNull
     private final IUserModel mUserModel;
@@ -32,13 +39,33 @@ public class ShopAddrPresenter implements ShopAddrContract.Presenter, IRequestCa
      * Presenter 接口方法
      */
     @Override
-    public void addShopAddress(int uid, String area, String floorDetail) {
+    public void addShopAddress(int uid, String area, String floorDetail, String lat, String lng) {
         mView.showLoadingDialog(true);
+        requestType = RQTYPE_ADDR;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("area", area);
         params.put("floorDetail", floorDetail);
-        mUserModel.addShopAddress(params, this);
+
+        mParams = new HashMap<>();
+        mParams.put("uid", uid);
+        mParams.put("lat", lat);
+        mParams.put("lng", lng);
+
+        if (UserManager.isTokenEmpty()) {
+            ((IBaseModel) mUserModel).getAccessToken(params, this);
+        } else {
+            mUserModel.addShopAddress(params, this);
+        }
+    }
+
+    private void uploadLoaction() {
+        requestType = RQTYPE_LOCAT;
+        if (UserManager.isTokenEmpty()) {
+            ((IBaseModel) mUserModel).getAccessToken(mParams, this);
+        } else {
+            mUserModel.uploadLocation(mParams, this);
+        }
     }
 
     /**
@@ -52,8 +79,12 @@ public class ShopAddrPresenter implements ShopAddrContract.Presenter, IRequestCa
     // 成功回调
     @Override
     public void onSuccess() {
-        mView.showLoadingDialog(false);
-        mView.showSuccessView();
+        if (requestType == RQTYPE_ADDR) {
+            uploadLoaction();
+        } else {
+            mView.showLoadingDialog(false);
+            mView.showSuccessView();
+        }
     }
 
     @Override

@@ -27,7 +27,7 @@ import java.util.Map;
  * Goods Model实现类
  * Created by hyming on 2016/7/11.
  */
-public class GoodsModelImpl implements IGoodsModel {
+public class GoodsModelImpl extends BaseModelImpl implements IGoodsModel {
     private final String TAG = "GoodsModelImpl";
 
     // 获取商品列表

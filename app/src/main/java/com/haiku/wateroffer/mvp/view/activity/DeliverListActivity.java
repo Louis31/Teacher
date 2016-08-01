@@ -166,11 +166,11 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     @Override
     public void showListView(List<Deliver> list) {
         mDatas.addAll(list);
-        for (Deliver bean : mDatas) {
+        /*for (Deliver bean : mDatas) {
             if (bean.getDiliveryman_status() == TypeConstant.Deliver.DELETE) {
                 mDatas.remove(bean);
             }
-        }
+        }*/
         mListAdapter.notifyDataSetChanged();
         mEditAdapter.notifyDataSetChanged();
         mRefreshLayout.loadingCompleted(true);
@@ -187,7 +187,7 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
             mListAdapter.notifyItemInserted(mDatas.size() - 1);
             mEditAdapter.notifyItemInserted(mDatas.size() - 1);
         } else {
-            if (mOperationType == TypeConstant.Deliver.DELETE) {
+            if (mOperationType == TypeConstant.DeliverStatus.DELETE) {
                 mDatas.remove(mCurrentPos);
                 mListAdapter.notifyItemRemoved(mCurrentPos);
                 mEditAdapter.notifyItemRemoved(mCurrentPos);
@@ -238,10 +238,10 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
         // 暂停/继续点击
         mCurrentPos = pos;
         Deliver bean = mDatas.get(pos);
-        if (bean.getDiliveryman_status() == TypeConstant.Deliver.PAUSE) {
-            mOperationType = TypeConstant.Deliver.CONTINUE;
+        if (bean.getDiliveryman_status().equals(TypeConstant.Deliver.PAUSE)) {
+            mOperationType = TypeConstant.DeliverStatus.NORMAL;
         } else {
-            mOperationType = TypeConstant.Deliver.PAUSE;
+            mOperationType = TypeConstant.DeliverStatus.PAUSE;
         }
         mPresenter.changeDeliverStatus(bean.getDiliveryman_id(), bean.getDiliveryman_phone(), mOperationType);
     }
@@ -255,7 +255,7 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
                     public void onClick(View v) {
                         // 删除点击
                         mCurrentPos = pos;
-                        mOperationType = TypeConstant.Deliver.DELETE;
+                        mOperationType = TypeConstant.DeliverStatus.DELETE;
                         mPresenter.changeDeliverStatus(mDatas.get(pos).getDiliveryman_id(), mDatas.get(pos).getDiliveryman_phone(), mOperationType);
                     }
                 }).setNegativeButton("否", null).show();

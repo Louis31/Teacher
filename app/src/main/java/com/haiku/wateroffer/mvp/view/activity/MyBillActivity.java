@@ -47,6 +47,7 @@ public class MyBillActivity extends BaseActivity implements MyBillContract.View 
     private int colorRed;
     private int colorBlack;
 
+    private ProgressDialog mDialog;
     private List<Bill> mDatas;
     private BillListAdapter mAdapter;
     private MyBillContract.Presenter mPresenter;
@@ -118,6 +119,7 @@ public class MyBillActivity extends BaseActivity implements MyBillContract.View 
             ToastUtils.getInstant().showToast(R.string.msg_bill_search_invalid);
         } else {
             // 查询数据
+            showLoadingDialog(true);
             String deliver_id = (String) tv_deliver_name.getTag();
             mPresenter.searchBill(uid, start_time, end_time, deliver_id);
         }
@@ -186,6 +188,18 @@ public class MyBillActivity extends BaseActivity implements MyBillContract.View 
             mRefreshLayout.setVisibility(View.GONE);
         }
         mType = type;
+    }
+
+    @Override
+    public void showLoadingDialog(boolean isShow) {
+        if (isShow) {
+            mDialog = ProgressDialog.show(mContext, "", getString(R.string.dlg_searching));
+            mDialog.setCancelable(false);
+        } else {
+            if (mDialog != null && mDialog.isShowing()) {
+                mDialog.dismiss();
+            }
+        }
     }
 
     @Override

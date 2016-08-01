@@ -3,6 +3,7 @@ package com.haiku.wateroffer.mvp.base;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 import com.haiku.wateroffer.common.util.ui.ActivityUtils;
@@ -48,5 +49,14 @@ public class BaseActivity extends Activity {
     public <T extends View> T findView(View v, int viewId) {
         View view = v.findViewById(viewId);
         return (T) view;
+    }
+
+    public void finishDelayed(int delayMillis) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, delayMillis);
     }
 }

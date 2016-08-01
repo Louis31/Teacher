@@ -26,7 +26,7 @@ import java.util.Map;
  * Order Model实现类
  * Created by hyming on 2016/7/11.
  */
-public class OrderModelImpl implements IOrderModel {
+public class OrderModelImpl extends BaseModelImpl implements IOrderModel {
     private final String TAG = "OrderModelImpl";
 
     // 获取订单列表

@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
     private int uid;
-    private String usertype;
+    private int usertype;
 
     public int getUid() {
         return uid;
@@ -18,15 +18,15 @@ public class User implements Serializable {
         this.uid = uid;
     }
 
-    public String getUsertype() {
+    public int getUsertype() {
         return usertype;
     }
 
-    public void setUsertype(String usertype) {
+    public void setUsertype(int usertype) {
         this.usertype = usertype;
     }
 
     public boolean isNew() {
-        return usertype.equals("new");
+        return usertype == 0;
     }
 }

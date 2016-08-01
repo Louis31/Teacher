@@ -1,12 +1,21 @@
 package com.haiku.wateroffer.mvp.view.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.Circle;
+import com.amap.api.maps2d.model.CircleOptions;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
@@ -36,13 +45,22 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
     private ProgressDialog mDialog;
     private IShopModel mShopModel;
 
+    private AMap aMap;
+    private MarkerOptions markerOption;
     private int mChoiceWhich;
+    private int zoomLevel;
+    private String mRadius;
+    private Circle mCircle;
 
     @ViewInject(R.id.titlebar)
     private Titlebar mTitlebar;
 
     @ViewInject(R.id.tv_range)
     private TextView tv_range;
+
+
+    @ViewInject(R.id.map)
+    private MapView mMapView;
 
     @Event(R.id.rlayout_range)
     private void rangeClick(View v) {
@@ -51,7 +69,7 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
             builder.setTitle("配送范围");
             final ChoiceOnClickListener choiceListener =
                     new ChoiceOnClickListener();
-            builder.setSingleChoiceItems(R.array.deliver_range, UserManager.getInstance().getRange(), choiceListener);
+            builder.setSingleChoiceItems(R.array.deliver_range, mChoiceWhich, choiceListener);
 
             DialogInterface.OnClickListener btnListener =
                     new DialogInterface.OnClickListener() {
@@ -59,9 +77,11 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
                         public void onClick(DialogInterface dialogInterface, int which) {
                             int choiceWhich = choiceListener.getWhich();
                             mChoiceWhich = choiceWhich;
-                            String range =
+                            mRadius =
                                     getResources().getStringArray(R.array.deliver_range)[choiceWhich];
-                            tv_range.setText(range);
+                            tv_range.setText(mRadius);
+                            mCircle.setRadius(Double.valueOf(mRadius) * 1000);
+                            aMap.invalidate();
                         }
                     };
             builder.setPositiveButton("确定", btnListener);
@@ -74,7 +94,38 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，实现地图生命周期管理
+        mMapView.onCreate(savedInstanceState);
+        initLocation();
         mShopModel = new ShopModelImpl();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //在activity执行onResume时执行mMapView.onResume ()，实现地图生命周期管理
+        mMapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //在activity执行onPause时执行mMapView.onPause ()，实现地图生命周期管理
+        mMapView.onPause();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，实现地图生命周期管理
+        mMapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
+        mMapView.onDestroy();
     }
 
     private void initView() {
@@ -101,8 +152,33 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
                 }
             }
         });
+        mRadius = getIntent().getStringExtra("range");
+        tv_range.setText(mRadius);
 
-        tv_range.setText(getResources().getStringArray(R.array.deliver_range)[UserManager.getInstance().getRange()]);
+        String[] ranges = getResources().getStringArray(R.array.deliver_range);
+        for (int i = 0; i < ranges.length; i++) {
+            if (ranges[i].equals(mRadius)) {
+                mChoiceWhich = i;
+            }
+        }
+    }
+
+    private void initLocation() {
+        zoomLevel = 20;
+        double lat = getIntent().getDoubleExtra("latitude", 0);
+        double lon = getIntent().getDoubleExtra("longitude", 0);
+        LatLng latLng = new LatLng(lat, lon);
+
+        aMap = mMapView.getMap();
+        markerOption = new MarkerOptions();
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
+        markerOption.position(latLng);
+        aMap.addMarker(markerOption);
+
+        // 绘制圆形
+        mCircle = aMap.addCircle(new CircleOptions().center(latLng)
+                .radius(Double.valueOf(mRadius) * 1000).strokeColor(getResources().getColor(R.color.map_stroke)).fillColor(getResources().getColor(R.color.map_radius))
+                .strokeWidth(3));
     }
 
     private class ChoiceOnClickListener implements DialogInterface.OnClickListener {
@@ -137,8 +213,10 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
 
     @Override
     public void onSuccess() {
-        UserManager.getInstance().setRange(mChoiceWhich);
         showLoadingDialog(false);
+        Intent intent = new Intent();
+        intent.putExtra("range", mRadius);
+        setResult(Activity.RESULT_OK, intent);
         finish();
     }
 

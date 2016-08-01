@@ -40,6 +40,7 @@ import org.xutils.view.annotation.ViewInject;
 @ContentView(R.layout.act_shop_address)
 public class ShopAddressActivity extends BaseActivity implements ShopAddrContract.View {
     private final int REQUEST_ADDR = 1;
+    private boolean isHasAddrLoca = false;// 判断是否已经有地址位置信息
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
     //声明mLocationOption对象
@@ -67,9 +68,6 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
 
     @Event(R.id.iv_location)
     private void onLocationClick(View v) {
-        if (mPoiItem != null) {
-            mPoiItem.setAddress(et_address.getText().toString());
-        }
         Intent intent = new Intent(mContext, AddressActivity.class);
         intent.putExtra("point", mPoiItem);
         startActivityForResult(intent, REQUEST_ADDR);
@@ -100,6 +98,11 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
 
     // 开始定位
     private void initLocation() {
+        // 已经有位置地址，不需要再定位
+        if (isHasAddrLoca) {
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
         //初始化定位
         mLocationClient = new AMapLocationClient(getApplicationContext());
         //设置定位回调监听
@@ -131,12 +134,25 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
 
     private void initDatas() {
         isUpdate = getIntent().getBooleanExtra("isUpdate", false);
+        mPoiItem = new GeoPoint();
+        String area = getIntent().getStringExtra("area");
+        if (!TextUtils.isEmpty(area) && !area.equals("null")) {
+            isHasAddrLoca = true;
+            String longitude = getIntent().getStringExtra("longitude");
+            String latitude = getIntent().getStringExtra("latitude");
+            mPoiItem.setAddress(area);
+            mPoiItem.setCity("广州市");
+            mPoiItem.setLat(Double.valueOf(latitude));
+            mPoiItem.setLon(Double.valueOf(longitude));
+
+        }
     }
 
     private void initViews() {
         if (isUpdate) {
             String area = getIntent().getStringExtra("area");
             String area_detail = getIntent().getStringExtra("area_detail");
+
             et_address.setText(area);
             et_address_detail.setText(area_detail);
             mTitlebar.initDatas(R.string.shop_address, true);
@@ -216,7 +232,6 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
                     //定位成功回调信息，设置相关消息
                     double longitude = aMapLocation.getLongitude();
                     double latitude = aMapLocation.getLatitude();
-                    mPoiItem = new GeoPoint();
                     mPoiItem.setAddress(aMapLocation.getAddress());
                     mPoiItem.setCity(aMapLocation.getCity());
                     mPoiItem.setLat(latitude);
@@ -243,7 +258,7 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
             ToastUtils.getInstant().showToast(R.string.msg_addr_invalid);
         } else {
             int uid = UserManager.getInstance().getUser().getUid();
-            mPresenter.addShopAddress(uid, area, detail);
+            mPresenter.addShopAddress(uid, area, detail, mPoiItem.getLat() + "", mPoiItem.getLon() + "");
         }
     }
 
@@ -251,6 +266,11 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ADDR && resultCode == Activity.RESULT_OK) {
             String addr = data.getStringExtra("address");
+            Double lat = data.getDoubleExtra("latitude", 0);
+            Double lng = data.getDoubleExtra("longitude", 0);
+            mPoiItem.setAddress(addr);
+            mPoiItem.setLat(lat);
+            mPoiItem.setLon(lng);
             et_address.setText(addr);
         }
     }

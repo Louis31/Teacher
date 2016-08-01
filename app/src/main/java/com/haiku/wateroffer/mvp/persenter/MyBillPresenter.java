@@ -77,6 +77,7 @@ public class MyBillPresenter implements MyBillContract.Presenter, IUserModel.MyB
     // 查询账单成功
     @Override
     public void searchBillSuccess(Bill bean) {
+        mView.showLoadingDialog(false);
         mView.showSearchResult(bean);
     }
 
@@ -99,6 +100,7 @@ public class MyBillPresenter implements MyBillContract.Presenter, IUserModel.MyB
     @Override
     public void onError(int errorCode, String errorMsg) {
         mView.showMessage(errorMsg);
+        mView.showLoadingDialog(false);
         // token 失效
         if (errorCode == BaseConstant.TOKEN_INVALID) {
             UserManager.cleanToken();

@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface MyBillContract {
     interface View extends BaseView<Presenter> {
+        void showLoadingDialog(boolean isShow);
+
         // 显示列表界面
         void showListView(List<Bill> list);
 
