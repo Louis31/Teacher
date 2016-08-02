@@ -48,23 +48,24 @@ public class DeliverListAdapter extends MyBaseAdapter {
         vh.tv_deliver_name.setText(bean.getDiliveryman_name());
         vh.tv_deliver_phone.setText(bean.getDiliveryman_phone());
 
+        String status = bean.getDiliveryman_status();
         // 编辑列表
         if (mType == TYPE_EDIT) {
-            if (TypeConstant.Deliver.PAUSE == bean.getDiliveryman_status()) {
+            if (TypeConstant.Deliver.PAUSE.equals(status)) {
                 // 暂停状态，可以点击继续
                 vh.tv_continue_pause.setText(continueStr);
-            } else if (bean.getDiliveryman_status().equals(TypeConstant.Deliver.NORMAL)) {
+            } else if (TypeConstant.Deliver.NORMAL.equals(status)) {
                 // 继续状态，可以点击暂停
                 vh.tv_continue_pause.setText(pauseStr);
             }
         }
         // 配送列表
         else if (mType == TYPE_LIST) {
-            if (TypeConstant.Deliver.PAUSE == bean.getDiliveryman_status()) {
+            if (TypeConstant.Deliver.PAUSE.equals(status)){
                 // 暂停状态
                 vh.tv_paused.setVisibility(View.VISIBLE);
                 vh.tv_added.setVisibility(View.GONE);
-            } else if (bean.getDiliveryman_status().equals(TypeConstant.Deliver.NORMAL)) {
+            } else if (TypeConstant.Deliver.NORMAL.equals(status)){
                 // 继续状态
                 vh.tv_added.setVisibility(View.VISIBLE);
                 vh.tv_paused.setVisibility(View.GONE);

@@ -141,7 +141,7 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                if (result.isSuccess()) {
                     callback.changeStatusSuccess();
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
@@ -184,7 +184,7 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
         });
     }
 
-    @Override
+    /*@Override
     public void uploadLocation(Map<String, Object> params, @NonNull final IRequestCallback callback) {
         XUtils.Post(UrlConstant.User.uploadLocation(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
@@ -198,5 +198,5 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
                 }
             }
         });
-    }
+    }*/
 }

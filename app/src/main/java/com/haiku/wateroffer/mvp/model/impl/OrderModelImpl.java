@@ -76,7 +76,7 @@ public class OrderModelImpl extends BaseModelImpl implements IOrderModel {
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                if (result.isSuccess()) {
                     callback.onSuccess();
                 } else {
                     callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
@@ -113,7 +113,7 @@ public class OrderModelImpl extends BaseModelImpl implements IOrderModel {
                 if (result.isSuccess()) {
                     JsonObject jobj = result.getRetmsg().getAsJsonObject();
                     String judge = jobj.get("judge").getAsString();
-                    if(judge.equals("yes")){
+                    if (judge.equals("yes")) {
                         callback.checkHasDeliver(true, (Integer) params.get("order_id"), (Integer) params.get("uid"));
                         return;
                     }
@@ -128,12 +128,12 @@ public class OrderModelImpl extends BaseModelImpl implements IOrderModel {
     // 获取配送员订单列表
     @Override
     public void getDeliverOrder(Map<String, Object> params, @NonNull final OrderListCallback callback) {
-        XUtils.Get(UrlConstant.Deliver.getOrderList(), params, new XUtilsCallback<ResultData>(callback) {
+        XUtils.Get(UrlConstant.Shop.getDeliverOrders(), params, new XUtilsCallback<ResultData>(callback) {
             @Override
             public void onSuccess(ResultData result) {
                 super.onSuccess(result);
                 LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
+                if (result.isSuccess()) {
                     List<OrderItem> list = new ArrayList<>();
                     if (!result.getRetmsg().isJsonNull()) {
                         list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), OrderItem.class);

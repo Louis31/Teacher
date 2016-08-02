@@ -31,7 +31,7 @@ public interface DeliverContract {
         void getDeliverList(int uid);
 
         // 修改配送员状态
-        void changeDeliverStatus(int diliveryman_id, String phone, int status);
+        void changeDeliverStatus(int diliveryman_id, String phone, int status,int uid);
 
         // 添加配送员
         void addDeliver(int uid,String phone);

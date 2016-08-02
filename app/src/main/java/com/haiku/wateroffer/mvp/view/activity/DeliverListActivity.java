@@ -22,6 +22,7 @@ import com.haiku.wateroffer.mvp.persenter.DeliverPresenter;
 import com.haiku.wateroffer.mvp.view.adapter.DeliverListAdapter;
 import com.haiku.wateroffer.mvp.view.dialog.AddDeliverDialog;
 import com.haiku.wateroffer.mvp.view.dialog.IOSAlertDialog;
+import com.haiku.wateroffer.mvp.view.divider.DividerItem;
 import com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout;
 import com.haiku.wateroffer.mvp.view.widget.Titlebar;
 
@@ -42,6 +43,7 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     private final int TYPE_EDIT = 1;
     private int mType;
 
+    private int uid;
     private int mOperationType;
     private int colorRed;
     private int colorBlack;
@@ -93,6 +95,7 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
     }
 
     private void initDatas() {
+        uid = UserManager.getInstance().getUser().getUid();
         mType = TYPE_DELIVER;
         colorRed = getResources().getColor(R.color.red);
         colorBlack = getResources().getColor(R.color.black);
@@ -123,6 +126,7 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
         });
 
         mRefreshLayout.setPageSize(1000);
+        mRefreshLayout.addItemDecoration(new DividerItem(mContext));
         mRefreshLayout.setAdapter(mListAdapter);
         mRefreshLayout.setLinearLayout();
         mRefreshLayout.setPullRefreshEnable(false);
@@ -192,6 +196,14 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
                 mListAdapter.notifyItemRemoved(mCurrentPos);
                 mEditAdapter.notifyItemRemoved(mCurrentPos);
             } else {
+                String status = mDatas.get(mCurrentPos).getDiliveryman_status();
+                // 如果当前为暂停，则继续，否则
+                if(TypeConstant.Deliver.PAUSE.equals(status)){
+                    status = TypeConstant.Deliver.NORMAL;
+                }else{
+                    status = TypeConstant.Deliver.PAUSE;
+                }
+                mDatas.get(mCurrentPos).setDiliveryman_status(status);
                 mListAdapter.notifyItemChanged(mCurrentPos);
                 mEditAdapter.notifyItemChanged(mCurrentPos);
             }
@@ -243,7 +255,7 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
         } else {
             mOperationType = TypeConstant.DeliverStatus.PAUSE;
         }
-        mPresenter.changeDeliverStatus(bean.getDiliveryman_id(), bean.getDiliveryman_phone(), mOperationType);
+        mPresenter.changeDeliverStatus(bean.getDiliveryman_id(), bean.getDiliveryman_phone(), mOperationType,uid);
     }
 
     @Override
@@ -256,7 +268,7 @@ public class DeliverListActivity extends BaseActivity implements DeliverContract
                         // 删除点击
                         mCurrentPos = pos;
                         mOperationType = TypeConstant.DeliverStatus.DELETE;
-                        mPresenter.changeDeliverStatus(mDatas.get(pos).getDiliveryman_id(), mDatas.get(pos).getDiliveryman_phone(), mOperationType);
+                        mPresenter.changeDeliverStatus(mDatas.get(pos).getDiliveryman_id(), mDatas.get(pos).getDiliveryman_phone(), mOperationType,uid);
                     }
                 }).setNegativeButton("否", null).show();
     }

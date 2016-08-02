@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.constant.BaseConstant;
-import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.contract.DeliverOrderContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IOrderModel;
@@ -39,16 +38,13 @@ public class DeliverOrderPersenter implements DeliverOrderContract.Presenter, IO
      */
     // 获取列表数据
     @Override
-    public void getListDatas(int uid, String status, String key, int pageno) {
+    public void getListDatas(int uid, int mid) {
         requesType = REQUEST_LIST;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
-        params.put("status", status);
-        params.put("key", key);
-        params.put("pageno", pageno);
+        params.put("mid", mid);
 
         if (UserManager.isTokenEmpty()) {
-            // 获取token
             ((IBaseModel) mOrderModel).getAccessToken(params, this);
         } else {
             mOrderModel.getOrderList(params, this);
@@ -57,14 +53,14 @@ public class DeliverOrderPersenter implements DeliverOrderContract.Presenter, IO
 
     // 取消订单
     @Override
-    public void cancelOrder(int id, int uid) {
+    public void cancelOrder(int id, int uid, int did) {
         mView.showLoadingDialog(true);
         requesType = REQUEST_CANCEL;
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("uid", uid);
+        params.put("did", did);
         if (UserManager.isTokenEmpty()) {
-            // 获取token
             ((IBaseModel) mOrderModel).getAccessToken(params, this);
         } else {
             mOrderModel.cancelOrder(params, this);
@@ -103,7 +99,7 @@ public class DeliverOrderPersenter implements DeliverOrderContract.Presenter, IO
         mView.showLoadingDialog(false);
         if (requesType == REQUEST_CANCEL) {
             // 取消配送成功
-            //mView.refreshListView(TypeConstant.OrderOpera.CANCEL_DELIVER);
+            mView.refreshListView();
         }
     }
 

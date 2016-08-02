@@ -46,11 +46,8 @@ public class ShopAddrPresenter implements ShopAddrContract.Presenter, IRequestCa
         params.put("uid", uid);
         params.put("area", area);
         params.put("floorDetail", floorDetail);
-
-        mParams = new HashMap<>();
-        mParams.put("uid", uid);
-        mParams.put("lat", lat);
-        mParams.put("lng", lng);
+        params.put("lat", lat);
+        params.put("lng", lng);
 
         if (UserManager.isTokenEmpty()) {
             ((IBaseModel) mUserModel).getAccessToken(params, this);
@@ -59,14 +56,14 @@ public class ShopAddrPresenter implements ShopAddrContract.Presenter, IRequestCa
         }
     }
 
-    private void uploadLoaction() {
+    /*private void uploadLoaction() {
         requestType = RQTYPE_LOCAT;
         if (UserManager.isTokenEmpty()) {
             ((IBaseModel) mUserModel).getAccessToken(mParams, this);
         } else {
             mUserModel.uploadLocation(mParams, this);
         }
-    }
+    }*/
 
     /**
      * Callback 接口方法
@@ -79,12 +76,15 @@ public class ShopAddrPresenter implements ShopAddrContract.Presenter, IRequestCa
     // 成功回调
     @Override
     public void onSuccess() {
-        if (requestType == RQTYPE_ADDR) {
+       /* if (requestType == RQTYPE_ADDR) {
             uploadLoaction();
         } else {
             mView.showLoadingDialog(false);
             mView.showSuccessView();
-        }
+        }*/
+
+        mView.showLoadingDialog(false);
+        mView.showSuccessView();
     }
 
     @Override

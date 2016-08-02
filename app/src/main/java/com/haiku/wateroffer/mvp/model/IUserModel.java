@@ -60,5 +60,5 @@ public interface IUserModel {
     void addShopAddress(Map<String, Object> params, @NonNull IRequestCallback callback);
 
     // 上传用户的位置
-    void uploadLocation(Map<String, Object> params, @NonNull final IRequestCallback callback);
+    //void uploadLocation(Map<String, Object> params, @NonNull final IRequestCallback callback);
 }

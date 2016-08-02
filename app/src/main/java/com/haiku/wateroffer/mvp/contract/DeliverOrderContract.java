@@ -27,9 +27,9 @@ public interface DeliverOrderContract {
 
     interface Presenter extends BasePresenter {
         // 获取列表数据
-        void getListDatas(int uid, String status, String key, int pageno);
+        void getListDatas(int uid, int mid);
 
         // 取消派单
-        void cancelOrder(int id, int uid);
+        void cancelOrder(int id, int uid,int did);
     }
 }

@@ -35,8 +35,8 @@ public class TypeConstant {
     }
 
     public static class Deliver {
-        public final static String PAUSE = "pause";// 暂停状态
-        public final static String NORMAL = "normal";// 继续状态
+        public final static String NORMAL = "0";// 继续状态
+        public final static String PAUSE = "1";// 暂停状态
     }
 
     public static class DeliverStatus {

@@ -210,11 +210,6 @@ public class UrlConstant {
      * 配送员相关
      */
     public static class Deliver {
-        // 获取配送员订单列表
-        public static String getOrderList() {
-            return getDeliverPath() + "/get_order" + getToken();
-        }
-
         // 判断某店铺是否有配送员
         public static String isShopHasDeliver() {
             return getDeliverPath() + "/judge_dilivery_in_shop" + getToken();
@@ -268,6 +263,11 @@ public class UrlConstant {
         // 获取店铺是否已缴纳保证金，Get
         public static String getShopMarginStatus() {
             return getShopPath() + "/getShopMarginStatus" + getToken();
+        }
+
+        // 获得目标配送员正在配送的订单，Get
+        public static String getDeliverOrders() {
+            return getShopPath() + "/get_dilivery_oders" + getToken();
         }
     }
 }

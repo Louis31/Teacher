@@ -39,12 +39,11 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
      */
     @Override
     public void getDeliverList(int uid) {
+        requesType = REQUEST_LIST;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
 
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_LIST;
-            // 获取token
             ((IBaseModel) mUserModel).getAccessToken(params, this);
         } else {
             mUserModel.getDeliverList(params, this);
@@ -52,16 +51,16 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
     }
 
     @Override
-    public void changeDeliverStatus(int diliveryman_id, String phone, int status) {
+    public void changeDeliverStatus(int diliveryman_id, String phone, int status,int uid) {
+        requesType = REQUEST_CHANGE;
         mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
         params.put("diliveryman_id", diliveryman_id);
         params.put("phone", phone);
         params.put("status", status);
+        params.put("mid", uid);
 
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_CHANGE;
-            // 获取token
             ((IBaseModel) mUserModel).getAccessToken(params, this);
         } else {
             mUserModel.changeDeliverStatus(params, this);
@@ -70,13 +69,12 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
 
     @Override
     public void addDeliver(int uid, String phone) {
+        requesType = REQUEST_ADD;
         mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("phone", phone);
         if (UserManager.isTokenEmpty()) {
-            requesType = REQUEST_ADD;
-            // 获取token
             ((IBaseModel) mUserModel).getAccessToken(params, this);
         } else {
             mUserModel.addDeliver(params, this);
