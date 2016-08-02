@@ -17,7 +17,7 @@
     <color name="line">#DDDDDD</color>
 
     <color name="map_stroke">#99000000</color>
-    <color name="map_radius">#550000ff</color>
+    <color name="map_radius">#33000000</color>
 
     <!-- ios dialog -->
     <color name="alertdialog_line">#c6c6c6</color>

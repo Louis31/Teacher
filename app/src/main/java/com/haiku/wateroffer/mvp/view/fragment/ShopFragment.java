@@ -210,6 +210,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             case R.id.llayout_deliver_range:
                 if (mShopInfo != null) {
                     Intent intent = new Intent(mContext, DeliverRangeActivity.class);
+                    intent.putExtra("area", mShopInfo.getArea());
                     intent.putExtra("range", mShopInfo.getRange());
                     intent.putExtra("latitude", mShopInfo.getLat());
                     intent.putExtra("longitude", mShopInfo.getLng());

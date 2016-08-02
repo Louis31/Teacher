@@ -3,10 +3,12 @@ package com.haiku.wateroffer.mvp.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
@@ -150,7 +152,8 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
         if (mPoiItem != null) {
             LatLng latLng = new LatLng(mPoiItem.getLat(), mPoiItem.getLon());
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
-            markerOption.position(latLng);
+            markerOption.position(latLng).icon(BitmapDescriptorFactory
+                    .defaultMarker(BitmapDescriptorFactory.HUE_RED));;
             aMap.addMarker(markerOption);
         }
         aMap.setOnMapClickListener(this);// 对amap添加单击地图事件监听器
@@ -197,7 +200,7 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
     //对移动地图结束事件回调
     @Override
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
-        if (isInit) {
+       /* if (isInit) {
             markerOption.position(cameraPosition.target);
             mPoiItem.setLat(cameraPosition.target.latitude);
             mPoiItem.setLon(cameraPosition.target.longitude);
@@ -210,7 +213,7 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
             RegeocodeQuery query = new RegeocodeQuery(new LatLonPoint(cameraPosition.target.latitude, cameraPosition.target.longitude), 200, GeocodeSearch.AMAP);
             geocoderSearch.getFromLocationAsyn(query);
         }
-        isInit = true;
+        isInit = true;*/
     }
 
     //逆地理编码回调接口

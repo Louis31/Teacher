@@ -15,7 +15,6 @@ public class TypeConstant {
         public final static String CLOSED = "closed";// 已完成
         public final static String REFUNDED = "refunded";// 退款中
         public final static String DELIVERING = "delivering";// 配送中
-
     }
 
     public static class OrderOpera {

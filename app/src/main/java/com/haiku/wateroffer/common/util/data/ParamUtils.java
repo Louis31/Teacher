@@ -20,6 +20,7 @@ public class ParamUtils {
             map.put("login_type", BaseConstant.LOGIN_TYPE_MERCHANT);
             map.put("pagesize", BaseConstant.PAGE_SIZE_DEFAULT);
             map.put("device_type", BaseConstant.DEVICE_TYPE);
+            map.put("key", BaseConstant.ORDER_SORT_SYNTHESIS);
             map.putAll(params);
             return map;
         }

@@ -154,7 +154,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
             return;
         }
         isFirstLoad = false;
-        mPresenter.getListDatas(uid, mType, BaseConstant.ORDER_SORT_SYNTHESIS, mRefreshLayout.getCurrentPage());
+        mPresenter.getListDatas(uid, mType, mRefreshLayout.getCurrentPage());
     }
 
     // 下拉刷新
@@ -162,13 +162,13 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     public void onRefresh() {
         mDatas.clear();
         mAdapter.notifyDataSetChanged();
-        mPresenter.getListDatas(uid, mType, BaseConstant.ORDER_SORT_SYNTHESIS, mRefreshLayout.getCurrentPage());
+        mPresenter.getListDatas(uid, mType, mRefreshLayout.getCurrentPage());
     }
 
     // 加载更多
     @Override
     public void onLoadMore() {
-        mPresenter.getListDatas(uid, mType, BaseConstant.ORDER_SORT_SYNTHESIS, mRefreshLayout.getCurrentPage());
+        mPresenter.getListDatas(uid, mType, mRefreshLayout.getCurrentPage());
     }
 
     // 显示列表界面

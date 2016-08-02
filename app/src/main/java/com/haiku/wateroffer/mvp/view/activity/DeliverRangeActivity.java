@@ -5,20 +5,28 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.Circle;
 import com.amap.api.maps2d.model.CircleOptions;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.model.Text;
+import com.amap.api.maps2d.model.TextOptions;
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
+import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.BaseConstant;
@@ -165,16 +173,26 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
 
     private void initLocation() {
         zoomLevel = 20;
-        double lat = getIntent().getDoubleExtra("latitude", 0);
-        double lon = getIntent().getDoubleExtra("longitude", 0);
-        LatLng latLng = new LatLng(lat, lon);
-
+        String lat = getIntent().getStringExtra("latitude");
+        String lon = getIntent().getStringExtra("longitude");
+        LatLng latLng = new LatLng(Double.valueOf(lat), Double.valueOf(lon));
         aMap = mMapView.getMap();
-        markerOption = new MarkerOptions();
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
-        markerOption.position(latLng);
-        aMap.addMarker(markerOption);
 
+        markerOption = new MarkerOptions();
+        markerOption.position(latLng)
+                .icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+        String area = getIntent().getStringExtra("area");
+        if(!TextUtils.isEmpty(area)){
+            String title = area.substring(0,area.indexOf("市")+1);
+            String snippet = area.substring(area.indexOf("市") + 1,area.length());
+            markerOption.title(title);
+            markerOption.snippet(snippet);
+        }
+        Marker marker =  aMap.addMarker(markerOption);
+        marker.showInfoWindow();
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
         // 绘制圆形
         mCircle = aMap.addCircle(new CircleOptions().center(latLng)
                 .radius(Double.valueOf(mRadius) * 1000).strokeColor(getResources().getColor(R.color.map_stroke)).fillColor(getResources().getColor(R.color.map_radius))

@@ -41,12 +41,11 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
      */
     // 获取列表数据
     @Override
-    public void getListDatas(int uid, String status, String key, int pageno) {
+    public void getListDatas(int uid, String status, int pageno) {
         requesType = REQUEST_LIST;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("status", status);
-        params.put("key", key);
         params.put("pageno", pageno);
 
         if (UserManager.isTokenEmpty()) {
