@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.Goods;
 import com.haiku.wateroffer.common.UserManager;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.contract.GoodsListContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
@@ -24,7 +23,7 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
     private final int REQUEST_OFF_SHELF = 3;// 下架
     private final int REQUEST_UP_SHELF = 4;// 上架
     private int requesType;
-
+    private Map<String, Object> mTempParams;// 存储当前请求的参数
     @NonNull
     private final IGoodsModel mGoodsModel;
     @NonNull
@@ -48,9 +47,7 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         params.put("status", status);
         params.put("pageno", pageno);
 
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mGoodsModel.getGoodsList(params, this);
         }
     }
@@ -64,9 +61,7 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         params.put("uid", uid);
         params.put("product_id", product_id);
 
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mGoodsModel.deleteGoods(params, this);
         }
     }
@@ -80,10 +75,7 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         params.put("uid", uid);
         params.put("product_id", product_id);
 
-        if (UserManager.isTokenEmpty()) {
-            // 获取token
-            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mGoodsModel.offShelfGoods(params, this);
         }
     }
@@ -97,9 +89,7 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
         params.put("uid", uid);
         params.put("product_id", product_id);
 
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mGoodsModel.upShelfGoods(params, this);
         }
     }
@@ -147,9 +137,21 @@ public class GoodsListPersenter implements GoodsListContract.Presenter, IGoodsMo
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
-        // token 失效
-        if (errorCode == BaseConstant.TOKEN_INVALID) {
-            UserManager.cleanToken();
+    }
+
+    @Override
+    public void onTokenFail() {
+        UserManager.cleanToken();
+        ((IBaseModel) mGoodsModel).getAccessToken(mTempParams, this);
+    }
+
+    // 判断是否为token失效
+    private boolean isTokenFail(Map<String, Object> params) {
+        if (UserManager.isTokenEmpty()) {
+            mTempParams = params;
+            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
+            return true;
         }
+        return false;
     }
 }

@@ -1,12 +1,10 @@
 package com.haiku.wateroffer.mvp.persenter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.Goods;
 import com.haiku.wateroffer.bean.GoodsCategory;
 import com.haiku.wateroffer.common.UserManager;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.GoodsEditContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IGoodsModel;
@@ -26,6 +24,7 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
     private final int REQUEST_MODIFY = 4;
     private final int REQUEST_INFO = 5;
     private int requesType;
+    private Map<String, Object> mTempParams;// 存储当前请求的参数
 
     @NonNull
     private final IGoodsModel mGoodsModel;
@@ -47,9 +46,7 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
         mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
         params.put("attach", attach);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mGoodsModel.uploadGoodsImage(params, this);
         }
     }
@@ -60,9 +57,7 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
         Map<String, Object> params = new HashMap<>();
         params.put("parent_id", parent_id);
         params.put("ishome", ishome);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mGoodsModel.getGoodsCategory(params, this);
         }
     }
@@ -85,9 +80,7 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
         params.put("product_personalamount", product_personalamount);
         params.put("product_beyondprice", product_beyondprice);
 
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mGoodsModel.addGoods(params, this);
         }
     }
@@ -111,9 +104,7 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
         params.put("product_personalamount", product_personalamount);
         params.put("product_beyondprice", product_beyondprice);
 
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mGoodsModel.modifyGoods(params, this);
         }
     }
@@ -124,9 +115,7 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
         requesType = REQUEST_INFO;
         Map<String, Object> params = new HashMap<>();
         params.put("product_id", product_id);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mGoodsModel.getGoodsInfo(params, this);
         }
     }
@@ -192,13 +181,24 @@ public class GoodsEditPersenter implements GoodsEditContract.Presenter, IGoodsMo
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
-        // token 失效
-        if (errorCode == BaseConstant.TOKEN_INVALID) {
-            UserManager.cleanToken();
-            return;
-        }
         if (requesType == REQUEST_INFO) {
             mView.finishView();
         }
+    }
+
+    @Override
+    public void onTokenFail() {
+        UserManager.cleanToken();
+        ((IBaseModel) mGoodsModel).getAccessToken(mTempParams, this);
+    }
+
+    // 判断是否为token失效
+    private boolean isTokenFail(Map<String, Object> params) {
+        if (UserManager.isTokenEmpty()) {
+            mTempParams = params;
+            ((IBaseModel) mGoodsModel).getAccessToken(params, this);
+            return true;
+        }
+        return false;
     }
 }

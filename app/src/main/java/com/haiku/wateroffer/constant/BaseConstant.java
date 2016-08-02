@@ -5,7 +5,6 @@ package com.haiku.wateroffer.constant;
  */
 public class BaseConstant {
     public final static int DELAYED_TIME = 1500;
-    public final static int TOKEN_INVALID = 403;//token 失效
     // 请求的code
     public final static int REQUEST_TAKE_PHOTO = 1;// 相机照相
     public final static int REQUEST_PICK_PHOTO = 2;// 相册选取
@@ -18,6 +17,7 @@ public class BaseConstant {
     public final static int REQUEST_EDIT_RANGE = 14;// 编辑配送范围
     // 网络返回的错误代码常量
     public final static int SUCCESS = 0;// 返回成功
+    public final static int ACCESS_DENIED = 403;// token失效
     public final static int SERVER_ERROR = 998;// 服务器错误
     public final static int METWORD_ERROR = 999;// 网络错误
 

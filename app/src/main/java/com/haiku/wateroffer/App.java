@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class App extends Application {
     private static App instance;
-    private Map<Integer, String> mErrors;
+    private static Map<Integer, String> mErrors;
 
     @Override
     public void onCreate() {
@@ -41,7 +41,7 @@ public class App extends Application {
         return instance;
     }
 
-    public String getErrorMsg(int code) {
+    public static String getErrorMsg(int code) {
         String errorMsg = mErrors.get(code);
         LogUtils.showLogE("ErrorCode", "code = " + code + " - msg = " + errorMsg);
         return errorMsg;

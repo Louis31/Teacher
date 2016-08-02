@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.common.UserManager;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.contract.OrderListContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
@@ -24,7 +23,7 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
     private final int REQUEST_SEND = 3;// 派送
     private final int REQUEST_HAS_DELIVER = 4;// 是否有配送员
     private int requesType;
-
+    private Map<String, Object> mTempParams;// 存储当前请求的参数
     @NonNull
     private final IOrderModel mOrderModel;
     @NonNull
@@ -48,10 +47,7 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
         params.put("status", status);
         params.put("pageno", pageno);
 
-        if (UserManager.isTokenEmpty()) {
-            // 获取token
-            ((IBaseModel) mOrderModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mOrderModel.getOrderList(params, this);
         }
     }
@@ -64,10 +60,7 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("uid", uid);
-        if (UserManager.isTokenEmpty()) {
-            // 获取token
-            ((IBaseModel) mOrderModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mOrderModel.cancelOrder(params, this);
         }
     }
@@ -86,9 +79,7 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
         params.put("uid", uid);
         params.put("order_id", order_id);
 
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mOrderModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mOrderModel.isHasDeliver(params, this);
         }
     }
@@ -99,9 +90,7 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("uid", uid);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mOrderModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mOrderModel.sendOrder(params, this);
         }
     }
@@ -158,9 +147,21 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
-        // token 失效
-        if (errorCode == BaseConstant.TOKEN_INVALID) {
-            UserManager.cleanToken();
+    }
+
+    @Override
+    public void onTokenFail() {
+        UserManager.cleanToken();
+        ((IBaseModel) mOrderModel).getAccessToken(mTempParams, this);
+    }
+
+    // 判断是否为token失效
+    private boolean isTokenFail(Map<String, Object> params) {
+        if (UserManager.isTokenEmpty()) {
+            mTempParams = params;
+            ((IBaseModel) mOrderModel).getAccessToken(params, this);
+            return true;
         }
+        return false;
     }
 }

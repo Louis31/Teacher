@@ -2,19 +2,16 @@ package com.haiku.wateroffer.mvp.model.impl;
 
 import android.support.annotation.NonNull;
 
-import com.haiku.wateroffer.App;
 import com.haiku.wateroffer.bean.Bill;
 import com.haiku.wateroffer.bean.Deliver;
 import com.haiku.wateroffer.bean.ResultData;
 import com.haiku.wateroffer.bean.User;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.data.GsonUtils;
-import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.data.SharedPreferencesUtils;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
+import com.haiku.wateroffer.common.util.net.MyXUtilsCallback;
 import com.haiku.wateroffer.common.util.net.XUtils;
-import com.haiku.wateroffer.common.util.net.XUtilsCallback;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.constant.UrlConstant;
 import com.haiku.wateroffer.mvp.model.IUserModel;
 
@@ -27,24 +24,16 @@ import java.util.Map;
  * Created by hyming on 2016/7/6.
  */
 public class UserModelImpl extends BaseModelImpl implements IUserModel {
-    private final String TAG = "UserModelImpl";
-
     // 登陆
     @Override
     public void login(Map<String, Object> params, @NonNull final IRequestCallback callback) {
-        XUtils.Post(UrlConstant.User.loginUrl(), params, new XUtilsCallback<ResultData>(callback) {
+        XUtils.Post(UrlConstant.User.loginUrl(), params, new MyXUtilsCallback(callback) {
             @Override
-            public void onSuccess(ResultData result) {
-                super.onSuccess(result);
-                LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
-                    String jsonStr = result.getRetmsg().toString();
-                    SharedPreferencesUtils.save(SharedPreferencesUtils.USER, jsonStr);
-                    UserManager.getInstance().setUser(GsonUtils.gsonToBean(jsonStr, User.class));
-                    callback.onSuccess();
-                } else {
-                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
-                }
+            protected void onSuccessCallback(ResultData result) {
+                String jsonStr = result.getRetmsg().toString();
+                SharedPreferencesUtils.save(SharedPreferencesUtils.USER, jsonStr);
+                UserManager.getInstance().setUser(GsonUtils.gsonToBean(jsonStr, User.class));
+                callback.onSuccess();
             }
         });
     }
@@ -52,16 +41,10 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
     // 获取验证码
     @Override
     public void getVerifyCode(Map<String, Object> params, @NonNull final IRequestCallback callback) {
-        XUtils.Get(UrlConstant.smsCodeUrl(), params, new XUtilsCallback<ResultData>(callback) {
+        XUtils.Get(UrlConstant.smsCodeUrl(), params, new MyXUtilsCallback(callback) {
             @Override
-            public void onSuccess(ResultData result) {
-                super.onSuccess(result);
-                LogUtils.showLogE(TAG, result.toString());
-                if (result.isSuccess()) {
-                    callback.onSuccess();
-                } else {
-                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
-                }
+            protected void onSuccessCallback(ResultData result) {
+                callback.onSuccess();
             }
         });
     }
@@ -69,27 +52,15 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
     // 获取我的账单列表
     @Override
     public void getBillList(Map<String, Object> params, @NonNull final MyBillCallback callback) {
-        XUtils.Get(UrlConstant.User.getBillList(), params, new XUtilsCallback<ResultData>(callback) {
+        XUtils.Get(UrlConstant.User.getBillList(), params, new MyXUtilsCallback(callback) {
             @Override
-            public void onSuccess(ResultData result) {
-                super.onSuccess(result);
-                LogUtils.showLogE(TAG, result.toString());
-                if (result.isSuccess()) {
-                    List<Bill> list = new ArrayList<Bill>();
-                    if (!result.getRetmsg().isJsonNull()) {
-                       /* JsonObject jobj = result.getRetmsg().getAsJsonObject();
-                        Set<Map.Entry<String, JsonElement>> set = jobj.entrySet();
-                        for (Map.Entry<String, JsonElement> entry : set) {
-                            JsonElement je = entry.getValue();
-                            Bill bill = GsonUtils.gsonToBean(je.toString(), Bill.class);
-                            list.add(bill);
-                        }*/
-                        list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), Bill.class);
-                    }
-                    callback.getBillSuccess(list);
-                } else {
-                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+            protected void onSuccessCallback(ResultData result) {
+                List<Bill> list = new ArrayList<Bill>();
+                if (!result.getRetmsg().isJsonNull()) {
+                    list = GsonUtils.gsonToList(result.toMsgString(), Bill.class);
                 }
+                callback.getBillSuccess(list);
+
             }
         });
     }
@@ -97,38 +68,26 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
     // 查询账单
     @Override
     public void searchBill(Map<String, Object> params, @NonNull final MyBillCallback callback) {
-        XUtils.Get(UrlConstant.User.searchBill(), params, new XUtilsCallback<ResultData>(callback) {
+        XUtils.Get(UrlConstant.User.searchBill(), params, new MyXUtilsCallback(callback) {
             @Override
-            public void onSuccess(ResultData result) {
-                super.onSuccess(result);
-                LogUtils.showLogE(TAG, result.toString());
-                if (result.isSuccess()) {
-                    Bill bean = GsonUtils.gsonToBean(result.getRetmsg().getAsJsonObject().toString(), Bill.class);
-                    callback.searchBillSuccess(bean);
-                } else {
-                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
-                }
+            protected void onSuccessCallback(ResultData result) {
+                Bill bean = GsonUtils.gsonToBean(result.toMsgString(), Bill.class);
+                callback.searchBillSuccess(bean);
             }
         });
     }
 
     // 获取配送员列表
     @Override
-    public void getDeliverList(Map<String, Object> params, @NonNull final DeliverCallback callback) {
-        XUtils.Get(UrlConstant.User.getDeliverList(), params, new XUtilsCallback<ResultData>(callback) {
+    public void getDeliverList(Map<String, Object> params, @NonNull final DeliverSelectCallback callback) {
+        XUtils.Get(UrlConstant.User.getDeliverList(), params, new MyXUtilsCallback(callback) {
             @Override
-            public void onSuccess(ResultData result) {
-                super.onSuccess(result);
-                LogUtils.showLogE(TAG, result.toString());
-                if (result.isSuccess()) {
-                    List<Deliver> list = new ArrayList<Deliver>();
-                    if (!result.getRetmsg().isJsonNull()) {
-                        list = GsonUtils.gsonToList(result.getRetmsg().getAsJsonArray().toString(), Deliver.class);
-                    }
-                    callback.getDeliverListSuccess(list);
-                } else {
-                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
+            protected void onSuccessCallback(ResultData result) {
+                List<Deliver> list = new ArrayList<Deliver>();
+                if (!result.getRetmsg().isJsonNull()) {
+                    list = GsonUtils.gsonToList(result.toMsgString(), Deliver.class);
                 }
+                callback.getDeliverListSuccess(list);
             }
         });
     }
@@ -136,16 +95,10 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
     // 编辑配送员
     @Override
     public void changeDeliverStatus(Map<String, Object> params, @NonNull final DeliverCallback callback) {
-        XUtils.Get(UrlConstant.User.editDeliver(), params, new XUtilsCallback<ResultData>(callback) {
+        XUtils.Get(UrlConstant.User.editDeliver(), params, new MyXUtilsCallback(callback) {
             @Override
-            public void onSuccess(ResultData result) {
-                super.onSuccess(result);
-                LogUtils.showLogE(TAG, result.toString());
-                if (result.isSuccess()) {
-                    callback.changeStatusSuccess();
-                } else {
-                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
-                }
+            protected void onSuccessCallback(ResultData result) {
+                callback.changeStatusSuccess();
             }
         });
     }
@@ -153,16 +106,10 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
     // 添加配送员
     @Override
     public void addDeliver(Map<String, Object> params, @NonNull final DeliverCallback callback) {
-        XUtils.Get(UrlConstant.User.addDeliver(), params, new XUtilsCallback<ResultData>(callback) {
+        XUtils.Get(UrlConstant.User.addDeliver(), params, new MyXUtilsCallback(callback) {
             @Override
-            public void onSuccess(ResultData result) {
-                super.onSuccess(result);
-                LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
-                    callback.addDeliverSuccess(GsonUtils.gsonToBean(result.getRetmsg().toString(), Deliver.class));
-                } else {
-                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
-                }
+            protected void onSuccessCallback(ResultData result) {
+                callback.addDeliverSuccess(GsonUtils.gsonToBean(result.toMsgString(), Deliver.class));
             }
         });
     }
@@ -170,16 +117,10 @@ public class UserModelImpl extends BaseModelImpl implements IUserModel {
     // 修改店铺地址
     @Override
     public void addShopAddress(Map<String, Object> params, @NonNull final IRequestCallback callback) {
-        XUtils.Post(UrlConstant.User.addShopAddress(), params, new XUtilsCallback<ResultData>(callback) {
+        XUtils.Post(UrlConstant.User.addShopAddress(), params, new MyXUtilsCallback(callback) {
             @Override
-            public void onSuccess(ResultData result) {
-                super.onSuccess(result);
-                LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
-                    callback.onSuccess();
-                } else {
-                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
-                }
+            protected void onSuccessCallback(ResultData result) {
+                callback.onSuccess();
             }
         });
     }

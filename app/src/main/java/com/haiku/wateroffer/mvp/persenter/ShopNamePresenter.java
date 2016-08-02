@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.ShopNameContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IShopModel;
@@ -20,7 +19,7 @@ public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCa
     private final int REQUEST_ADD = 1;
     private final int REQUEST_CHANGE = 2;
     private int requesType;
-
+    private Map<String, Object> mTempParams;// 存储当前请求的参数
     @NonNull
     private final IShopModel mShopModel;
     @NonNull
@@ -42,9 +41,7 @@ public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCa
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("shopname", shopName);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mShopModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mShopModel.addShopName(params, this);
         }
     }
@@ -56,9 +53,7 @@ public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCa
         Map<String, Object> params = new HashMap<>();
         params.put("id", uid);
         params.put("shopname", shopName);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mShopModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mShopModel.changeShopName(params, this);
         }
     }
@@ -86,9 +81,21 @@ public class ShopNamePresenter implements ShopNameContract.Presenter, IRequestCa
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
-        // token 失效
-        if (errorCode == BaseConstant.TOKEN_INVALID) {
-            UserManager.cleanToken();
+    }
+
+    @Override
+    public void onTokenFail() {
+        UserManager.cleanToken();
+        ((IBaseModel) mShopModel).getAccessToken(mTempParams, this);
+    }
+
+    // 判断是否为token失效
+    private boolean isTokenFail(Map<String, Object> params) {
+        if (UserManager.isTokenEmpty()) {
+            mTempParams = params;
+            ((IBaseModel) mShopModel).getAccessToken(params, this);
+            return true;
         }
+        return false;
     }
 }

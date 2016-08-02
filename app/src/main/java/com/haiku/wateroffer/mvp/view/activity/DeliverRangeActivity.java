@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,15 +19,11 @@ import com.amap.api.maps2d.model.CircleOptions;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
-import com.amap.api.maps2d.model.Text;
-import com.amap.api.maps2d.model.TextOptions;
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
-import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IShopModel;
@@ -59,6 +53,7 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
     private int zoomLevel;
     private String mRadius;
     private Circle mCircle;
+    private Map<String, Object> mTempParams;// 存储当前请求的参数
 
     @ViewInject(R.id.titlebar)
     private Titlebar mTitlebar;
@@ -153,9 +148,7 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
                 Map<String, Object> params = new HashMap<>();
                 params.put("id", uid);
                 params.put("range", range);
-                if (UserManager.isTokenEmpty()) {
-                    ((IBaseModel) mShopModel).getAccessToken(params, DeliverRangeActivity.this);
-                } else {
+                if (!isTokenFail(params)) {
                     mShopModel.changeShopRange(params, DeliverRangeActivity.this);
                 }
             }
@@ -184,13 +177,13 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
                         .defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
         String area = getIntent().getStringExtra("area");
-        if(!TextUtils.isEmpty(area)){
-            String title = area.substring(0,area.indexOf("市")+1);
-            String snippet = area.substring(area.indexOf("市") + 1,area.length());
+        if (!TextUtils.isEmpty(area)) {
+            String title = area.substring(0, area.indexOf("市") + 1);
+            String snippet = area.substring(area.indexOf("市") + 1, area.length());
             markerOption.title(title);
             markerOption.snippet(snippet);
         }
-        Marker marker =  aMap.addMarker(markerOption);
+        Marker marker = aMap.addMarker(markerOption);
         marker.showInfoWindow();
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
         // 绘制圆形
@@ -242,9 +235,21 @@ public class DeliverRangeActivity extends BaseActivity implements IRequestCallba
     public void onError(int errorCode, String errorMsg) {
         showLoadingDialog(false);
         ToastUtils.getInstant().showToast(errorMsg);
-        // token 失效
-        if (errorCode == BaseConstant.TOKEN_INVALID) {
-            UserManager.cleanToken();
+    }
+
+    @Override
+    public void onTokenFail() {
+        UserManager.cleanToken();
+        ((IBaseModel) mShopModel).getAccessToken(mTempParams, this);
+    }
+
+    // 判断是否为token失效
+    private boolean isTokenFail(Map<String, Object> params) {
+        if (UserManager.isTokenEmpty()) {
+            mTempParams = params;
+            ((IBaseModel) mShopModel).getAccessToken(params, this);
+            return true;
         }
+        return false;
     }
 }

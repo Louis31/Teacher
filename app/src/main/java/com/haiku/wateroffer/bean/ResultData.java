@@ -37,6 +37,14 @@ public class ResultData implements Serializable {
         return retcode == BaseConstant.SUCCESS;
     }
 
+    public boolean isTokenFail() {
+        return retcode == BaseConstant.ACCESS_DENIED;
+    }
+
+    public String toMsgString() {
+        return retmsg.toString();
+    }
+
     @Override
     public String toString() {
         return "ResultData{" +

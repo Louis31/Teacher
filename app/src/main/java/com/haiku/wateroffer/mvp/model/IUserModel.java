@@ -24,15 +24,18 @@ public interface IUserModel {
     }
 
     // 配送列表回调
-    interface DeliverCallback extends IRequestCallback {
-        // 获取配送列表成功
-        void getDeliverListSuccess(List<Deliver> list);
-
+    interface DeliverCallback extends DeliverSelectCallback {
         // 修改状态成功
         void changeStatusSuccess();
 
         // 添加配送员成功
         void addDeliverSuccess(Deliver deliver);
+    }
+
+    // 配送列表回调
+    interface DeliverSelectCallback extends IRequestCallback {
+        // 获取配送列表成功
+        void getDeliverListSuccess(List<Deliver> list);
     }
 
     // 登陆
@@ -48,7 +51,7 @@ public interface IUserModel {
     void searchBill(Map<String, Object> params, @NonNull MyBillCallback callback);
 
     // 获取配送员列表
-    void getDeliverList(Map<String, Object> params, @NonNull DeliverCallback callback);
+    void getDeliverList(Map<String, Object> params, @NonNull DeliverSelectCallback callback);
 
     // 编辑配送员
     void changeDeliverStatus(Map<String, Object> params, @NonNull DeliverCallback callback);

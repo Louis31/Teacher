@@ -9,6 +9,7 @@ import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.data.GsonUtils;
 import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
+import com.haiku.wateroffer.common.util.net.MyXUtilsCallback;
 import com.haiku.wateroffer.common.util.net.XUtils;
 import com.haiku.wateroffer.common.util.net.XUtilsCallback;
 import com.haiku.wateroffer.constant.BaseConstant;
@@ -21,22 +22,14 @@ import java.util.Map;
  * Created by hyming on 2016/7/6.
  */
 public class BaseModelImpl implements IBaseModel {
-    private final String TAG = "BaseModelImpl";
-
     // 获取token
     @Override
     public void getAccessToken(final Map<String, Object> params, @NonNull final IRequestCallback callback) {
-        XUtils.Get(UrlConstant.tokenUrl(), null, new XUtilsCallback<ResultData>(callback) {
+        XUtils.Get(UrlConstant.tokenUrl(), null, new MyXUtilsCallback(callback) {
             @Override
-            public void onSuccess(ResultData result) {
-                super.onSuccess(result);
-                LogUtils.showLogE(TAG, result.toString());
-                if (result.getRetcode() == BaseConstant.SUCCESS) {
-                    UserManager.getInstance().setToken(GsonUtils.gsonToBean(result.getRetmsg().toString(), AccessToken.class));
-                    callback.getTokenSuccess(params);
-                } else {
-                    callback.onError(result.getRetcode(), App.getInstance().getErrorMsg(result.getRetcode()));
-                }
+            protected void onSuccessCallback(ResultData result) {
+                UserManager.getInstance().setToken(GsonUtils.gsonToBean(result.toMsgString(), AccessToken.class));
+                callback.getTokenSuccess(params);
             }
         });
     }

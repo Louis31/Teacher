@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.LoginContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IUserModel;
@@ -21,7 +20,7 @@ public class LoginPresenter implements LoginContract.Presenter, IRequestCallback
     private final int REQUEST_LOGIN = 1;
     private final int REQUEST_VERIFY_CODE = 2;
     private int requesType;
-
+    private Map<String, Object> mTempParams;// 存储当前请求的参数
     @NonNull
     private final IUserModel mUserModel;
     @NonNull
@@ -44,9 +43,7 @@ public class LoginPresenter implements LoginContract.Presenter, IRequestCallback
         Map<String, Object> params = new HashMap<>();
         params.put("phone", phone);
         params.put("valicode", valicode);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mUserModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mUserModel.login(params, this);
         }
     }
@@ -57,9 +54,7 @@ public class LoginPresenter implements LoginContract.Presenter, IRequestCallback
         requesType = REQUEST_VERIFY_CODE;
         Map<String, Object> params = new HashMap<>();
         params.put("phone", phone);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mUserModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mUserModel.getVerifyCode(params, this);
         }
     }
@@ -97,9 +92,21 @@ public class LoginPresenter implements LoginContract.Presenter, IRequestCallback
             mView.resetVerifyCodeView();
         }
         mView.showMessage(errorMsg);
-        // token 失效
-        if (errorCode == BaseConstant.TOKEN_INVALID) {
-            UserManager.cleanToken();
+    }
+
+    @Override
+    public void onTokenFail() {
+        UserManager.cleanToken();
+        ((IBaseModel) mUserModel).getAccessToken(mTempParams, this);
+    }
+
+    // 判断是否为token失效
+    private boolean isTokenFail(Map<String, Object> params) {
+        if (UserManager.isTokenEmpty()) {
+            mTempParams = params;
+            ((IBaseModel) mUserModel).getAccessToken(params, this);
+            return true;
         }
+        return false;
     }
 }

@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.ShopAddrContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IUserModel;
@@ -18,11 +17,7 @@ import java.util.Map;
  */
 public class ShopAddrPresenter implements ShopAddrContract.Presenter, IRequestCallback {
 
-    private final int RQTYPE_ADDR = 1;
-    private final int RQTYPE_LOCAT = 2;
-    private int requestType;
-    private Map<String, Object> mParams;
-
+    private Map<String, Object> mTempParams;// 存储当前请求的参数
 
     @NonNull
     private final IUserModel mUserModel;
@@ -41,7 +36,6 @@ public class ShopAddrPresenter implements ShopAddrContract.Presenter, IRequestCa
     @Override
     public void addShopAddress(int uid, String area, String floorDetail, String lat, String lng) {
         mView.showLoadingDialog(true);
-        requestType = RQTYPE_ADDR;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("area", area);
@@ -49,21 +43,10 @@ public class ShopAddrPresenter implements ShopAddrContract.Presenter, IRequestCa
         params.put("lat", lat);
         params.put("lng", lng);
 
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mUserModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mUserModel.addShopAddress(params, this);
         }
     }
-
-    /*private void uploadLoaction() {
-        requestType = RQTYPE_LOCAT;
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mUserModel).getAccessToken(mParams, this);
-        } else {
-            mUserModel.uploadLocation(mParams, this);
-        }
-    }*/
 
     /**
      * Callback 接口方法
@@ -76,13 +59,6 @@ public class ShopAddrPresenter implements ShopAddrContract.Presenter, IRequestCa
     // 成功回调
     @Override
     public void onSuccess() {
-       /* if (requestType == RQTYPE_ADDR) {
-            uploadLoaction();
-        } else {
-            mView.showLoadingDialog(false);
-            mView.showSuccessView();
-        }*/
-
         mView.showLoadingDialog(false);
         mView.showSuccessView();
     }
@@ -91,9 +67,21 @@ public class ShopAddrPresenter implements ShopAddrContract.Presenter, IRequestCa
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
-        // token 失效
-        if (errorCode == BaseConstant.TOKEN_INVALID) {
-            UserManager.cleanToken();
+    }
+
+    @Override
+    public void onTokenFail() {
+        UserManager.cleanToken();
+        ((IBaseModel) mUserModel).getAccessToken(mTempParams, this);
+    }
+
+    // 判断是否为token失效
+    private boolean isTokenFail(Map<String, Object> params) {
+        if (UserManager.isTokenEmpty()) {
+            mTempParams = params;
+            ((IBaseModel) mUserModel).getAccessToken(params, this);
+            return true;
         }
+        return false;
     }
 }

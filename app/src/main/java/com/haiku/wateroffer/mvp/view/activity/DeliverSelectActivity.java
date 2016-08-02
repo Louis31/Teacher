@@ -10,7 +10,6 @@ import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.MyItemClickListener;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IUserModel;
@@ -33,10 +32,11 @@ import java.util.Map;
  * Created by hyming on 2016/7/18.
  */
 @ContentView(R.layout.act_common_list)
-public class DeliverSelectActivity extends BaseActivity implements IUserModel.DeliverCallback, MyItemClickListener {
+public class DeliverSelectActivity extends BaseActivity implements IUserModel.DeliverSelectCallback, MyItemClickListener {
 
     private int uid;
     private List<Deliver> mDatas;
+    private Map<String, Object> mTempParams;// 存储当前请求的参数
     private DeliverSelectAdapter mAdapter;
 
     private IUserModel mUserModel;
@@ -54,9 +54,7 @@ public class DeliverSelectActivity extends BaseActivity implements IUserModel.De
         initViews();
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mUserModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mUserModel.getDeliverList(params, this);
         }
 
@@ -94,16 +92,6 @@ public class DeliverSelectActivity extends BaseActivity implements IUserModel.De
     }
 
     @Override
-    public void changeStatusSuccess() {
-
-    }
-
-    @Override
-    public void addDeliverSuccess(Deliver deliver) {
-
-    }
-
-    @Override
     public void getTokenSuccess(Map<String, Object> params) {
         mUserModel.getDeliverList(params, this);
     }
@@ -118,10 +106,22 @@ public class DeliverSelectActivity extends BaseActivity implements IUserModel.De
     public void onError(int errorCode, String errorMsg) {
         mRefreshLayout.loadingCompleted(false);
         ToastUtils.getInstant().showToast(errorMsg);
-        // token 失效
-        if (errorCode == BaseConstant.TOKEN_INVALID) {
-            UserManager.cleanToken();
+    }
+
+    @Override
+    public void onTokenFail() {
+        UserManager.cleanToken();
+        ((IBaseModel) mUserModel).getAccessToken(mTempParams, this);
+    }
+
+    // 判断是否为token失效
+    private boolean isTokenFail(Map<String, Object> params) {
+        if (UserManager.isTokenEmpty()) {
+            mTempParams = params;
+            ((IBaseModel) mUserModel).getAccessToken(params, this);
+            return true;
         }
+        return false;
     }
 
     @Override

@@ -21,6 +21,7 @@ public class DeliverOrderPersenter implements DeliverOrderContract.Presenter, IO
     private final int REQUEST_LIST = 1;
     private final int REQUEST_CANCEL = 2;// 取消配送
     private int requesType;
+    private Map<String, Object> mTempParams;// 存储当前请求的参数
 
     @NonNull
     private final IOrderModel mOrderModel;
@@ -44,9 +45,7 @@ public class DeliverOrderPersenter implements DeliverOrderContract.Presenter, IO
         params.put("uid", uid);
         params.put("mid", mid);
 
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mOrderModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mOrderModel.getOrderList(params, this);
         }
     }
@@ -60,9 +59,7 @@ public class DeliverOrderPersenter implements DeliverOrderContract.Presenter, IO
         params.put("id", id);
         params.put("uid", uid);
         params.put("did", did);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mOrderModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mOrderModel.cancelOrder(params, this);
         }
     }
@@ -108,9 +105,21 @@ public class DeliverOrderPersenter implements DeliverOrderContract.Presenter, IO
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
-        // token 失效
-        if (errorCode == BaseConstant.TOKEN_INVALID) {
-            UserManager.cleanToken();
+    }
+
+    @Override
+    public void onTokenFail() {
+        UserManager.cleanToken();
+        ((IBaseModel) mOrderModel).getAccessToken(mTempParams, this);
+    }
+
+    // 判断是否为token失效
+    private boolean isTokenFail(Map<String, Object> params){
+        if (UserManager.isTokenEmpty()) {
+            mTempParams = params;
+            ((IBaseModel) mOrderModel).getAccessToken(params, this);
+            return true;
         }
+        return false;
     }
 }

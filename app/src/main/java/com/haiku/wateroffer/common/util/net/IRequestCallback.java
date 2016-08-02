@@ -9,6 +9,9 @@ public interface IRequestCallback {
     // 获取token成功
     void getTokenSuccess(Map<String, Object> params);
 
+    // token失效
+    void onTokenFail();
+
     // 成功回调
     void onSuccess();
 

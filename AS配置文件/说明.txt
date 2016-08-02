@@ -1,0 +1,4 @@
+﻿打包用的数字签名文件：
+common_sign.jks
+密码：wateroffer
+别名：common_sign

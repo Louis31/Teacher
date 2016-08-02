@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.Bill;
 import com.haiku.wateroffer.common.UserManager;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.MyBillContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IUserModel;
@@ -22,7 +21,7 @@ public class MyBillPresenter implements MyBillContract.Presenter, IUserModel.MyB
     private final int RQTYPE_LIST = 1;
     private final int RQTYPE_INFO = 2;
     private int requestType;
-
+    private Map<String, Object> mTempParams;// 存储当前请求的参数
     @NonNull
     private final IUserModel mUserModel;
     @NonNull
@@ -42,9 +41,7 @@ public class MyBillPresenter implements MyBillContract.Presenter, IUserModel.MyB
         requestType = RQTYPE_LIST;
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mUserModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mUserModel.getBillList(params, this);
         }
     }
@@ -58,9 +55,7 @@ public class MyBillPresenter implements MyBillContract.Presenter, IUserModel.MyB
         params.put("from", from);
         params.put("to", to);
         params.put("diliveryman_id", diliveryman_id);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mUserModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mUserModel.searchBill(params, this);
         }
     }
@@ -101,9 +96,21 @@ public class MyBillPresenter implements MyBillContract.Presenter, IUserModel.MyB
     public void onError(int errorCode, String errorMsg) {
         mView.showMessage(errorMsg);
         mView.showLoadingDialog(false);
-        // token 失效
-        if (errorCode == BaseConstant.TOKEN_INVALID) {
-            UserManager.cleanToken();
+    }
+
+    @Override
+    public void onTokenFail() {
+        UserManager.cleanToken();
+        ((IBaseModel) mUserModel).getAccessToken(mTempParams, this);
+    }
+
+    // 判断是否为token失效
+    private boolean isTokenFail(Map<String, Object> params) {
+        if (UserManager.isTokenEmpty()) {
+            mTempParams = params;
+            ((IBaseModel) mUserModel).getAccessToken(params, this);
+            return true;
         }
+        return false;
     }
 }

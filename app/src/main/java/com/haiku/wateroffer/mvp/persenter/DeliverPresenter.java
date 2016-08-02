@@ -22,7 +22,7 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
     private final int REQUEST_CHANGE = 2;
     private final int REQUEST_ADD = 3;
     private int requesType;
-
+    private Map<String, Object> mTempParams;// 存储当前请求的参数
     @NonNull
     private final IUserModel mUserModel;
     @NonNull
@@ -43,9 +43,7 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
 
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mUserModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mUserModel.getDeliverList(params, this);
         }
     }
@@ -60,9 +58,7 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
         params.put("status", status);
         params.put("mid", uid);
 
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mUserModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mUserModel.changeDeliverStatus(params, this);
         }
     }
@@ -74,9 +70,7 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
         Map<String, Object> params = new HashMap<>();
         params.put("uid", uid);
         params.put("phone", phone);
-        if (UserManager.isTokenEmpty()) {
-            ((IBaseModel) mUserModel).getAccessToken(params, this);
-        } else {
+        if (!isTokenFail(params)) {
             mUserModel.addDeliver(params, this);
         }
     }
@@ -123,9 +117,21 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
     public void onError(int errorCode, String errorMsg) {
         mView.showLoadingDialog(false);
         mView.showMessage(errorMsg);
-        // token 失效
-        if (errorCode == BaseConstant.TOKEN_INVALID) {
-            UserManager.cleanToken();
+    }
+
+    @Override
+    public void onTokenFail() {
+        UserManager.cleanToken();
+        ((IBaseModel) mUserModel).getAccessToken(mTempParams, this);
+    }
+
+    // 判断是否为token失效
+    private boolean isTokenFail(Map<String, Object> params){
+        if (UserManager.isTokenEmpty()) {
+            mTempParams = params;
+            ((IBaseModel) mUserModel).getAccessToken(params, this);
+            return true;
         }
+        return false;
     }
 }

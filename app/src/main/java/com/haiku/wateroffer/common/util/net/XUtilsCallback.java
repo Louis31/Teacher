@@ -13,10 +13,10 @@ import org.xutils.x;
  * Created by hyming on 2016/7/7.
  */
 public class XUtilsCallback<ResultType> implements Callback.CommonCallback<ResultType> {
-    private IRequestCallback callback;
+    protected IRequestCallback cb;
 
-    public XUtilsCallback(IRequestCallback callback) {
-        this.callback = callback;
+    public XUtilsCallback(IRequestCallback cb) {
+        this.cb = cb;
     }
 
     @Override
@@ -32,19 +32,19 @@ public class XUtilsCallback<ResultType> implements Callback.CommonCallback<Resul
             int responseCode = httpEx.getCode();
             String responseMsg = httpEx.getMessage();
             String errorResult = httpEx.getResult();
-            if (callback != null) {
-                callback.onError(responseCode, responseMsg);
+            if (cb != null) {
+                cb.onError(responseCode, responseMsg);
             }
             // ...
         } else { // 其他错误
             // ...
             if (SystemUtils.isNetworkConnected(x.app())) {
-                if (callback != null) {
-                    callback.onError(BaseConstant.SERVER_ERROR, x.app().getString(R.string.err_server_error));
+                if (cb != null) {
+                    cb.onError(BaseConstant.SERVER_ERROR, x.app().getString(R.string.err_server_error));
                 }
             } else {
-                if (callback != null) {
-                    callback.onError(BaseConstant.METWORD_ERROR, x.app().getString(R.string.err_netword_error));
+                if (cb != null) {
+                    cb.onError(BaseConstant.METWORD_ERROR, x.app().getString(R.string.err_netword_error));
                 }
             }
         }
