@@ -144,7 +144,6 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
             mPoiItem.setCity("广州市");
             mPoiItem.setLat(Double.valueOf(latitude));
             mPoiItem.setLon(Double.valueOf(longitude));
-
         }
     }
 
@@ -199,6 +198,8 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
             Intent intent = new Intent();
             intent.putExtra("area", et_address.getText().toString());
             intent.putExtra("area_detail", et_address_detail.getText().toString());
+            intent.putExtra("latitude", mPoiItem.getLat() + "");
+            intent.putExtra("longitude", mPoiItem.getLon() + "");
             setResult(Activity.RESULT_OK, intent);
             finish();
         } else {
@@ -266,11 +267,11 @@ public class ShopAddressActivity extends BaseActivity implements ShopAddrContrac
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ADDR && resultCode == Activity.RESULT_OK) {
             String addr = data.getStringExtra("address");
-            Double lat = data.getDoubleExtra("latitude", 0);
-            Double lng = data.getDoubleExtra("longitude", 0);
+            String lat = data.getStringExtra("latitude");
+            String lng = data.getStringExtra("longitude");
             mPoiItem.setAddress(addr);
-            mPoiItem.setLat(lat);
-            mPoiItem.setLon(lng);
+            mPoiItem.setLat(Double.valueOf(lat));
+            mPoiItem.setLon(Double.valueOf(lng));
             et_address.setText(addr);
         }
     }

@@ -42,4 +42,14 @@ public class GeoPoint implements Serializable {
     public void setLon(double lon) {
         this.lon = lon;
     }
+
+    @Override
+    public String toString() {
+        return "GeoPoint{" +
+                "address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", lat=" + lat +
+                ", lon=" + lon +
+                '}';
+    }
 }

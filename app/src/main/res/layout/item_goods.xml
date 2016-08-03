@@ -96,8 +96,6 @@
             style="@style/goods_item_tv"
             android:text="@string/off_shelf" />
 
-        <View style="@style/goods_item_line_v" />
-
         <TextView
             android:id="@+id/tv_up_shelf"
             style="@style/goods_item_tv"

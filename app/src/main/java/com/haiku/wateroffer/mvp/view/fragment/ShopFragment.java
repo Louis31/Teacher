@@ -332,6 +332,10 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         else if (requestCode == BaseConstant.REQUEST_EDIT_SHOP_ADDR && resultCode == Activity.RESULT_OK) {
             String area = data.getStringExtra("area");
             String area_detail = data.getStringExtra("area_detail");
+            String lat = data.getStringExtra("latitude");
+            String lng = data.getStringExtra("longitude");
+            mShopInfo.setLat(lat);
+            mShopInfo.setLng(lng);
             mShopInfo.setArea(area);
             mShopInfo.setFloorDetail(area_detail);
         }

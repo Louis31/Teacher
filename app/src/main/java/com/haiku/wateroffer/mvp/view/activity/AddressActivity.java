@@ -25,7 +25,6 @@ import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.GeoPoint;
 import com.haiku.wateroffer.common.listener.MyItemClickListener;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
-import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.view.adapter.SearchAddressAdapter;
 import com.haiku.wateroffer.mvp.view.divider.DividerItem;
@@ -108,9 +107,7 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
 
     private void initDatas() {
         zoomLevel = 20;
-        if (getIntent().getExtras().get("point") != null) {
-            mPoiItem = (GeoPoint) getIntent().getExtras().get("point");
-        }
+        mPoiItem = (GeoPoint) getIntent().getSerializableExtra("point");
         mPoiItemList = new ArrayList<PoiItem>();
         mAdapter = new SearchAddressAdapter(mContext, mPoiItemList);
         mAdapter.setListener(new MyItemClickListener() {
@@ -121,8 +118,8 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
                 Intent intent = new Intent();
                 intent.putExtra("address", addr);
                 LatLonPoint lp = bean.getLatLonPoint();
-                intent.putExtra("latitude", lp.getLatitude());
-                intent.putExtra("longitude", lp.getLongitude());
+                intent.putExtra("latitude", lp.getLatitude()+"");
+                intent.putExtra("longitude", lp.getLongitude()+"");
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }
@@ -144,6 +141,7 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
         mRefreshLayout.setLinearLayout();
         mRefreshLayout.setPullRefreshEnable(false);
         mRefreshLayout.setLoadMoreEnable(false);
+        mRefreshLayout.setListener(this);
     }
 
     private void initLocation() {
@@ -153,7 +151,7 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
             LatLng latLng = new LatLng(mPoiItem.getLat(), mPoiItem.getLon());
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
             markerOption.position(latLng).icon(BitmapDescriptorFactory
-                    .defaultMarker(BitmapDescriptorFactory.HUE_RED));;
+                    .defaultMarker(BitmapDescriptorFactory.HUE_RED));
             aMap.addMarker(markerOption);
         }
         aMap.setOnMapClickListener(this);// 对amap添加单击地图事件监听器
@@ -161,6 +159,7 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
 
     private void initSearch() {
         if (mPoiItem == null) {
+            mRefreshLayout.loadingCompleted(false);
             return;
         }
         // 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
@@ -178,7 +177,8 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
     //对单击地图事件回调
     @Override
     public void onMapClick(LatLng latLng) {
-        markerOption.position(latLng);
+        markerOption.position(latLng).icon(BitmapDescriptorFactory
+                .defaultMarker(BitmapDescriptorFactory.HUE_RED));;
         mPoiItem.setLat(latLng.latitude);
         mPoiItem.setLon(latLng.longitude);
         aMap.clear();
@@ -200,7 +200,7 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
     //对移动地图结束事件回调
     @Override
     public void onCameraChangeFinish(CameraPosition cameraPosition) {
-       /* if (isInit) {
+      /* if (isInit) {
             markerOption.position(cameraPosition.target);
             mPoiItem.setLat(cameraPosition.target.latitude);
             mPoiItem.setLon(cameraPosition.target.longitude);
@@ -223,7 +223,6 @@ public class AddressActivity extends BaseActivity implements AMap.OnMapClickList
         String address = regeocodeResult.getRegeocodeAddress().getFormatAddress() + regeocodeResult.getRegeocodeAddress().getBuilding();
         mPoiItem.setAddress(address);
         mRefreshLayout.refresh();
-        initSearch();
     }
 
     @Override
