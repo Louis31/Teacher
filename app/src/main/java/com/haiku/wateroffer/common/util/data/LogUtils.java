@@ -9,10 +9,12 @@ public class LogUtils {
     public static boolean isShowLog = false;
 
     public static void showLogI(String TAG, String msg) {
-        Log.i(TAG, msg);
+        if (isShowLog)
+            Log.i(TAG, msg);
     }
 
     public static void showLogE(String TAG, String msg) {
-        Log.e(TAG, msg);
+        if (isShowLog)
+            Log.e(TAG, msg);
     }
 }

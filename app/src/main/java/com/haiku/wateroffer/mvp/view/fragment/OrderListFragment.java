@@ -42,6 +42,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     private final String TAG = "OrderListFragment";
     private Context mContext;
 
+    private boolean isRefreshData;
     private int uid;
     private int mItemPos;// 记录当前操作item的位置
     private String mType;// 标记当前列表数据的类型
@@ -139,7 +140,6 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
         mRefreshLayout.addItemDecoration(new BroadDividerItem(mContext));
         mRefreshLayout.setAdapter(mAdapter);
         mRefreshLayout.setLinearLayout();
-        mRefreshLayout.setPullRefreshEnable(false);
         mRefreshLayout.setListener(this);
     }
 
@@ -160,21 +160,26 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     // 下拉刷新
     @Override
     public void onRefresh() {
-        mDatas.clear();
-        mAdapter.notifyDataSetChanged();
+        isRefreshData = true;
         mPresenter.getListDatas(uid, mType, mRefreshLayout.getCurrentPage());
     }
 
     // 加载更多
     @Override
     public void onLoadMore() {
+        isRefreshData = false;
         mPresenter.getListDatas(uid, mType, mRefreshLayout.getCurrentPage());
     }
 
     // 显示列表界面
     @Override
     public void showListView(List<OrderItem> list) {
-        mDatas.addAll(list);
+        if(isRefreshData){
+            mDatas.clear();
+            mDatas.addAll(list);
+        }else{
+            mDatas.addAll(list);
+        }
         mRefreshLayout.loadingCompleted(true);
     }
 

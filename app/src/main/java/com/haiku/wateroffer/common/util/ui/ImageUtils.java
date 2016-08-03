@@ -50,8 +50,18 @@ public class ImageUtils {
                 .error(ERROR_IMG).into(iv);
     }
 
-    public static void showCircleImage(final Context context, Object url, final ImageView iv) {
-        Glide.with(context).load(url).asBitmap().centerCrop().into(new BitmapImageViewTarget(iv) {
+    public static void showCircleImage(final Context context, String url, final ImageView iv) {
+        makeCircleImage(context, getUrl(url), iv);
+    }
+
+    public static void showCircleImage(final Context context, int url, final ImageView iv) {
+        makeCircleImage(context, url, iv);
+    }
+
+    private static void makeCircleImage(final Context context, Object url, final ImageView iv) {
+        Glide.with(context).load(url)
+                .asBitmap().centerCrop().placeholder(LOADING_IMG)
+                .error(ERROR_IMG).into(new BitmapImageViewTarget(iv) {
             @Override
             protected void setResource(Bitmap resource) {
                 RoundedBitmapDrawable circularBitmapDrawable =

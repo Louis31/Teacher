@@ -25,7 +25,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         // 开启日志
-        LogUtils.isShowLog = true;
+        LogUtils.isShowLog = false;
         //Xutils初始化
         x.Ext.init(this);
 

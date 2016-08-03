@@ -210,6 +210,7 @@ public class MyRefreshLayout extends FrameLayout {
         public void onRefresh() {
             if (!isLoading) {
                 isLoading = true;
+                setStartPage(mStartPage);
                 if (mListener != null) {
                     mListener.onRefresh();
                 }

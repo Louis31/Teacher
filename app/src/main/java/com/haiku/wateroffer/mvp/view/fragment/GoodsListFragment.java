@@ -42,6 +42,7 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     private final String TAG = "GoodsListFragment";
     private final int REQUEST_UPDATE = 1;
     private Context mContext;
+    private boolean isRefreshData;
     private int uid;
     private int mItemPos;// 记录当前操作item的位置
     private int mType;// 标记当前列表数据的类型
@@ -113,7 +114,7 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
         public void onReceive(Context context, Intent intent) {
             int type = intent.getIntExtra("type", -1);
             LogUtils.showLogE(TAG, "BroadcastReceiver");
-            LogUtils.showLogE(TAG, "mType = " + mType + ", type " +type);
+            LogUtils.showLogE(TAG, "mType = " + mType + ", type " + type);
             if (mType == type) {
                 LogUtils.showLogE(TAG, "onReceive Success");
                 mRefreshLayout.refresh();// 刷新列表
@@ -150,7 +151,6 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
         mRefreshLayout.addItemDecoration(new BroadDividerItem(mContext));
         mRefreshLayout.setAdapter(mAdapter);
         mRefreshLayout.setLinearLayout();
-        mRefreshLayout.setPullRefreshEnable(false);
         mRefreshLayout.setListener(this);
     }
 
@@ -172,21 +172,26 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
     // 下拉刷新
     @Override
     public void onRefresh() {
-        mDatas.clear();
-        mAdapter.notifyDataSetChanged();
+        isRefreshData = true;
         mPresenter.getListDatas(uid, mType, mRefreshLayout.getCurrentPage());
     }
 
     // 加载更多
     @Override
     public void onLoadMore() {
+        isRefreshData = false;
         mPresenter.getListDatas(uid, mType, mRefreshLayout.getCurrentPage());
     }
 
     // 显示列表界面
     @Override
     public void showListView(List<Goods> list) {
-        mDatas.addAll(list);
+        if (isRefreshData) {
+            mDatas.clear();
+            mDatas.addAll(list);
+        } else {
+            mDatas.addAll(list);
+        }
         mRefreshLayout.loadingCompleted(true);
     }
 

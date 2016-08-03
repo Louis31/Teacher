@@ -12,8 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.bean.User;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
+import com.haiku.wateroffer.common.util.data.GsonUtils;
+import com.haiku.wateroffer.common.util.data.SharedPreferencesUtils;
 import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
@@ -128,6 +131,12 @@ public class ShopNameActivity extends BaseActivity implements ShopNameContract.V
             finish();
         } else {
             // 显示添加店铺地址页面
+            String jsonStr = SharedPreferencesUtils.load(SharedPreferencesUtils.USER);
+            User user = GsonUtils.gsonToBean(jsonStr, User.class);
+            user.setUsertype(1);
+            UserManager.getInstance().setUser(user);
+            SharedPreferencesUtils.save(SharedPreferencesUtils.USER, GsonUtils.gsonString(user));
+
             startActivity(new Intent(mContext, ShopAddressActivity.class));
             finish();
         }
