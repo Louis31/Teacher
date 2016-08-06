@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.Deliver;
 import com.haiku.wateroffer.common.UserManager;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.DeliverContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IUserModel;
@@ -49,7 +48,7 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
     }
 
     @Override
-    public void changeDeliverStatus(int diliveryman_id, String phone, int status,int uid) {
+    public void changeDeliverStatus(int diliveryman_id, String phone, int status, int uid) {
         requesType = REQUEST_CHANGE;
         mView.showLoadingDialog(true);
         Map<String, Object> params = new HashMap<>();
@@ -126,7 +125,7 @@ public class DeliverPresenter implements DeliverContract.Presenter, IUserModel.D
     }
 
     // 判断是否为token失效
-    private boolean isTokenFail(Map<String, Object> params){
+    private boolean isTokenFail(Map<String, Object> params) {
         if (UserManager.isTokenEmpty()) {
             mTempParams = params;
             ((IBaseModel) mUserModel).getAccessToken(params, this);

@@ -125,7 +125,7 @@ public class OrderListAdapter extends MyBaseAdapter {
                 vh.tv_order_cancel.setVisibility(View.VISIBLE);
             }
             // 订单状态为已完成
-            else if (bean.getStatus().equals(TypeConstant.Order.CLOSED)) {
+            else if (bean.getStatus().equals(TypeConstant.Order.RECEIVED)) {
                 vh.flayout_bottom.setVisibility(View.VISIBLE);
                 vh.tv_order_send.setVisibility(View.GONE);
                 vh.tv_order_finish.setVisibility(View.VISIBLE);
@@ -219,7 +219,7 @@ public class OrderListAdapter extends MyBaseAdapter {
                 });
             }
             // 列表状态为已完成
-            else if (mStatus.equals(TypeConstant.Order.CLOSED)) {
+            else if (mStatus.equals(TypeConstant.Order.RECEIVED)) {
                 flayout_bottom = bind(v, R.id.flayout_bottom);
                 tv_order_finish = bind(v, R.id.tv_order_finish);
                 flayout_bottom.setVisibility(View.VISIBLE);

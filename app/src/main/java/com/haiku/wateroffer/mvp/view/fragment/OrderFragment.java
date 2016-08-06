@@ -60,7 +60,7 @@ public class OrderFragment extends Fragment {
         pendingPaymentFragment = OrderListFragment.newInstance(TypeConstant.Order.UNPAY);
         pendingSendFragment = OrderListFragment.newInstance(TypeConstant.Order.PAYED);
         sendingFragment = OrderListFragment.newInstance(TypeConstant.Order.DELIVERING);
-        finishFragment = OrderListFragment.newInstance(TypeConstant.Order.CLOSED);
+        finishFragment = OrderListFragment.newInstance(TypeConstant.Order.RECEIVED);
 
         fragments.add(allFragment);
         fragments.add(pendingPaymentFragment);

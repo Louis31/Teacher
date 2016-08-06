@@ -54,12 +54,13 @@ public class OrderListPersenter implements OrderListContract.Presenter, IOrderMo
 
     // 取消订单
     @Override
-    public void cancelOrder(int id, int uid) {
+    public void cancelOrder(int id, int uid, String did) {
         mView.showLoadingDialog(true);
         requesType = REQUEST_CANCEL;
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("uid", uid);
+        params.put("did", did);
         if (!isTokenFail(params)) {
             mOrderModel.cancelOrder(params, this);
         }

@@ -1,8 +1,11 @@
 package com.haiku.wateroffer.mvp.contract;
 
 import com.haiku.wateroffer.bean.OrderItem;
+import com.haiku.wateroffer.bean.OrderStatus;
 import com.haiku.wateroffer.mvp.base.BasePresenter;
 import com.haiku.wateroffer.mvp.base.BaseView;
+
+import java.util.List;
 
 /**
  * 订单详情模块的Contract类
@@ -12,6 +15,8 @@ public interface OrderInfoContract {
     interface View extends BaseView<Presenter> {
         // 设置信息订单信息
         void setOrderInfo(OrderItem bean);
+
+        void setOrderStatus(List<OrderStatus> list);
 
         // 显示/隐藏加载对话框
         void showLoadingDialog(boolean isShow);
@@ -27,6 +32,9 @@ public interface OrderInfoContract {
     }
 
     interface Presenter extends BasePresenter {
+        // 获取订单逻辑
+        void getOrderStatus(int uid, int order_id);
+
         // 获取订单详情
         void getOrderInfo(int uid, int order_id);
 

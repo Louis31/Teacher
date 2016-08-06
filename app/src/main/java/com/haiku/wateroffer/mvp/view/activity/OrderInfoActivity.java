@@ -1,9 +1,11 @@
 package com.haiku.wateroffer.mvp.view.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -21,6 +23,7 @@ import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.common.util.ui.ImageUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.ActionConstant;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.base.BaseActivity;
 import com.haiku.wateroffer.mvp.contract.OrderInfoContract;
@@ -32,6 +35,8 @@ import com.haiku.wateroffer.mvp.view.widget.Titlebar;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import java.util.List;
 
 /**
  * 订单详情Activity
@@ -105,6 +110,8 @@ public class OrderInfoActivity extends BaseActivity implements OrderInfoContract
         initDatas();
         initViews();
         new OrderInfoPersenter(new OrderModelImpl(), this);
+        // 获取订单状态
+        mPresenter.getOrderStatus(uid, order_id);
         // 获取订单详情数据
         mPresenter.getOrderInfo(uid, order_id);
     }
@@ -166,86 +173,76 @@ public class OrderInfoActivity extends BaseActivity implements OrderInfoContract
     @Override
     public void setOrderInfo(OrderItem bean) {
         mOrderItem = bean;
-        setStatusView();
         setInfoView();
         flayout_loading.setVisibility(View.GONE);
     }
 
+    @Override
+    public void setOrderStatus(List<com.haiku.wateroffer.bean.OrderStatus> list) {
+
+        RelativeLayout rlayout_status_1 = findView(llayout_order_status, R.id.rlayout_status_1);
+        ImageView iv_circle_1 = findView(llayout_order_status, R.id.iv_order_receive_circle);
+        TextView tv_order_receive_time = findView(llayout_order_status, R.id.tv_order_receive_time);
+
+        RelativeLayout rlayout_status_2 = findView(llayout_order_status, R.id.rlayout_status_2);
+        ImageView iv_circle_2 = findView(llayout_order_status, R.id.iv_order_deliver_circle);
+        TextView tv_order_deliver_name = findView(llayout_order_status, R.id.tv_order_deliver_name);
+        TextView tv_order_deliver_phone = findView(llayout_order_status, R.id.tv_order_deliver_phone);
+        TextView tv_order_deliver_time = findView(llayout_order_status, R.id.tv_order_deliver_time);
+
+        RelativeLayout rlayout_status_3 = findView(llayout_order_status, R.id.rlayout_status_3);
+        TextView tv_order_finish_time = findView(llayout_order_status, R.id.tv_order_finish_time);
+        ImageView iv_circle_3 = findView(llayout_order_status, R.id.iv_order_finish_circle);
+
+        RelativeLayout rlayout_status_4 = findView(llayout_order_status, R.id.rlayout_status_4);
+        TextView tv_order_cancel_time = findView(llayout_order_status, R.id.tv_order_cancel_time);
+        ImageView iv_circle_4 = findView(llayout_order_status, R.id.iv_order_cancel_circle);
+
+        for (int i = 0; i < list.size(); i++) {
+            com.haiku.wateroffer.bean.OrderStatus orderStatus = list.get(i);
+            // 商家已接单
+            if (orderStatus.getStatus().equals(OrderStatus.PAYED.getStatus())) {
+                iv_circle_1.setImageResource(R.drawable.ic_circle_green);
+                tv_order_receive_time.setText(orderStatus.getCreate_time());
+                rlayout_status_1.setVisibility(View.VISIBLE);
+            }
+            // 配送员已抢单
+            else if (orderStatus.getStatus().equals(OrderStatus.DELIVERING.getStatus())) {
+                iv_circle_1.setImageResource(R.drawable.ic_circle);
+                iv_circle_2.setImageResource(R.drawable.ic_circle_green);
+
+                tv_order_deliver_name.setText(getString(R.string.order_delivername_tip) + orderStatus.getDiliveryman_name());
+                tv_order_deliver_phone.setText(getString(R.string.phone_tip) + orderStatus.getDiliveryman_phone());
+                tv_order_deliver_time.setText(orderStatus.getCreate_time());
+
+                rlayout_status_2.setVisibility(View.VISIBLE);
+            }
+            // 订单已完成
+            else if (orderStatus.getStatus().equals(OrderStatus.RECEIVED.getStatus())) {
+                iv_circle_1.setImageResource(R.drawable.ic_circle);
+                iv_circle_2.setImageResource(R.drawable.ic_circle);
+                iv_circle_3.setImageResource(R.drawable.ic_circle_green);
+                tv_order_finish_time.setText(orderStatus.getCreate_time());
+
+                rlayout_status_3.setVisibility(View.VISIBLE);
+            }
+        }
+     /*
+      else if (ordinal == OrderStatus.CANCELED.ordinal()) {
+            iv_circle_1.setImageResource(R.drawable.ic_circle);
+            iv_circle_2.setImageResource(R.drawable.ic_circle);
+            iv_circle_4.setImageResource(R.drawable.ic_circle_green);
+            tv_order_cancel_time.setText(mOrderItem.getExptime());
+
+            rlayout_status_4.setVisibility(View.VISIBLE);
+        }*/
+    }
 
     // 显示消息
     @Override
     public void showMessage(String msg) {
         flayout_loading.setVisibility(View.GONE);
         ToastUtils.getInstant().showToast(msg);
-    }
-
-    // 设置订单状态
-    private void setStatusView() {
-        // 订单有四种状态
-        /**
-         1.商家已接单：买家已付款或已经提交货到付款订单
-         2.配送员已接单：配送员已经抢到单的状态
-         3.订单完成：配送员已经完成配送，点击了确认送达按钮后的状态
-         4.配送已取消：商家或者配送员点击了取消配送按钮，配送取消状态
-         */
-        String status = mOrderItem.getStatus();
-
-        if (status.equals(TypeConstant.Order.PAYED) ||
-                status.equals(TypeConstant.Order.DELIVERING)
-                || status.equals(TypeConstant.Order.CLOSED)
-                || status.equals(TypeConstant.Order.CANCELED)) {
-            RelativeLayout rlayout_status_1 = findView(llayout_order_status, R.id.rlayout_status_1);
-            ImageView iv_circle_1 = findView(llayout_order_status, R.id.iv_order_receive_circle);
-            TextView tv_order_receive_time = findView(llayout_order_status, R.id.tv_order_receive_time);
-
-            RelativeLayout rlayout_status_2 = findView(llayout_order_status, R.id.rlayout_status_2);
-            ImageView iv_circle_2 = findView(llayout_order_status, R.id.iv_order_deliver_circle);
-            TextView tv_order_deliver_name = findView(llayout_order_status, R.id.tv_order_deliver_name);
-            TextView tv_order_deliver_phone = findView(llayout_order_status, R.id.tv_order_deliver_phone);
-            TextView tv_order_deliver_time = findView(llayout_order_status, R.id.tv_order_deliver_time);
-
-            RelativeLayout rlayout_status_3 = findView(llayout_order_status, R.id.rlayout_status_3);
-            TextView tv_order_finish_time = findView(llayout_order_status, R.id.tv_order_finish_time);
-            ImageView iv_circle_3 = findView(llayout_order_status, R.id.iv_order_finish_circle);
-
-            RelativeLayout rlayout_status_4 = findView(llayout_order_status, R.id.rlayout_status_4);
-            TextView tv_order_cancel_time = findView(llayout_order_status, R.id.tv_order_cancel_time);
-            ImageView iv_circle_4 = findView(llayout_order_status, R.id.iv_order_cancel_circle);
-
-            mOrderItem.setOrderStatus();
-            int ordinal = mOrderItem.getOrderStatus().ordinal();
-            if (ordinal >= OrderStatus.PAYED.ordinal()) {
-                iv_circle_1.setImageResource(R.drawable.ic_circle_green);
-                tv_order_receive_time.setText(mOrderItem.getOrder_time());
-                rlayout_status_1.setVisibility(View.VISIBLE);
-            }
-            if (ordinal >= OrderStatus.DELIVERING.ordinal()) {
-                iv_circle_1.setImageResource(R.drawable.ic_circle);
-                iv_circle_2.setImageResource(R.drawable.ic_circle_green);
-
-                tv_order_deliver_name.setText(getString(R.string.order_delivername_tip) + mOrderItem.getAddress_info().getUname());
-                tv_order_deliver_phone.setText(getString(R.string.phone_tip) + mOrderItem.getAddress_info().getPhone());
-                tv_order_deliver_time.setText(mOrderItem.getSend_time());
-
-                rlayout_status_2.setVisibility(View.VISIBLE);
-            }
-
-            if (ordinal == OrderStatus.CLOSED.ordinal()) {
-                iv_circle_1.setImageResource(R.drawable.ic_circle);
-                iv_circle_2.setImageResource(R.drawable.ic_circle);
-                iv_circle_3.setImageResource(R.drawable.ic_circle_green);
-                tv_order_finish_time.setText(mOrderItem.getExptime());
-
-                rlayout_status_3.setVisibility(View.VISIBLE);
-            } else if (ordinal == OrderStatus.CANCELED.ordinal()) {
-                iv_circle_1.setImageResource(R.drawable.ic_circle);
-                iv_circle_2.setImageResource(R.drawable.ic_circle);
-                iv_circle_4.setImageResource(R.drawable.ic_circle_green);
-                tv_order_cancel_time.setText(mOrderItem.getExptime());
-
-                rlayout_status_4.setVisibility(View.VISIBLE);
-            }
-        }
     }
 
     // 设置订单详情
@@ -346,7 +343,7 @@ public class OrderInfoActivity extends BaseActivity implements OrderInfoContract
             });
         }
         // 订单状态为已完成
-        else if (status.equals(OrderStatus.CLOSED.getStatus())) {
+        else if (status.equals(OrderStatus.RECEIVED.getStatus())) {
             flayout_bottom.setVisibility(View.VISIBLE);
             tv_order_send.setVisibility(View.GONE);
             tv_order_finish.setVisibility(View.VISIBLE);
@@ -394,11 +391,14 @@ public class OrderInfoActivity extends BaseActivity implements OrderInfoContract
         if (type == TypeConstant.OrderOpera.SEND_ORDER) {
             // 派单成功，通知更新配送中
             intent.putExtra("type", TypeConstant.Order.DELIVERING);
+            ToastUtils.getInstant().showToast("派单成功");
         } else if (type == TypeConstant.OrderOpera.CANCEL_DELIVER) {
             // 取消配送成功，通知更新待发货
+            ToastUtils.getInstant().showToast("取消成功");
             intent.putExtra("type", TypeConstant.Order.PAYED);
         }
-        sendBroadcast(intent);
-        finish();
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+        setResult(Activity.RESULT_OK);
+        finishDelayed(BaseConstant.DELAYED_TIME);
     }
 }

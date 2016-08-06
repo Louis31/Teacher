@@ -3,6 +3,7 @@ package com.haiku.wateroffer.mvp.model.impl;
 import android.support.annotation.NonNull;
 
 import com.google.gson.JsonObject;
+import com.haiku.wateroffer.bean.Contribution;
 import com.haiku.wateroffer.bean.ResultData;
 import com.haiku.wateroffer.bean.ShopInfo;
 import com.haiku.wateroffer.common.UserManager;
@@ -13,6 +14,8 @@ import com.haiku.wateroffer.common.util.net.XUtils;
 import com.haiku.wateroffer.constant.UrlConstant;
 import com.haiku.wateroffer.mvp.model.IShopModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -153,6 +156,20 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
                     UserManager.getInstance().setIsPayDeposit(false);
                 }
                 callback.onSuccess();
+            }
+        });
+    }
+
+    @Override
+    public void getContribution(Map<String, Object> params, @NonNull final IContributionCallback callback) {
+        XUtils.Get(UrlConstant.Shop.getContribution(), params, new MyXUtilsCallback(callback) {
+            @Override
+            protected void onSuccessCallback(ResultData result) {
+                List<Contribution> list = new ArrayList<>();
+                if (!result.getRetmsg().isJsonNull()) {
+                    list = GsonUtils.gsonToList(result.toMsgString(), Contribution.class);
+                }
+                callback.getContributionSuccess(list);
             }
         });
     }

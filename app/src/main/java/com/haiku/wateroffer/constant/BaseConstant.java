@@ -15,6 +15,8 @@ public class BaseConstant {
     public final static int REQUEST_EDIT_SHOP_QQ = 12;// 编辑店铺QQ
     public final static int REQUEST_EDIT_SHOP_ADDR = 13;// 编辑店铺地址
     public final static int REQUEST_EDIT_RANGE = 14;// 编辑配送范围
+    public final static int REQUEST_EDIT_DEPOSIT = 15;// 编辑保证金
+
     // 网络返回的错误代码常量
     public final static int SUCCESS = 0;// 返回成功
     public final static int ACCESS_DENIED = 403;// token失效

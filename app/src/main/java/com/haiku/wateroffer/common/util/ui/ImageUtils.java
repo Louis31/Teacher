@@ -19,7 +19,9 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.haiku.wateroffer.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -137,7 +139,6 @@ public class ImageUtils {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = cxt.getContentResolver().query(contentUri, proj, null, null, null);
         if (cursor.moveToFirst()) {
-            ;
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             res = cursor.getString(column_index);
         }
@@ -242,6 +243,31 @@ public class ImageUtils {
             return out.toByteArray();
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public static void saveBitmapToLocal(String path, Bitmap mBitmap) {
+        File f = new File(path);
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+        }
+        FileOutputStream fOut = null;
+        try {
+            fOut = new FileOutputStream(f);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+        try {
+            fOut.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            fOut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

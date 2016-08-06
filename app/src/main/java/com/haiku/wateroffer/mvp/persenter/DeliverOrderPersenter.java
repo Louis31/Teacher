@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.common.UserManager;
-import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.mvp.contract.DeliverOrderContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IOrderModel;
@@ -46,7 +45,7 @@ public class DeliverOrderPersenter implements DeliverOrderContract.Presenter, IO
         params.put("mid", mid);
 
         if (!isTokenFail(params)) {
-            mOrderModel.getOrderList(params, this);
+            mOrderModel.getDeliverOrder(params, this);
         }
     }
 
@@ -83,7 +82,7 @@ public class DeliverOrderPersenter implements DeliverOrderContract.Presenter, IO
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
         if (requesType == REQUEST_LIST) {
-            mOrderModel.getOrderList(params, this);
+            mOrderModel.getDeliverOrder(params, this);
         } else if (requesType == REQUEST_CANCEL) {
             mOrderModel.cancelOrder(params, this);
         }
@@ -114,7 +113,7 @@ public class DeliverOrderPersenter implements DeliverOrderContract.Presenter, IO
     }
 
     // 判断是否为token失效
-    private boolean isTokenFail(Map<String, Object> params){
+    private boolean isTokenFail(Map<String, Object> params) {
         if (UserManager.isTokenEmpty()) {
             mTempParams = params;
             ((IBaseModel) mOrderModel).getAccessToken(params, this);

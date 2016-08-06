@@ -62,6 +62,4 @@ public interface IUserModel {
     // 修改店铺地址
     void addShopAddress(Map<String, Object> params, @NonNull IRequestCallback callback);
 
-    // 上传用户的位置
-    //void uploadLocation(Map<String, Object> params, @NonNull final IRequestCallback callback);
 }

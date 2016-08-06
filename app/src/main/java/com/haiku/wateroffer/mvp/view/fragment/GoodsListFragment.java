@@ -71,7 +71,6 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
             mType = bundle.getInt("type");
         }
         mContext = getContext();
-        LogUtils.showLogE(TAG, "onCreate");
         // 注册广播接收者
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
         IntentFilter intentFilter = new IntentFilter();
@@ -97,43 +96,19 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
         return rootView;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        LogUtils.showLogE(TAG, "onActivityCreated");
-      /*  LogUtils.showLogE(TAG, "onActivityCreated");
-        // 注册广播接收者
-        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ActionConstant.REFRESH_GOODS_LIST);
-        broadcastManager.registerReceiver(mBroadcastReceiver, intentFilter);*/
-    }
-
     BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             int type = intent.getIntExtra("type", -1);
-            LogUtils.showLogE(TAG, "BroadcastReceiver");
-            LogUtils.showLogE(TAG, "mType = " + mType + ", type " + type);
             if (mType == type) {
-                LogUtils.showLogE(TAG, "onReceive Success");
                 mRefreshLayout.refresh();// 刷新列表
             }
         }
     };
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        LogUtils.showLogE(TAG, "onDestroyView");
-       /* LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
-        broadcastManager.unregisterReceiver(mBroadcastReceiver);*/
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
-        LogUtils.showLogE(TAG, "onDestroy");
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
         broadcastManager.unregisterReceiver(mBroadcastReceiver);
     }

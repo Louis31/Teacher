@@ -24,7 +24,7 @@ public class StringUtils {
         if (day < 10) {
             dateStr = "0" + dateStr;
         }
-        return year + "年" + monthStr + "月" + dateStr + "日";
+        return year + "-" + monthStr + "-" + dateStr;
     }
 
     public static String formatDate(Date date, String format) {

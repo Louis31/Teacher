@@ -7,13 +7,20 @@ package com.haiku.wateroffer.constant;
 public class TypeConstant {
     // all,unpay,payed,received,canceled,closed,refunded,delivering
     public static class Order {
-        public final static String ALL = "all";// 全部
+      /*  public final static String ALL = "all";// 全部
         public final static String UNPAY = "unpay";// 待付款
         public final static String PAYED = "payed";// 已付款
         public final static String RECEIVED = "received";// 已收到
         public final static String CANCELED = "canceled";// 已取消
         public final static String CLOSED = "closed";// 已完成
         public final static String REFUNDED = "refunded";// 退款中
+        public final static String DELIVERING = "delivering";// 配送中*/
+
+        public final static String ALL = "all";// 全部
+        public final static String UNPAY = "unpay";// 待付款
+        public final static String PAYED = "payed";// 已付款
+        public final static String RECEIVED = "received";// 已完成
+        public final static String CANCELED = "canceled";// 已取消
         public final static String DELIVERING = "delivering";// 配送中
     }
 
@@ -35,8 +42,8 @@ public class TypeConstant {
     }
 
     public static class Deliver {
-        public final static String NORMAL = "0";// 继续状态
-        public final static String PAUSE = "1";// 暂停状态
+        public final static String NORMAL = "1";// 继续状态
+        public final static String PAUSE = "0";// 暂停状态
     }
 
     public static class DeliverStatus {
@@ -48,5 +55,10 @@ public class TypeConstant {
     public static class ShopStatus {
         public final static String OPEN = "0";// 营业中
         public final static String CLOSE = "1";// 打烊
+    }
+
+    public static class PayType {
+        public final static int WECHAT = 0;// 微信支付
+        public final static int ALI = 1;// 支付宝
     }
 }

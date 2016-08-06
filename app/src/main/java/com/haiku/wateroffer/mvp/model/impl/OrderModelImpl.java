@@ -2,10 +2,13 @@ package com.haiku.wateroffer.mvp.model.impl;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.haiku.wateroffer.bean.OrderItem;
+import com.haiku.wateroffer.bean.OrderStatus;
 import com.haiku.wateroffer.bean.ResultData;
 import com.haiku.wateroffer.common.util.data.GsonUtils;
+import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.data.ParamUtils;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 import com.haiku.wateroffer.common.util.net.MyXUtilsCallback;
@@ -99,6 +102,22 @@ public class OrderModelImpl extends BaseModelImpl implements IOrderModel {
                     list = GsonUtils.gsonToList(result.toMsgString(), OrderItem.class);
                 }
                 callback.getListDataSuccess(list);
+            }
+        });
+    }
+
+    @Override
+    public void getOrderStatus(Map<String, Object> params, @NonNull final OrderInfoCallback callback) {
+        XUtils.Get(UrlConstant.Order.orderStatusUrl(), params, new MyXUtilsCallback(callback) {
+            @Override
+            protected void onSuccessCallback(ResultData result) {
+                JsonObject jobj = result.getRetmsg().getAsJsonObject();
+                JsonElement arrStr = jobj.get("status");
+                List<OrderStatus> list = new ArrayList<>();
+                if (!arrStr.isJsonNull()) {
+                    list = GsonUtils.gsonToList(arrStr.toString(), OrderStatus.class);
+                }
+                callback.getOrderStatusSuccess(list);
             }
         });
     }

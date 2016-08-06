@@ -3,6 +3,7 @@ package com.haiku.wateroffer.mvp.model;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.OrderItem;
+import com.haiku.wateroffer.bean.OrderStatus;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public interface IOrderModel {
     interface OrderInfoCallback extends IOrderCallback {
         // 获取详情数据成功
         void getOrderInfoSuccess(OrderItem bean);
+
+        void getOrderStatusSuccess(List<OrderStatus> list);
     }
 
     // 获取订单列表
@@ -46,4 +49,7 @@ public interface IOrderModel {
 
     // 获取配送员订单列表
     void getDeliverOrder(Map<String, Object> params, @NonNull OrderListCallback callback);
+
+    // 获取订单状态
+    void getOrderStatus(Map<String, Object> params, @NonNull OrderInfoCallback callback);
 }

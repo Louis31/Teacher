@@ -7,7 +7,7 @@ package com.haiku.wateroffer.common;
 public enum OrderStatus {
     // all,unpay,payed,delivering,received,canceled,,closed,refunded
     // 全部,待付款,已付款,配送中,已收到,,已取消,已完成,退款中
-    ALL("all", "全部"), UNPAY("unpay", "待付款"), PAYED("payed", "已付款"), DELIVERING("delivering", "配送中"), RECEIVED("received", "已收到"), CANCELED("canceled", "已取消"), CLOSED("closed", "已完成"), REFUNDED("refunded", "退款中");
+    ALL("all", "全部"), UNPAY("unpay", "待付款"), PAYED("payed", "已付款"), DELIVERING("delivering", "配送中"), RECEIVED("received", "已完成"), CANCELED("canceled", "已取消"), SENDING("sending", "商家派单中"), REJECT("reject", "配送已取消");
 
     private String status;
     private String name;

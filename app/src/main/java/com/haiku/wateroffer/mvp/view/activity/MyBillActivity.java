@@ -133,7 +133,7 @@ public class MyBillActivity extends BaseActivity implements MyBillContract.View 
         new MyBillPresenter(new UserModelImpl(), this);
         mPresenter.getListDatas(uid);
         // 查询当日的数据
-        String currentDay = StringUtils.formatDate(new Date(), "yyyy年MM月dd日");
+        String currentDay = StringUtils.formatDate(new Date(), "yyyy-MM-dd");
         mPresenter.searchBill(uid, currentDay, currentDay, "");
     }
 

@@ -6,8 +6,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_camera"
-        android:scaleType="fitXY"/>
+        android:src="@drawable/ic_camera" />
 
     <ImageView
         android:id="@+id/iv_error"

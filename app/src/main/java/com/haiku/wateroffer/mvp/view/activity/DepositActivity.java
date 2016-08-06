@@ -1,12 +1,12 @@
 package com.haiku.wateroffer.mvp.view.activity;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -14,11 +14,13 @@ import android.widget.Button;
 
 import com.alipay.sdk.app.PayTask;
 import com.haiku.wateroffer.R;
+import com.haiku.wateroffer.bean.Deposit;
 import com.haiku.wateroffer.bean.WechatParams;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
 import com.haiku.wateroffer.common.pay.PayResult;
 import com.haiku.wateroffer.common.pay.SignUtils;
+import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.SecurityConstant;
 import com.haiku.wateroffer.constant.UrlConstant;
@@ -36,8 +38,6 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -51,9 +51,13 @@ import java.util.Random;
 public class DepositActivity extends BaseActivity implements DepositContract.View {
     private static final int SDK_PAY_FLAG = 1;
 
+    private int uid;
     private String goodsName;
     private String goodsDescribe;
     private String goodsPrice;
+
+    private ProgressDialog mDialog;
+
     private IWXAPI api;
     private WechatParams mWechatParams;
 
@@ -81,7 +85,7 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
     // 支付宝支付
     @Event(R.id.btn_alipay)
     private void alipayClick(View v) {
-        aliPay();
+        mPresenter.alipayPayment(uid);
     }
 
     /**
@@ -105,6 +109,8 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
                         ToastUtils.getInstant().showToast("支付成功");
+                        setResult(Activity.RESULT_OK);
+                        finishDelayed(1500);
                     } else {
                         // 判断resultStatus 为非"9000"则代表可能支付失败
                         // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
@@ -134,6 +140,7 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
     }
 
     private void initDatas() {
+        uid = UserManager.getInstance().getUser().getUid();
         goodsName = "保证金";
         goodsDescribe = getString(R.string.deposit_tip);
         goodsPrice = "0.01";
@@ -166,8 +173,8 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
     /**
      * call alipay sdk pay. 调用SDK支付
      */
-    public void aliPay() {
-        if (TextUtils.isEmpty(SecurityConstant.PARTNER) || TextUtils.isEmpty(SecurityConstant.RSA_PRIVATE) || TextUtils.isEmpty(SecurityConstant.SELLER)) {
+    public void aliPay(Deposit bean) {
+       /* if (TextUtils.isEmpty(SecurityConstant.PARTNER) || TextUtils.isEmpty(SecurityConstant.RSA_PRIVATE) || TextUtils.isEmpty(SecurityConstant.SELLER)) {
             new AlertDialog.Builder(this).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialoginterface, int i) {
@@ -175,26 +182,27 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
                         }
                     }).show();
             return;
-        }
-        String orderInfo = getOrderInfo(goodsName, goodsDescribe, goodsPrice);
-
+        }*/
+        String orderInfo = bean.getPayment_package();//getOrderInfo(goodsName, goodsDescribe, goodsPrice);
+        LogUtils.showLogE("orderInfo", orderInfo);
         /**
          * 特别注意，这里的签名逻辑需要放在服务端，切勿将私钥泄露在代码中！
          */
-        String sign = sign(orderInfo);
+     /*   String sign = sign(orderInfo);
         try {
-            /**
-             * 仅需对sign 做URL编码
-             */
+            *//**
+         * 仅需对sign 做URL编码
+         *//*
             sign = URLEncoder.encode(sign, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
 
         /**
          * 完整的符合支付宝参数规范的订单信息
          */
-        final String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + getSignType();
+        orderInfo = orderInfo.replaceAll("\\\\", "");
+        final String payInfo = orderInfo;// + "&sign=\"" + sign + "\"&" + getSignType();
 
         Runnable payRunnable = new Runnable() {
 
@@ -307,8 +315,9 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
     /*微信支付*/
     public void wechatPay() {
         if (mWechatParams == null) {
-            // mWechatParams = mOrder.getWechatParams();
             // 从网络获取订单信息
+            // mWechatParams = mOrder.getWechatParams();
+
         }
         api = WXAPIFactory.createWXAPI(mContext, SecurityConstant.WECHAT_APP_ID, true);
         try {
@@ -349,5 +358,36 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
     private boolean isWXAppInstalled() {
         boolean isPaySupported = api.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
         return isPaySupported;
+    }
+
+    /**
+     * View 相应接口回调
+     */
+
+    @Override
+    public void showLoadingDialog(boolean isShow) {
+        if (isShow) {
+            mDialog = ProgressDialog.show(mContext, "", getString(R.string.dlg_submit_order));
+            mDialog.setCancelable(false);
+        } else {
+            if (mDialog != null && mDialog.isShowing()) {
+                mDialog.dismiss();
+            }
+        }
+    }
+
+    @Override
+    public void showMessage(String msg) {
+        ToastUtils.getInstant().showToast(msg);
+    }
+
+    @Override
+    public void showAliPayView(Deposit bean) {
+        aliPay(bean);
+    }
+
+    @Override
+    public void showWechatPayView(Deposit bean) {
+
     }
 }

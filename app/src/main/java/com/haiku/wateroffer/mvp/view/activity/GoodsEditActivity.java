@@ -6,9 +6,9 @@ import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
@@ -26,6 +26,7 @@ import com.haiku.wateroffer.bean.Goods;
 import com.haiku.wateroffer.bean.GoodsImage;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.TitlebarListenerAdapter;
+import com.haiku.wateroffer.common.util.data.FileUtils;
 import com.haiku.wateroffer.common.util.ui.ImageUtils;
 import com.haiku.wateroffer.common.util.ui.KeyBoardUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
@@ -402,6 +403,8 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
     @Override
     public void setImageView(String url) {
         addImageView(url);
+        FileUtils.deleteFile(mImagePath);
+        mImagePath = "";
     }
 
     private void addImageView(String url) {
@@ -475,6 +478,8 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
     @Override
     public void showMessage(String msg) {
         ToastUtils.getInstant().showToast(msg);
+        FileUtils.deleteFile(mImagePath);
+        mImagePath = "";
     }
 
     @Override
@@ -520,21 +525,25 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
         // 手机拍照
         if (requestCode == BaseConstant.REQUEST_TAKE_PHOTO) {
             if (resultCode == Activity.RESULT_OK) {
-                //Bitmap bmp = ImageUtils.readBitmap(mImagePath, 480, 480);
+                Bitmap bmp = ImageUtils.readBitmap(mImagePath, 480, 800);
+                ImageUtils.saveBitmapToLocal(mImagePath, bmp);
                 mDialogStr = getString(R.string.dlg_upload_image);
                 mPresenter.uploadImage(mImagePath);
             }
-            //FileUtils.deleteFile(mImagePath);
-            mImagePath = "";
         }
         // 相册获取
         else if (requestCode == BaseConstant.REQUEST_PICK_PHOTO) {
             if (data != null && data.getData() != null) {
                 Uri uri = data.getData();
                 String imagePath = ImageUtils.getRealPathFromURI(mContext, uri);
-                //Bitmap bmp = ImageUtils.readBitmap(imagePath, 480, 480);
+                Bitmap bmp = ImageUtils.readBitmap(imagePath, 480, 800);
+                mImagePath = mContext.getExternalCacheDir()
+                        .getAbsolutePath()
+                        + String.valueOf(System.currentTimeMillis())
+                        + ".jpg";
+                ImageUtils.saveBitmapToLocal(mImagePath, bmp);
                 mDialogStr = getString(R.string.dlg_upload_image);
-                mPresenter.uploadImage(imagePath);
+                mPresenter.uploadImage(mImagePath);
             }
         }
     }

@@ -22,6 +22,7 @@ public class OrderItem implements Serializable {
     private String express_code;// 快递单号
     private String exptime;// 快递时间
     private String express_company;// 快递公司名称
+    private String order_diliveryman_id;
 
     private List<Goods> details;// 订单商品列表
     private AddressInfo address_info;
@@ -142,6 +143,14 @@ public class OrderItem implements Serializable {
 
     public OrderStatus getOrderStatus() {
         return mOrderStatus;
+    }
+
+    public String getOrder_diliveryman_id() {
+        return order_diliveryman_id;
+    }
+
+    public void setOrder_diliveryman_id(String order_diliveryman_id) {
+        this.order_diliveryman_id = order_diliveryman_id;
     }
 
     public void setOrderStatus() {

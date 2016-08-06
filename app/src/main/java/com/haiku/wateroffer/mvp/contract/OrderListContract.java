@@ -33,7 +33,7 @@ public interface OrderListContract {
         void getListDatas(int uid, String status, int pageno);
 
         // 取消订单
-        void cancelOrder(int id, int uid);
+        void cancelOrder(int id, int uid, String did);
 
         // 如果有就执行派送订单操作
         void sendOrder(int id, int uid);

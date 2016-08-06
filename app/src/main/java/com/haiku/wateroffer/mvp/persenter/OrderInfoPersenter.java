@@ -3,13 +3,16 @@ package com.haiku.wateroffer.mvp.persenter;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.OrderItem;
+import com.haiku.wateroffer.bean.OrderStatus;
 import com.haiku.wateroffer.common.UserManager;
+import com.haiku.wateroffer.constant.BaseConstant;
 import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.contract.OrderInfoContract;
 import com.haiku.wateroffer.mvp.model.IBaseModel;
 import com.haiku.wateroffer.mvp.model.IOrderModel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +24,7 @@ public class OrderInfoPersenter implements OrderInfoContract.Presenter, IOrderMo
     private final int REQUEST_CANCEL = 2;
     private final int REQUEST_SEND = 3;
     private final int REQUEST_HAS_DELIVER = 4;
+    private final int REQUEST_STATUS = 5;
     private int requesType;
     private Map<String, Object> mTempParams;// 存储当前请求的参数
     @NonNull
@@ -37,6 +41,18 @@ public class OrderInfoPersenter implements OrderInfoContract.Presenter, IOrderMo
     /**
      * Presenter 接口方法
      */
+    @Override
+    public void getOrderStatus(int uid, int order_id) {
+        requesType = REQUEST_STATUS;
+        Map<String, Object> params = new HashMap<>();
+        params.put("uid", uid);
+        params.put("order_id", order_id);
+        params.put("login_type", BaseConstant.LOGIN_TYPE_MERCHANT);
+        if (!isTokenFail(params)) {
+            mOrderModel.getOrderStatus(params, this);
+        }
+    }
+
     // 获取订单详情
     @Override
     public void getOrderInfo(int uid, int order_id) {
@@ -100,6 +116,11 @@ public class OrderInfoPersenter implements OrderInfoContract.Presenter, IOrderMo
         mView.setOrderInfo(bean);
     }
 
+    @Override
+    public void getOrderStatusSuccess(List<OrderStatus> list) {
+        mView.setOrderStatus(list);
+    }
+
     // 获取token成功
     @Override
     public void getTokenSuccess(Map<String, Object> params) {
@@ -111,6 +132,8 @@ public class OrderInfoPersenter implements OrderInfoContract.Presenter, IOrderMo
             mOrderModel.sendOrder(params, this);
         } else if (requesType == REQUEST_HAS_DELIVER) {
             mOrderModel.isHasDeliver(params, this);
+        } else if (requesType == REQUEST_STATUS) {
+            mOrderModel.getOrderStatus(params, this);
         }
     }
 

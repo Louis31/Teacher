@@ -1,5 +1,6 @@
 package com.haiku.wateroffer.mvp.view.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,7 +16,6 @@ import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.OrderItem;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.common.listener.OrderListListener;
-import com.haiku.wateroffer.common.util.data.LogUtils;
 import com.haiku.wateroffer.common.util.ui.ToastUtils;
 import com.haiku.wateroffer.constant.ActionConstant;
 import com.haiku.wateroffer.constant.BaseConstant;
@@ -39,9 +39,8 @@ import java.util.List;
  * Created by hyming on 2016/7/11.
  */
 public class OrderListFragment extends LazyFragment implements OrderListContract.View, MyRefreshLayout.OnRefreshLayoutListener, OrderListListener {
-    private final String TAG = "OrderListFragment";
     private Context mContext;
-
+    private final int REQUEST_INFO = 1;
     private boolean isRefreshData;
     private int uid;
     private int mItemPos;// 记录当前操作item的位置
@@ -97,28 +96,15 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
         return rootView;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
     BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String type = intent.getStringExtra("type");
             if (mType.equals(type)) {
-                LogUtils.showLogE(TAG, "onReceive Success");
                 mRefreshLayout.refresh();// 刷新列表
             }
         }
     };
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-    }
 
     @Override
     public void onDestroy() {
@@ -174,10 +160,10 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     // 显示列表界面
     @Override
     public void showListView(List<OrderItem> list) {
-        if(isRefreshData){
+        if (isRefreshData) {
             mDatas.clear();
             mDatas.addAll(list);
-        }else{
+        } else {
             mDatas.addAll(list);
         }
         mRefreshLayout.loadingCompleted(true);
@@ -253,10 +239,11 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     // 查看订单详情
     @Override
     public void onOrderDetailClick(int pos) {
+        mItemPos = pos;
         int order_id = mDatas.get(pos).getOrder_id();
         Intent intent = new Intent(mContext, OrderInfoActivity.class);
         intent.putExtra("order_id", order_id);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_INFO);
     }
 
     // 取消配送
@@ -268,7 +255,7 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
                     @Override
                     public void onClick(View v) {
                         mItemPos = pos;
-                        mPresenter.cancelOrder(mDatas.get(pos).getOrder_id(), uid);  // 取消配送
+                        mPresenter.cancelOrder(mDatas.get(pos).getOrder_id(), uid, mDatas.get(pos).getOrder_diliveryman_id());  // 取消配送
                     }
                 }).setNegativeButton("否", null).show();
     }
@@ -278,5 +265,14 @@ public class OrderListFragment extends LazyFragment implements OrderListContract
     public void onOrderSendClick(int pos) {
         mItemPos = pos;
         mPresenter.sendOrder(mDatas.get(pos).getOrder_id(), uid);// 派送订单
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 订单详情操作成功返回
+        if (requestCode == REQUEST_INFO && resultCode == Activity.RESULT_OK) {
+            mDatas.remove(mItemPos);
+            mAdapter.notifyItemRemoved(mItemPos);
+        }
     }
 }

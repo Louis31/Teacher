@@ -87,7 +87,7 @@ public class DeliverOrderAdapter extends MyBaseAdapter {
             vh.tv_order_cancel.setVisibility(View.VISIBLE);
             vh.tv_order_finish.setVisibility(View.GONE);
 
-        } else if (TypeConstant.Order.CLOSED.equals(bean.getStatus())) {
+        } else if (TypeConstant.Order.RECEIVED.equals(bean.getStatus())) {
             vh.tv_order_finish.setVisibility(View.VISIBLE);
             vh.tv_order_cancel.setVisibility(View.GONE);
         }

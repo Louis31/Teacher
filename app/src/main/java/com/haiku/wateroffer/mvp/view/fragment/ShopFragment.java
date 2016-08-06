@@ -228,7 +228,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
                 break;
             // 跳转到保证金页面
             case R.id.llayout_deposit:
-                startActivity(new Intent(mContext, DepositActivity.class));
+                startActivityForResult(new Intent(mContext, DepositActivity.class), BaseConstant.REQUEST_EDIT_DEPOSIT);
                 break;
             // 跳转到商家贡献值界面
             case R.id.llayout_contribute:
@@ -343,6 +343,10 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
         else if (requestCode == BaseConstant.REQUEST_EDIT_RANGE && resultCode == Activity.RESULT_OK) {
             mShopInfo.setRange(data.getStringExtra("range"));
         }
+        // 保证金
+        else if (requestCode == BaseConstant.REQUEST_EDIT_DEPOSIT && resultCode == Activity.RESULT_OK) {
+            UserManager.getInstance().setIsPayDeposit(true);
+        }
         // 手机拍照
         else if (requestCode == BaseConstant.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             cropImageUri(mImageUri, 480, 480, BaseConstant.REQUEST_CROP_PICTURE);
@@ -407,8 +411,7 @@ public class ShopFragment extends LazyFragment implements View.OnClickListener, 
             // 打烊
             tv_shop_status.setText(getString(R.string.shop_status_close));
             iv_shop_status.setImageResource(R.drawable.switch_off);
-        }
-    }
+        }    }
 
     @Override
     public void showMessage(String msg) {

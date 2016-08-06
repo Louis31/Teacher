@@ -2,9 +2,11 @@ package com.haiku.wateroffer.mvp.model;
 
 import android.support.annotation.NonNull;
 
+import com.haiku.wateroffer.bean.Contribution;
 import com.haiku.wateroffer.bean.ShopInfo;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +27,10 @@ public interface IShopModel {
 
     interface IShopQQCallback extends IRequestCallback {
         void getShopQQSuccess(String qq);
+    }
+
+    interface IContributionCallback extends IRequestCallback {
+        void getContributionSuccess(List<Contribution> list);
     }
 
     // 获取验证码
@@ -59,4 +65,7 @@ public interface IShopModel {
 
     // 获取店铺保证金状态
     void getShopMarginStatus(Map<String, Object> params, @NonNull final IRequestCallback callback);
+
+    // 获取贡献值
+    void getContribution(Map<String, Object> params, @NonNull final IContributionCallback callback);
 }

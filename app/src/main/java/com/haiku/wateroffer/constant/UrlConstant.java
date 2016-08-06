@@ -23,6 +23,8 @@ public class UrlConstant {
     private final static String PATH_DELIVER = "/diliveryman";
     private final static String PATH_SHOP = "/shops";
     private final static String PATH_CATEGORY = "/category";
+    private final static String PATH_MERCHANT = "/merchant";
+
 
     // 用户相关path
     private static String getUserPath() {
@@ -49,8 +51,14 @@ public class UrlConstant {
         return HOST + PATH_SHOP;
     }
 
+    // 分类相关
     private static String getCategoryPath() {
         return HOST + PATH_CATEGORY;
+    }
+
+    // 商家接口
+    private static String getMerchantPath() {
+        return HOST + PATH_MERCHANT;
     }
 
     /**
@@ -85,7 +93,12 @@ public class UrlConstant {
             return getUserPath() + "/identify" + getToken();
         }*/
         public static String loginUrl() {
-            return HOST + "/merchant/identify" + getToken();
+            return getMerchantPath() + "/identify" + getToken();
+        }
+
+        // 缴纳保证金,POST
+        public static String depositUrl() {
+            return getMerchantPath() + "/margin_deposit" + getToken();
         }
 
         // 添加店铺名称，Post
@@ -142,6 +155,11 @@ public class UrlConstant {
         // 获取订单详情，Get
         public static String infoUrl() {
             return getOrderPath() + "/get_info" + getToken();
+        }
+
+        // 获取订单状态，Get
+        public static String orderStatusUrl() {
+            return getOrderPath() + "/getOrderStatus" + getToken();
         }
 
         // 取消配送，Post
@@ -268,6 +286,11 @@ public class UrlConstant {
         // 获得目标配送员正在配送的订单，Get
         public static String getDeliverOrders() {
             return getShopPath() + "/get_dilivery_oders" + getToken();
+        }
+
+        // 获取贡献值，Get
+        public static String getContribution() {
+            return getShopPath() + "/getShopContribution" + getToken();
         }
     }
 }
