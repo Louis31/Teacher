@@ -2,6 +2,7 @@ package com.haiku.wateroffer.mvp.model.impl;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.haiku.wateroffer.bean.Contribution;
 import com.haiku.wateroffer.bean.ResultData;
@@ -165,9 +166,11 @@ public class ShopModelImpl extends BaseModelImpl implements IShopModel {
         XUtils.Get(UrlConstant.Shop.getContribution(), params, new MyXUtilsCallback(callback) {
             @Override
             protected void onSuccessCallback(ResultData result) {
+                JsonObject jobj = result.getRetmsg().getAsJsonObject();
+                JsonElement jEle = jobj.get("data");
                 List<Contribution> list = new ArrayList<>();
-                if (!result.getRetmsg().isJsonNull()) {
-                    list = GsonUtils.gsonToList(result.toMsgString(), Contribution.class);
+                if (!jEle.isJsonNull()) {
+                    list = GsonUtils.gsonToList(jEle.toString(), Contribution.class);
                 }
                 callback.getContributionSuccess(list);
             }

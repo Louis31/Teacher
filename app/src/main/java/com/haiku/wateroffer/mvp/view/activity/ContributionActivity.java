@@ -1,6 +1,8 @@
 package com.haiku.wateroffer.mvp.view.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.haiku.wateroffer.R;
 import com.haiku.wateroffer.bean.Contribution;
@@ -45,6 +47,9 @@ public class ContributionActivity extends BaseActivity implements IShopModel.ICo
     @ViewInject(R.id.myRefreshLayout)
     private MyRefreshLayout mRefreshLayout;
 
+    @ViewInject(R.id.tv_total)
+    private TextView tv_total;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +89,15 @@ public class ContributionActivity extends BaseActivity implements IShopModel.ICo
 
     @Override
     public void getContributionSuccess(List<Contribution> list) {
+        int conTotal = 0;
+        for (int i = 0; i < list.size(); i++) {
+            String conStr = list.get(i).getContribution();
+            if (!TextUtils.isEmpty(conStr)) {
+                int con = Integer.valueOf(conStr);
+                conTotal += con;
+            }
+        }
+        tv_total.setText(conTotal + "");
         mDatas.addAll(list);
         mRefreshLayout.loadingCompleted(true);
     }

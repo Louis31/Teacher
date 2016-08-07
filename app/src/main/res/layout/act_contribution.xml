@@ -18,9 +18,9 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="900"
             android:textColor="@color/red"
             android:textSize="@dimen/tsize_title" />
 
@@ -30,7 +30,10 @@
             android:layout_marginTop="4dp"
             android:text="@string/current_contribution" />
     </LinearLayout>
-    
+
+    <View android:layout_width="match_parent"
+        android:layout_height="12dp"/>
+
     <com.haiku.wateroffer.mvp.view.widget.MyRefreshLayout
         android:id="@+id/myRefreshLayout"
         android:layout_width="match_parent"

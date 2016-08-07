@@ -30,7 +30,7 @@ public class ContributionAdapter extends MyBaseAdapter {
         Contribution bean = mDatas.get(position);
         ItemViewHolder vh = (ItemViewHolder) holder;
         vh.tv_order_id.setText(bean.getOrderid());
-        vh.tv_contribute.setText(bean.getContribution());
+        vh.tv_contribute.setText("+"+bean.getContribution());
 
     }
 
