@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -271,7 +272,13 @@ public class GoodsListFragment extends LazyFragment implements GoodsListContract
             Goods oldGoods = mDatas.get(mItemPos);
             oldGoods.setProduct_name(goods.getProduct_name());
             oldGoods.setProduct_instocks(goods.getProduct_store());
-            oldGoods.setProduct_image(goods.getProduct_image());
+
+            String imageStr = goods.getProduct_image();
+            if(!TextUtils.isEmpty(imageStr)){
+                String imgs[] = imageStr.split(",");
+                oldGoods.setProduct_image(imgs[0]);
+            }
+
             oldGoods.setProduct_breif(goods.getProduct_description());
             oldGoods.setProduct_category(goods.getProduct_category());
             oldGoods.setProduct_buyingcycle(goods.getProduct_buyingcycle());

@@ -3,6 +3,7 @@ package com.haiku.wateroffer.mvp.model;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.Deposit;
+import com.haiku.wateroffer.bean.WechatParams;
 import com.haiku.wateroffer.common.util.net.IRequestCallback;
 
 import java.util.Map;
@@ -14,8 +15,11 @@ import java.util.Map;
 public interface IDepositModel {
 
     interface IDepositCallback extends IRequestCallback {
-        // 获取保证金订单
+        // 获取支付宝保证金订单
         void getOrderSuccess(Deposit bean);
+
+        //  获取微信保证金订单
+        void getOrderSuccess(WechatParams bean);
     }
 
     // 获取保证金订单

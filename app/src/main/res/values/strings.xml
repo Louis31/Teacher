@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">一键送水</string>
+    <string name="app_name">送水商家端</string>
 
     <string name="rmb">¥</string>
     <string name="login">登录</string>
@@ -43,6 +43,7 @@
     <string name="msg_shop_name_empty">店铺名称不能为空</string>
     <string name="msg_shop_qq_empty">店铺QQ不能为空</string>
     <string name="msg_bill_search_invalid">请选择需要查询的时间段和配送员</string>
+    <string name="msg_time_start_end_invalid">结束时间不能少于开始时间</string>
     <string name="msg_price_invalid">价格输入错误</string>
     <string name="msg_stock_invalid">库存输入错误</string>
     <string name="msg_goods_invalid">填写完整信息后方可上架</string>

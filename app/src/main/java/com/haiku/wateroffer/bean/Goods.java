@@ -21,7 +21,7 @@ public class Goods implements Serializable {
     private String product_buyingcycle;
     private String product_personalamount;
     private String product_category;
-    private List<GoodsImage> images;
+    private List<String> images;
 
     private String product_store;
     private String product_description;
@@ -131,11 +131,11 @@ public class Goods implements Serializable {
         this.product_category = product_category;
     }
 
-    public List<GoodsImage> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(List<GoodsImage> images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 

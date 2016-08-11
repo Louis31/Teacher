@@ -6,7 +6,7 @@ import java.io.Serializable;
  * 用于解析微信支付所需参数列表的类
  * Created by hyming on 2016/7/27.
  */
-public class WechatParams implements Serializable{
+public class WechatParams implements Serializable {
     private String appid;
     private String partnerid;
     private String prepayid;
@@ -69,5 +69,18 @@ public class WechatParams implements Serializable{
 
     public void setSign(String sign) {
         this.sign = sign;
+    }
+
+    @Override
+    public String toString() {
+        return "WechatParams{" +
+                "appid='" + appid + '\'' +
+                ", partnerid='" + partnerid + '\'' +
+                ", prepayid='" + prepayid + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", noncestr='" + noncestr + '\'' +
+                ", packagevalue='" + packagevalue + '\'' +
+                ", sign='" + sign + '\'' +
+                '}';
     }
 }

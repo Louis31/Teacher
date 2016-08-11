@@ -3,6 +3,7 @@ package com.haiku.wateroffer.mvp.persenter;
 import android.support.annotation.NonNull;
 
 import com.haiku.wateroffer.bean.Deposit;
+import com.haiku.wateroffer.bean.WechatParams;
 import com.haiku.wateroffer.common.UserManager;
 import com.haiku.wateroffer.constant.TypeConstant;
 import com.haiku.wateroffer.mvp.contract.DepositContract;
@@ -64,11 +65,13 @@ public class DepositPresenter implements DepositContract.Presenter, IDepositMode
     @Override
     public void getOrderSuccess(Deposit bean) {
         mView.showLoadingDialog(false);
-        if (requesType == REQUEST_WECHAT) {
-            mView.showWechatPayView(bean);
-        } else if (requesType == REQUEST_ALI) {
-            mView.showAliPayView(bean);
-        }
+        mView.showAliPayView(bean);
+    }
+
+    @Override
+    public void getOrderSuccess(WechatParams bean) {
+        mView.showLoadingDialog(false);
+        mView.showWechatPayView(bean);
     }
 
     @Override

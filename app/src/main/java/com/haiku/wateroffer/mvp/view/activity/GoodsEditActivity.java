@@ -58,6 +58,7 @@ import java.util.List;
 @ContentView(R.layout.act_goods_edit)
 public class GoodsEditActivity extends BaseActivity implements GoodsEditContract.View {
     private String product_id;
+    private int categoryId;
     private boolean isUpdate;// 当前是否为编辑界面
     private String mImagePath;
     private String mDialogStr;
@@ -105,7 +106,8 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
 
     // 添加商品图片
     private void addImageClick() {
-        if (mImageUrlList.size() >= 6) {
+        if (mImageUrlList.size() >= 3) {
+            ToastUtils.getInstant().showToast("最多上传3张商品图片");
             return;
         }
         mImagePath = mContext.getExternalCacheDir()
@@ -231,7 +233,7 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
             builder.setTitle("选择分类");
             final ChoiceOnClickListener choiceListener =
                     new ChoiceOnClickListener();
-            builder.setSingleChoiceItems(categoryNames, 0, choiceListener);
+            builder.setSingleChoiceItems(categoryNames, categoryId, choiceListener);
 
             DialogInterface.OnClickListener btnListener =
                     new DialogInterface.OnClickListener() {
@@ -434,7 +436,7 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
         et_goods_name.setText(bean.getProduct_name());
         et_goods_price.setText(bean.getSell_price());
         et_goods_stock.setText(bean.getProduct_instocks());
-        et_goods_describe.setText(bean.getProduct_breif());
+        et_goods_describe.setText(bean.getProduct_description());
 
         tv_limit_count.setText(bean.getProduct_personalamount());
         tv_overrange.setText(bean.getProduct_beyondprice());
@@ -452,10 +454,16 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
         }
 
         // 设置图片
-        List<GoodsImage> images = bean.getImages();
+        String product_image = bean.getProduct_image();
+        if (!TextUtils.isEmpty(product_image)) {
+            addImageView(product_image);
+        }
+
+        List<String> images = bean.getImages();
         if (images != null) {
-            for (GoodsImage img : images) {
-                addImageView(img.getImage_path());
+            for (String img : images) {
+                if (!img.equals(product_image))
+                    addImageView(img);
             }
         }
         // TODO 设置分类
@@ -464,7 +472,9 @@ public class GoodsEditActivity extends BaseActivity implements GoodsEditContract
             int classify = Integer.valueOf(classifyStr);
             for (int i = 0; i < categoryIds.length; i++) {
                 if (categoryIds[i] == classify) {
+                    categoryId = i;
                     tv_category.setText(categoryNames[i]);
+                    break;
                 }
             }
         }

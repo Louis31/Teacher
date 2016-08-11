@@ -52,13 +52,11 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
     private static final int SDK_PAY_FLAG = 1;
 
     private int uid;
-    private String goodsName;
-    private String goodsDescribe;
-    private String goodsPrice;
 
     private ProgressDialog mDialog;
 
     private IWXAPI api;
+    private Deposit mDeposit;
     private WechatParams mWechatParams;
 
     private DepositContract.Presenter mPresenter;
@@ -79,13 +77,21 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
     // 微信支付
     @Event(R.id.btn_wechat)
     private void wechatClick(View v) {
-
+        if (mWechatParams == null)
+            mPresenter.weChatPayment(uid);
+        else{
+            wechatPay();
+        }
     }
 
     // 支付宝支付
     @Event(R.id.btn_alipay)
     private void alipayClick(View v) {
-        mPresenter.alipayPayment(uid);
+        if (mDeposit == null)
+            mPresenter.alipayPayment(uid);
+        else{
+            aliPay();
+        }
     }
 
     /**
@@ -141,9 +147,6 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
 
     private void initDatas() {
         uid = UserManager.getInstance().getUser().getUid();
-        goodsName = "保证金";
-        goodsDescribe = getString(R.string.deposit_tip);
-        goodsPrice = "0.01";
     }
 
     private void initViews() {
@@ -159,6 +162,7 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
             btn_wechat.setVisibility(View.GONE);
             btn_alipay.setVisibility(View.GONE);
         } else {
+            btn_wechat.setVisibility(View.GONE);
             btn_play_finish.setVisibility(View.GONE);
         }
     }
@@ -173,7 +177,7 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
     /**
      * call alipay sdk pay. 调用SDK支付
      */
-    public void aliPay(Deposit bean) {
+    public void aliPay() {
        /* if (TextUtils.isEmpty(SecurityConstant.PARTNER) || TextUtils.isEmpty(SecurityConstant.RSA_PRIVATE) || TextUtils.isEmpty(SecurityConstant.SELLER)) {
             new AlertDialog.Builder(this).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -183,7 +187,7 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
                     }).show();
             return;
         }*/
-        String orderInfo = bean.getPayment_package();//getOrderInfo(goodsName, goodsDescribe, goodsPrice);
+        String orderInfo = mDeposit.getPayment_package();//getOrderInfo(goodsName, goodsDescribe, goodsPrice);
         LogUtils.showLogE("orderInfo", orderInfo);
         /**
          * 特别注意，这里的签名逻辑需要放在服务端，切勿将私钥泄露在代码中！
@@ -314,16 +318,16 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
      *****************************/
     /*微信支付*/
     public void wechatPay() {
-        if (mWechatParams == null) {
+       /* if (mWechatParams == null) {
             // 从网络获取订单信息
             // mWechatParams = mOrder.getWechatParams();
 
-        }
-        api = WXAPIFactory.createWXAPI(mContext, SecurityConstant.WECHAT_APP_ID, true);
+        }*/
+        api = WXAPIFactory.createWXAPI(this,mWechatParams.getAppid(), false);
         try {
             if (api != null && mWechatParams != null && isWXAppInstalled()) {
 
-                api.registerApp(SecurityConstant.WECHAT_APP_ID);
+                api.registerApp(mWechatParams.getAppid());
 
                 PayReq req = new PayReq();
                 if (!TextUtils.isEmpty(mWechatParams.getAppid()))
@@ -339,6 +343,8 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
                     req.timeStamp = mWechatParams.getTimestamp();
                 if (!TextUtils.isEmpty(mWechatParams.getSign()))
                     req.sign = mWechatParams.getSign();
+
+
                 boolean isConnected = api.sendReq(req);
             } else {
                 Log.d("PAY_GET", "服务器请求错误");
@@ -383,11 +389,13 @@ public class DepositActivity extends BaseActivity implements DepositContract.Vie
 
     @Override
     public void showAliPayView(Deposit bean) {
-        aliPay(bean);
+        mDeposit = bean;
+        aliPay();
     }
 
     @Override
-    public void showWechatPayView(Deposit bean) {
-
+    public void showWechatPayView(WechatParams bean) {
+        mWechatParams = bean;
+       // wechatPay();
     }
 }

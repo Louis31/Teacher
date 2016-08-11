@@ -117,6 +117,8 @@ public class MyBillActivity extends BaseActivity implements MyBillContract.View 
         if (time_none.equals(start_time) || time_none.equals(end_time)
                 || TextUtils.isEmpty(deliver_name)) {
             ToastUtils.getInstant().showToast(R.string.msg_bill_search_invalid);
+        }  else if(end_time.compareTo(start_time)<0){
+            ToastUtils.getInstant().showToast(R.string.msg_time_start_end_invalid);
         } else {
             // 查询数据
             showLoadingDialog(true);

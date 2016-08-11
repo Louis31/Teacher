@@ -1,6 +1,7 @@
 package com.haiku.wateroffer.mvp.contract;
 
 import com.haiku.wateroffer.bean.Deposit;
+import com.haiku.wateroffer.bean.WechatParams;
 import com.haiku.wateroffer.mvp.base.BasePresenter;
 import com.haiku.wateroffer.mvp.base.BaseView;
 
@@ -17,7 +18,7 @@ public interface DepositContract {
         void showAliPayView(Deposit bean);
 
         // 显示微信页面
-        void showWechatPayView(Deposit bean);
+        void showWechatPayView(WechatParams bean);
 
         // 显示信息
         void showMessage(String msg);

@@ -1,5 +1,7 @@
 package com.haiku.wateroffer.bean;
 
+import com.google.gson.JsonElement;
+
 /**
  * Created by hyming on 2016/8/4.
  */
@@ -22,4 +24,5 @@ public class Deposit {
     public void setPayment_package(String payment_package) {
         this.payment_package = payment_package;
     }
+
 }
