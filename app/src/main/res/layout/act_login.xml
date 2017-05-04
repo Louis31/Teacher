@@ -1,78 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:paddingLeft="32dp"
-    android:paddingRight="32dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/common_height"
-        android:layout_marginTop="100dp"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/et_phone"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="@string/hint_phone"
-            android:inputType="number"
-            android:maxLength="11"
-            android:textSize="@dimen/tsize_normal" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/line" />
-
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@drawable/reg_bg">
+    <RelativeLayout
+        android:layout_width = "match_parent"
+        android:layout_height = "48dp"
+        android:background = "@drawable/shap_head_0">
         <TextView
-            android:id="@+id/tv_verify_code"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:text="@string/get_verify_code"
-            android:textColor="@color/black"
-            android:textSize="@dimen/tsize_big" />
-    </LinearLayout>
-
-    <View style="@style/line_h" />
-
-    <EditText
-        android:id="@+id/et_verify_code"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_centerInParent = "true"
+            android:text = "登陆"
+            android:textColor = "@color/white"
+            android:textSize = "20dp"
+            />
+    </RelativeLayout>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/common_height"
-        android:background="@null"
-        android:hint="@string/hint_verify_code"
-        android:inputType="number"
-        android:maxLength="6"
-        android:textSize="@dimen/tsize_normal" />
+        android:layout_height="match_parent">
 
-    <View style="@style/line_h" />
 
-    <Button
-        android:id="@+id/btn_login"
-        style="@style/btn_common_red"
-        android:layout_marginTop="48dp"
-        android:text="@string/login" />
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true"
+            android:id="@+id/inp_id"
+            android:background="#80FFFFFF"
+            android:orientation="vertical"
+            android:layout_height="111dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal"
+            >
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ico_phone"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="6dp"
+                android:hint="请输入手机号"
+                android:background="@null"
+                />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:orientation="horizontal"
+                >
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ico_password"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="12dp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="6dp"
+                        android:hint="请输入密码"
+                        android:background="@null"
+                        />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:gravity="center"
-        android:text="@string/app_name"
-        android:textSize="@dimen/tsize_title" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/reg_circ_red"
+            android:layout_below="@+id/inp_id"
+            android:text="登陆"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="22dp"
+
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:layout_below="@+id/btn_login"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:text="去注册？"
+            android:id="@+id/turn2register"
+            android:textColor="@color/white"
+            />
+
+    </RelativeLayout>
 </LinearLayout>
